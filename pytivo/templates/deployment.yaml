@@ -1,0 +1,96 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "pytivo.fullname" . }}
+  labels:
+    {{- include "pytivo.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "pytivo.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "pytivo.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "pytivo.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - /usr/bin/python
+            - /opt/pytivo/lucasnz/pyTivo.py
+#            - --config
+#            - /config/server.config
+            {{- range $key, $val := .Values.config }}
+            - --extraconf
+            - {{ $key }}.conf
+            {{- end }}
+            - --extraconf
+            - /secret/pyTivo.conf
+          ports:
+            - name: broadcast
+              containerPort: 2190
+              protocol: UDP
+            - name: management
+              containerPort: 9032
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 9032
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 9032
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: {{ include "pytivo.fullname" . }}-media
+              mountPath: /media
+              readOnly: true
+            - name: {{ include "pytivo.fullname" . }}-config
+              mountPath: /config
+              readOnly: true
+            - name: {{ include "pytivo.fullname" . }}-secret
+              mountPath: /secret
+              readOnly: true
+      volumes:
+        - name: {{ include "pytivo.fullname" . }}-media
+          nfs:
+            server: "pluto"
+            path: /Recordings
+        - name: {{ include "pytivo.fullname" . }}-config
+          configMap:
+            name: {{ include "pytivo.fullname" . }}
+        - name: {{ include "pytivo.fullname" . }}-secret
+          secret:
+            secretName: {{ include "pytivo.fullname" . }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

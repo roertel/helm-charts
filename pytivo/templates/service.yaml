@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "pytivo.fullname" . }}-management
+  labels:
+    {{- include "pytivo.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: 9032
+      protocol: TCP
+      name: management
+  selector:
+    {{- include "pytivo.selectorLabels" . | nindent 4 }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "pytivo.fullname" . }}-broadcast
+  labels:
+    {{- include "pytivo.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: 2190
+      targetPort: 2190
+      protocol: UDP
+      name: broadcast
+  selector:
+    {{- include "pytivo.selectorLabels" . | nindent 4 }}
