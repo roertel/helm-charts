@@ -1,0 +1,14 @@
+{{- if .Values.persistentVolume.enabled -}}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "soft-serve.fullname" . }}
+  labels:
+    {{- include "soft-serve.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{- include ".Values.persistentVolume.size" | default "1Gi" }}
+{{- end }}
