@@ -1,0 +1,71 @@
+# Where to set concurrent policy to false?
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "minecraft-overviewer.fullname" . }}
+  labels:
+    {{- include "minecraft-overviewer.labels" . | nindent 4 }}
+spec:
+  schedule: "{{ .Values.regenerationSchedule }}"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          {{- with .Values.podAnnotations }}
+          annotations:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          labels:
+            {{- include "minecraft-overviewer.selectorLabels" . | nindent 12 }}
+        spec:
+          {{- with .Values.imagePullSecrets }}
+          imagePullSecrets:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          containers:
+          - name: {{ .Chart.Name }}
+            image: "{{ .Values.image.renderer.repository }}:{{ .Values.image.renderer.tag | default .Chart.AppVersion }}"
+            imagePullPolicy: {{ .Values.image.renderer.pullPolicy }}
+            env:
+              # - name: CONFIG_LOCATION
+              #   value: "/opt/config.py"
+              - name: MINECRAFT_VERSION
+                value: "{{ .Values.minecraftVersion }}"
+            volumeMounts:
+              - name: config
+                mountPath: /opt
+                readOnly: true
+              - name: world
+                mountPath: /home/minecraft/server/
+                readOnly: true
+              - name: map
+                mountPath: /home/minecraft/render/
+                readOnly: false
+          volumes:
+            - name: config
+              configMap:
+                name: {{ include "minecraft-overviewer.fullname" . }}
+            - name: world
+              {{- if .Values.world.claimName }}
+              persistentVolumeClaim:
+                claimName: {{ .Values.world.claimName }}
+              {{- end }}
+            - name: map
+              {{- if .Values.map.persistent }}
+              persistentVolumeClaim:
+                claimName: {{ include "minecraft-overviewer.fullname" . }}
+              {{- end }}
+          restartPolicy: OnFailure
+          {{- with .Values.nodeSelector }}
+          nodeSelector:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.affinity }}
+          affinity:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.tolerations }}
+          tolerations:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
