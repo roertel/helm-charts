@@ -1,0 +1,107 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "minecraft-overviewer.fullname" . }}
+  labels:
+    {{- include "minecraft-overviewer.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "minecraft-overviewer.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "minecraft-overviewer.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "minecraft-overviewer.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:  # One time setup to create index.html if the www is empty
+        - name: init-{{ .Chart.Name }}
+          image: busybox
+          command: ['sh', '-c', 'touch /usr/share/nginx/html/index.html']
+          volumeMounts:
+            - name: map
+              mountPath: /usr/share/nginx/html
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.display.repository }}:{{ .Values.image.display.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.display.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: map
+              mountPath: /usr/share/nginx/html
+              readOnly: true
+      volumes:
+        - name: map
+        {{- if .Values.map.persistent }}
+          persistentVolumeClaim:
+            claimName: {{ include "minecraft-overviewer.fullname" . }}
+#            - metadata:
+#                name: database
+#                labels:
+#                  app.kubernetes.io/name: {{ include "minecraft-overviewer.name" . }}
+#                  app.kubernetes.io/instance: {{ .Release.Name }}
+#                  app.kubernetes.io/managed-by: {{ .Release.Service }}
+#              spec:
+#                accessModes:
+#                {{- range .Values.map.accessModes }}
+#                  - {{ . | quote }}
+#                {{- end }}
+#                resources:
+#                  requests:
+#                    storage: {{ .Values.map.size | quote }}
+#                {{ if .Values.map.existingClaim }}
+#                selector:
+#                  matchLabels:
+#                    name: {{ .Values.map.existingClaim | quote }}
+#                {{- else }}
+#                {{- if .Values.map.storageClass }}
+#                {{- if (eq "-" .Values.map.storageClass) }}
+#                storageClassName: ""
+#                {{- else }}
+#                storageClassName: {{ .Values.map.storageClass | quote }}
+#                {{- end }}
+#                {{- end }}
+#                {{- end }}
+        {{- else }}
+          emptyDir: {}
+        {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
