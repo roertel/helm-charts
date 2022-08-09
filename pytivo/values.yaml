@@ -36,9 +36,14 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
+servicePort: 80  # Port which pyTivo uses to serve files and present a browsing
+                 # interface. This must match the K8s service port or else the
+                 # mDNS broadcast will broadcast the wrong port to the TiVo.
+
 service:
   type: ClusterIP
-  port: 80
+  port: 80  # This must match the port inside the container or else the mDNS
+            # broadcast will broadcast the wrong port to the TiVo.
 
 ingress:
   enabled: false
@@ -56,6 +61,12 @@ ingress:
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
+
+mediaMount: {}
+# nfs:
+#   server: "servername"
+#   path: /TiVo
+
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -82,23 +93,26 @@ tolerations: []
 
 affinity: {}
 
+# Swith the container to one of your shares to test NFS, for example
+healthProbePath: "/TiVoConnect?Command=QueryContainer&container=/NowPlaying"
+
 config:
   server:
     Server:
-      port: 9032
+      port: 80
       nosettings: true
-  shares:
-    Movies:
-      type: video
-      path: /media/Movies
-    Shows:
-      type: video
-      path: /media/Shows
-    Videos:
-      type: video
-      path: /media/Videos
+  shares: {}  # Example setup
+    # Movies:
+    #   type: video
+    #   path: /media/Movies
+    # Shows:
+    #   type: video
+    #   path: /media/Shows
+    # Videos:
+    #   type: video
+    #   path: /media/Videos
 
-#secret:
+secret: {}
 #  pyTivo:
 #    Server:
 #      tivo_mak: ####

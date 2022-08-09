@@ -38,50 +38,58 @@ spec:
             - /opt/pytivo/lucasnz/pyTivo.py
 #            - --config
 #            - /config/server.config
-            {{- range $key, $val := .Values.config }}
+            {{- range $key, $val := (merge .Values.config .Values.secret) }}
             - --extraconf
             - {{ $key }}.conf
             {{- end }}
-            - --extraconf
-            - /secret/pyTivo.conf
           ports:
             - name: broadcast
               containerPort: 2190
               protocol: UDP
             - name: management
-              containerPort: 9032
+              containerPort: {{ .Values.servicePort }}
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /
-              port: 9032
+              path: "{{ .Values.healthProbePath | default '/' }}"
+              port: {{ .Values.servicePort }}
           readinessProbe:
             httpGet:
-              path: /
-              port: 9032
+              path: "{{ .Values.healthProbePath | default '/' }}"
+              port: {{ .Values.servicePort }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
+            {{- if .Values.mediaMount }}
             - name: {{ include "pytivo.fullname" . }}-media
               mountPath: /media
               readOnly: true
+            {{- end }}
+            {{- if .Values.config }}
             - name: {{ include "pytivo.fullname" . }}-config
               mountPath: /config
               readOnly: true
+            {{- end }}
+            {{- if .Values.secret }}
             - name: {{ include "pytivo.fullname" . }}-secret
               mountPath: /secret
               readOnly: true
+            {{- end }}
       volumes:
+        {{- if .Values.mediaMount }}
         - name: {{ include "pytivo.fullname" . }}-media
-          nfs:
-            server: "pluto"
-            path: /Recordings
+          {{- toYaml .Values.mediaMount | nindent 10 }}
+        {{- end }}
+        {{- if .Values.config }}
         - name: {{ include "pytivo.fullname" . }}-config
           configMap:
             name: {{ include "pytivo.fullname" . }}
+        {{- end }}
+        {{- if .Values.secret }}
         - name: {{ include "pytivo.fullname" . }}-secret
           secret:
             secretName: {{ include "pytivo.fullname" . }}
+        {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

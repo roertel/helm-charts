@@ -8,7 +8,7 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.port }}
-      targetPort: 9032
+      targetPort: {{ .Values.servicePort }}
       protocol: TCP
       name: management
   selector:
