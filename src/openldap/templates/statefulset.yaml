@@ -76,18 +76,12 @@ spec:
           {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-          volumeMounts:
-          - name: {{ include "openldap.fullname" . }}-init
-            mountPath: /ldap/init
-            readOnly: true
-          - name: {{ include "openldap.fullname" . }}-secret
-            mountPath: /ldap/secrets
-            readOnly: true
-          - name: {{ include "openldap.fullname" . }}-client
-            mountPath: /ldap/client
-            readOnly: true
+          volumeMounts:   
           - name: {{ include "openldap.fullname" . }}-config
             mountPath: /ldap/config
+            readOnly: true
+          - name: {{ include "openldap.fullname" . }}-secret
+            mountPath: /ldap/secret
             readOnly: true
           {{- if .Values.tls.enabled }}
           - name: {{ include "openldap.fullname" . }}-tls
@@ -95,24 +89,18 @@ spec:
             readOnly: true
           {{- end }}
       volumes:
-      - name: {{ include "openldap.fullname" . }}-init
-        configMap:
-          name: {{ include "openldap.fullname" . }}-init
-      - name: {{ include "openldap.fullname" . }}-client
-        configMap:
-          name: {{ include "openldap.fullname" . }}-client
       - name: {{ include "openldap.fullname" . }}-config
         configMap:
-          name: {{ include "openldap.fullname" . }}-config
-      - name: {{ include "openldap.fullname" . }}-secret
+          name: {{ include "openldap.fullname" . }}
+      - name: {{ include "openldap.fullname" . }}-secrets
         secret:
-          secretName: {{ include "openldap.fullname" . }}-admin
+          secretName: {{ include "openldap.fullname" . }}
           defaultMode: 0444
       {{- if .Values.tls.enabled }}
       - name: {{ include "openldap.fullname" . }}-tls
         secret:
           {{- if eq .Values.tls.type "certificate" }}
-          secretName: {{ include "openldap.fullname" . }}-tls
+          secretName: {{ include "openldap.fullname" . }}
           {{- else if eq .Values.tls.type "secret" }}
           secretName: "{{ .Values.tls.secret }}"
           {{- end }}

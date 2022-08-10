@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    {{- include "openldap.labels" . | nindent 4 }}
+
+  name: {{ include "openldap.fullname" . }}
+  
+data:
+  # Configuration for client & server
+  ldaprc: |
+    {{- include "ldaprc" . | indent 4 }}
+  
+  # One time init if the DB is absent. Sets up modules and access
+  pre-init.ldif: |
+    {{- include "pre-init.ldif" . | indent 4 }}
+
+  # Base DB, run once after pre-init. Sets up database. 
+  base.ldif: |
+    {{- include "base.ldif" . | indent 4 }}
+
+  # Runtime config. Expected to be able to be run over and over.
+  config.ldif: |
+    {{- include "config.ldif" . | indent 4 }}

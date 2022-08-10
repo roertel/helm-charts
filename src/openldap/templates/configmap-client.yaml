@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: {{ include "openldap.fullname" . }}-client
-  labels:
-    {{- include "openldap.labels" . | nindent 4 }}
-data:
-  ldaprc: |
-    {{- include "ldaprc" . | indent 4 }}

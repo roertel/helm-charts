@@ -1,11 +1,11 @@
-{{- define "root.ldif" }}
-# Initialize the root (user) database
+{{- define "base.ldif" }}
+# Initialize the base (user) database. Changes to this file will only run on first-time initialization. 
 dn: olcDatabase=mdb,cn=config
 objectClass: olcDatabaseConfig
 objectClass: olcMdbConfig
 olcDatabase: mdb
-olcSuffix: {{ .ldapSuffix }}
-olcRootDN: cn=admin,$LDAP_suffix
+olcSuffix: $LDAPBASE
+olcRootDN: cn=admin,$LDAPBASE
 olcRootPW: $LDAP_admin
 olcDbDirectory: /ldapdata
 olcDbIndex: objectClass,uid,uidNumber,gidNumber eq
@@ -17,12 +17,12 @@ olcAccess: to attrs=userPassword
   by * none
 olcAccess: to attrs=shadowLastChange by self write
   by dn.subtree="uidNumber={{ .Values.securityContext.runAsUser | default 0 }},cn=peercred,cn=external,cn=auth" manage
-  by dn.subtree="ou=system,$LDAP_suffix" read
+  by dn.subtree="ou=system,$LDAPBASE" read
   by * none
-olcAccess: to dn.subtree="ou=system,$LDAP_suffix" 
+olcAccess: to dn.subtree="ou=system,$LDAPBASE" 
   by dn.subtree="uidNumber={{ .Values.securityContext.runAsUser | default 0 }},cn=peercred,cn=external,cn=auth" manage
   by * none
-olcAccess: to dn.subtree="$LDAP_suffix" 
+olcAccess: to dn.subtree="$LDAPBASE" 
   by dn.subtree="uidNumber={{ .Values.securityContext.runAsUser | default 0 }},cn=peercred,cn=external,cn=auth" manage
   by users read 
   by * none
