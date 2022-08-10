@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    {{- include "openldap.labels" . | nindent 4 }}
+
+  name: {{ include "openldap.fullname" . }}-init
+  
+data:
+  init.ldif: |
+    {{- include "init.ldif" . | indent 4 }}

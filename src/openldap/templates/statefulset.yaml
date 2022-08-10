@@ -1,0 +1,132 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "openldap.fullname" . }}
+  labels:
+    {{- include "openldap.labels" . | nindent 4 }}
+spec:
+  serviceName: {{ include "openldap.fullname" . }}
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "openldap.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "openldap.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "openldap.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["sleep", "infinity"]  # for debugging
+          args:
+            # - "-d{{ .Values.slapd.debugLevel | default 1}}"
+            # {{- range values .Values.slapd.listeners }}
+            # {{- if .enabled }}
+            # - "-h {{ .scheme }}://0.0.0.0:{{ .containerPort }}/"
+            # {{- end }}
+            # {{- end }}
+          env:
+            - name: LDAPCONF
+              value: /ldap/client/ldaprc
+            - name: LDAPURI
+              value: "ldapi://%2fldap%2frun%2fslapd.sock"
+            - name: LDAPBASE
+              value: {{ cat "dc=" .Values.ldapDomain | nospace | replace "." ",dc=" }}
+
+          ports:
+            {{- range $key, $value := .Values.slapd.listeners }}
+            {{- if $value.enabled }}
+            - name: {{ $key }}
+              containerPort: {{ $value.containerPort | int }}
+              protocol: {{ $value.protocol | default "TCP" }}
+            {{- end }}
+            {{- end }}            
+          {{- $continue := true }}
+          {{- range $key, $value := .Values.slapd.listeners }}
+          {{- if and $value.enabled $continue }}
+          {{- $continue := false }}
+          # readinessProbe:
+          #   initialDelaySeconds: 10
+          #   periodSeconds: 20
+          #   tcpSocket:
+          #     port: {{ $key }}
+          # livenessProbe:
+          #   initialDelaySeconds: 10
+          #   periodSeconds: 20
+          #   tcpSocket:
+          #     port: {{ $key }}
+          {{- end }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+          - name: {{ include "openldap.fullname" . }}-init
+            mountPath: /ldap/init
+            readOnly: true
+          - name: {{ include "openldap.fullname" . }}-secret
+            mountPath: /ldap/secrets
+            readOnly: true
+          - name: {{ include "openldap.fullname" . }}-client
+            mountPath: /ldap/client
+            readOnly: true
+          - name: {{ include "openldap.fullname" . }}-config
+            mountPath: /ldap/config
+            readOnly: true
+          {{- if .Values.tls.enabled }}
+          - name: {{ include "openldap.fullname" . }}-tls
+            mountPath: /ldap/tls
+            readOnly: true
+          {{- end }}
+      volumes:
+      - name: {{ include "openldap.fullname" . }}-init
+        configMap:
+          name: {{ include "openldap.fullname" . }}-init
+      - name: {{ include "openldap.fullname" . }}-client
+        configMap:
+          name: {{ include "openldap.fullname" . }}-client
+      - name: {{ include "openldap.fullname" . }}-config
+        configMap:
+          name: {{ include "openldap.fullname" . }}-config
+      - name: {{ include "openldap.fullname" . }}-secret
+        secret:
+          secretName: {{ include "openldap.fullname" . }}-admin
+          defaultMode: 0444
+      {{- if .Values.tls.enabled }}
+      - name: {{ include "openldap.fullname" . }}-tls
+        secret:
+          {{- if eq .Values.tls.type "certificate" }}
+          secretName: {{ include "openldap.fullname" . }}-tls
+          {{- else if eq .Values.tls.type "secret" }}
+          secretName: "{{ .Values.tls.secret }}"
+          {{- end }}
+          defaultMode: 0444
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

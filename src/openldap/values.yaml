@@ -1,0 +1,141 @@
+# Default values for openldap.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: roertel/openldap
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext:
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 101
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+service:  # Only one service is allowed at this time (LDAP or LDAPS)
+  type: ClusterIP
+  port: 389
+
+# ingress:
+#   enabled: false
+#   annotations: {}
+#     # kubernetes.io/ingress.class: nginx
+#     # kubernetes.io/tls-acme: "true"
+#   hosts:
+#     - host: openldap.local
+#       paths:
+#       - path: /
+#         backend:
+#           serviceName: openldap.local
+#           servicePort: 389
+#   tls: []
+#   #  - secretName: openldap-tls
+#   #    hosts:
+#   #      - openldap.local
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+# TCP:  # UDP not supported
+#   LDAP:
+#     enabled: true
+#     port: 1389  # Set this to a number >1024 to run as non-root
+
+#   LDAPS:
+#     enabled: false  # Certificate infrastructure must be in place (ex: cert-manager)
+#     port: 1636  # Set this to a number >1024 to run as non-root
+
+tls:
+  enabled: false
+  type: certificate  # or secret
+  secret: secret-name  # you create this. must have key, cert & chain values
+  certificate:
+    issuerRef:
+      name: default  # This is most likely not correct for your setup
+      # kind: Issuer  # ...or ClusterIssuer (not set defaults to Issuer)
+      # group:
+    commonName: example.com  # Set to the FQDN of your server
+    optional: {}  # Optional Certificate fields
+      # dnsNames: # (optional)
+      # - example.com
+      # ipAddresses:  # (optional)
+      # - 127.0.0.1
+      # subject: #(optional)
+      # duration: 24h #(optional)
+      # renewBefore: 8h #(optional)
+      # uris:   # (optional)
+      # emailAddresses:   # (optional)
+      # secretTemplate:   # (optional)
+      # keystores:   # (optional)
+
+persistence:
+  enabled: false
+  size: 1Gi
+  storageClass: nfs
+
+ldapDomain: example.com
+
+slapd:
+  # debugLevel: 1  # Must be integer >=0 or else slapd will background itself
+  # adminPassword: password1234  # Administrative (RW) password or one will be generated for you
+  # configPassword: password1234  # Configuration (R) or one will be generated for you
+  listeners: 
+    ldap:
+      enabled: true
+      scheme: ldap   # Only ldap & ldaps is supported
+      containerPort: 1389
+      port: 389
+    ldaps:
+      enabled: false  # ldaps requires TLS into to be set, above
+      scheme: ldaps
+      containerPort: 1636
+      port: 636
+
+phpldapadmin:
+  enabled: true
