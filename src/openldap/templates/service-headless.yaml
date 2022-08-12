@@ -1,0 +1,21 @@
+{{- if len .Values.slapd.listeners }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "openldap.fullname" . }}-headless
+  labels:
+    {{- include "openldap.labels" . | nindent 4 }}
+spec:
+  clusterIP: None  # Headless service
+  ports:
+    {{- range $key, $value := .Values.slapd.listeners }}
+    {{- if $value.enabled }}
+    - name: {{ $key }}
+      targetPort: {{ $key }}
+      protocol: {{ $value.protocol | default "TCP" }}
+      port: {{ $value.port | int }}
+    {{- end }}
+    {{- end }}
+  selector:
+    {{- include "openldap.selectorLabels" . | nindent 4 }}
+{{- end }}
