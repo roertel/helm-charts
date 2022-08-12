@@ -34,21 +34,18 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          command: ["sleep", "infinity"]  # for debugging
+          # command: ["sleep", "infinity"]  # for debugging
           args:
-            # - "-d{{ .Values.slapd.debugLevel | default 1}}"
-            # {{- range values .Values.slapd.listeners }}
-            # {{- if .enabled }}
-            # - "-h {{ .scheme }}://0.0.0.0:{{ .containerPort }}/"
-            # {{- end }}
-            # {{- end }}
+            - "-h"
+            - "ldapi://%2fldap%2frun%2fslapd.sock
+            {{- range values .Values.slapd.listeners }}
+            {{- if .enabled }} {{ .scheme }}://0.0.0.0:{{ .containerPort }}/{{ end -}}
+            {{- end }}"
           env:
-            - name: LDAPCONF
-              value: /ldap/client/ldaprc
-            - name: LDAPURI
-              value: "ldapi://%2fldap%2frun%2fslapd.sock"
-            - name: LDAPBASE
-              value: {{ cat "dc=" .Values.ldapDomain | nospace | replace "." ",dc=" }}
+            - {name: LDAPURI      , value: "ldapi://%2fldap%2frun%2fslapd.sock"}
+            - {name: LDAPSASL_MECH, value: "EXTERNAL"}
+            - {name: LDAPBASE     , value: {{ cat "dc=" .Values.ldapDomain | replace "." ",dc=" | nospace | quote }}}
+            - {name: LDAP_DEBUG   , value: {{ .Values.slapd.debugLevel | default 1 | quote }}}
 
           ports:
             {{- range $key, $value := .Values.slapd.listeners }}
@@ -81,7 +78,7 @@ spec:
             mountPath: /ldap/config
             readOnly: true
           - name: {{ include "openldap.fullname" . }}-secret
-            mountPath: /ldap/secret
+            mountPath: /ldap/secrets
             readOnly: true
           {{- if .Values.tls.enabled }}
           - name: {{ include "openldap.fullname" . }}-tls
@@ -92,7 +89,7 @@ spec:
       - name: {{ include "openldap.fullname" . }}-config
         configMap:
           name: {{ include "openldap.fullname" . }}
-      - name: {{ include "openldap.fullname" . }}-secrets
+      - name: {{ include "openldap.fullname" . }}-secret
         secret:
           secretName: {{ include "openldap.fullname" . }}
           defaultMode: 0444
