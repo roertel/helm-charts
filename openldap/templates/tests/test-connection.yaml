@@ -8,11 +8,17 @@ metadata:
     "helm.sh/hook": test
 spec:
   containers:
-    - name: curl
-      image: curlimages/curl
+    - name: test
+      image: roertel/openldap
+      command: ["ldapwhoami"]
       args:
-        - "--verbose"
-        {{- range .Values.slapd.listeners }}
-        {{- if .enabled }}- {{.scheme}}://{{ include "openldap.fullname" . }}:{{ .containerPort }}/{{ end -}}
-        {{- end }}
+        - "-v"
+        - "-x"
+        - "-H"
+        {{- $fullname := include "openldap.fullname" . }}
+        - "{{- range values .Values.slapd.listeners -}}
+        {{- if .enabled -}}
+        {{ .scheme }}://{{ $fullname }}:{{ .port }}/,
+        {{- end -}}
+        {{- end -}}"
   restartPolicy: Never
