@@ -1,13 +1,16 @@
 # helm-charts
 A repository for helm charts. See the documentation for each chart in it's subdirectory.
 
-* minecraft-overviewer - Overviewer will generate Google maps-style pages for your Minecraft world.
-* pytivo - Service to share videos with your Tivo.
+|Chart Name|Chart Description|
+|-|-|
+|minecraft-overviewer|Overviewer will generate Google maps-style pages for your Minecraft world.|
+|pytivo|Service to share videos with your Tivo.|
+|openldap|OpenLDAP server including PHPLDAPAdmin.|
 
 General usage instructions
 
 1. Add the repo
-  ``
+  `helm repo add roertel https://roertel.github.io/helm-charts/`
 2. Install the chart
   `helm install <local name> <chart name>`
 
