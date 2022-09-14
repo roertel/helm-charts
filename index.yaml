@@ -3,52 +3,52 @@ entries:
   minecraft-overviewer:
   - apiVersion: v2
     appVersion: 0.17.0
-    created: "2022-08-12T15:37:11.128401367-05:00"
+    created: "2022-09-14T10:00:02.275302226-05:00"
     description: A Helm chart for Minecraft Overviewer
-    digest: 06ee2980f33c4d8de0748e7637f2c2b8d45b347c504b4ef5ed61cdc171bb5018
+    digest: e7f013d171de62652eb0b1492c20b70e3976e6e7e51aee51c22ed30ab2f32202
     name: minecraft-overviewer
     type: application
     urls:
-    - https://roertel.github.io/helm-charts/minecraft-overviewer-0.1.0.tgz
+    - minecraft-overviewer-0.1.0.tgz
     version: 0.1.0
   openldap:
   - apiVersion: v2
     appVersion: latest
-    created: "2022-08-12T15:37:11.132117387-05:00"
+    created: "2022-09-14T10:00:02.27936916-05:00"
     dependencies:
     - condition: phpldapadmin.enabled
       name: phpldapadmin
       repository: ""
       version: 0.1.x
     description: A Helm chart for Kubernetes
-    digest: 3185c2c1c971d4336479e6e8d2183950a0b6f9a6d0ebfb14f4c5e68cb0e63943
+    digest: 4fe190c0631b72ccdd4d294fd679caac33baf9612ca486f10e18c048e5399a72
     icon: https://img.favpng.com/6/22/16/openldap-lightweight-directory-access-protocol-directory-service-active-directory-computer-configuration-png-favpng-rXDVC6WCDDD8UQ7ZFTDryfGdZ.jpg
     name: openldap
     type: application
     urls:
-    - https://roertel.github.io/helm-charts/openldap-0.1.0.tgz
+    - openldap-0.1.0.tgz
     version: 0.1.0
   pytivo:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-08-12T15:37:11.134320961-05:00"
+    created: "2022-09-14T10:00:02.281341946-05:00"
     description: A Helm chart for Kubernetes
-    digest: 245122717bc91dd628ac0bcd38edd86b65c7d711826abf13e225920190e357bc
+    digest: ecf3d02da04d4259ee63873ebdcd56b412834b16928f09d15a367e73eccde96a
     name: pytivo
     type: application
     urls:
-    - https://roertel.github.io/helm-charts/pytivo-0.1.0.tgz
+    - pytivo-0.1.0.tgz
     version: 0.1.0
   soft-serve:
   - apiVersion: v2
     appVersion: v0.3.2
-    created: "2022-08-12T15:37:11.136931013-05:00"
+    created: "2022-09-14T10:00:02.283363832-05:00"
     description: A Helm chart for CharmCLI soft-serve
-    digest: 1b25bd9a409a070bae9d5b297bec46e8e755060d93a9c66d3f3c8340c6076b07
+    digest: ca4cc08a4c277c850ac2437e48a322062720651ed92941e2d3f7a400093106ce
     icon: https://camo.githubusercontent.com/13c5b4b96888c7577c8a6d427123a0ca9c32e1c97d390baf76fac311cdce756e/68747470733a2f2f73747566662e636861726d2e73682f736f66742d73657276652f736f66742d73657276652d6865616465722e706e673f30
     name: soft-serve
     type: application
     urls:
-    - https://roertel.github.io/helm-charts/soft-serve-0.1.0.tgz
+    - soft-serve-0.1.0.tgz
     version: 0.1.0
-generated: "2022-08-12T15:37:11.125920691-05:00"
+generated: "2022-09-14T10:00:02.269370207-05:00"
