@@ -4,7 +4,10 @@ on:
   workflow_dispatch:
   pull_request:
     paths:
-      - 'charts/**'
+      - './**'
+
+env:
+  CHART_PATH: .
 
 jobs:
   lint-chart:
