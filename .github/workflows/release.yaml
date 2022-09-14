@@ -6,8 +6,11 @@ on:
     branches:
       - main
     paths:
-      - 'charts/**'
+      - './**'
 
+env:
+  CHART_PATH: .
+  
 jobs:
   release:
     runs-on: ubuntu-latest

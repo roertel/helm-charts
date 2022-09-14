@@ -2,7 +2,7 @@
 set -euo pipefail
 
 CHART_DIRS="$(git diff --find-renames --name-only \
-  "$(git rev-parse --abbrev-ref HEAD)" remotes/origin/main -- charts \
+  "$(git rev-parse --abbrev-ref HEAD)" remotes/origin/main -- "${CHART_PATH}" \
   | grep '[cC]hart.yaml' \
   | sed -e 's#/[Cc]hart.yaml##g')"
 KUBEVAL_VERSION="0.16.1"
