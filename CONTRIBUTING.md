@@ -36,11 +36,16 @@ There is an action on the repository, but if you want to build and deploy manual
 1. Stash the packages.
 1. Change to the `gh-pages` branch.
 1. Unstash the packages.
-1. Commit.
+1. Build the index.
+1. Commit & push.
 ```
-helm package `ls -d */` -u
-git stash push -u *.tgz
+rmdir build
+helm package `ls -d */` -d build
+git stash push -u build
 git checkout gh-pages
-git checkout stash -- .
+git stash pop
+mv build/* .
+rmdir build
+helm repo index .
 git commit -am "Publish charts"
 ```
