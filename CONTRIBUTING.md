@@ -48,4 +48,5 @@ mv -u build/* .
 rmdir build
 helm repo index .
 git commit -am "Publish charts"
+git push
 ```
