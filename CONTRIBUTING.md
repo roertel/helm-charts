@@ -47,6 +47,7 @@ git stash pop
 mv -u build/* .
 rmdir build
 helm repo index .
+git add *.tgz
 git commit -am "Publish charts"
 git push
 ```

@@ -36,6 +36,8 @@ objectClass: olcDatabaseConfig
 objectClass: olcFrontendConfig
 olcDatabase: frontend
 olcPasswordHash: $LDAP_admin
+olcAccess: to dn.base="" by * read
+olcAccess: to dn.base="cn=subschema" by * read
 olcAccess: to * 
   by dn.base="gidNumber={{ .Values.securityContext.runAsUser | default 0 }}+uidNumber={{ .Values.securityContext.runAsUser | default 0 }},cn=peercred,cn=external,cn=auth" manage 
   by * none

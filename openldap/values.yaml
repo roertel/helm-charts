@@ -125,6 +125,8 @@ slapd:
   # debugLevel: 1  # Must be integer >=0 or else slapd will background itself
   # adminPassword: password1234  # Administrative (RW) password or one will be generated for you
   # configPassword: password1234  # Configuration (R) or one will be generated for you
+  secrets: {}  # Additional secrets to mount for use in your config files as environment variables
+    # SomeOtherSecret: shh!
   listeners: 
     ldap:
       enabled: true
