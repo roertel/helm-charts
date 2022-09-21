@@ -3,9 +3,9 @@ entries:
   minecraft-overviewer:
   - apiVersion: v2
     appVersion: 0.17.0
-    created: "2022-09-21T15:53:51.459856027-05:00"
+    created: "2022-09-21T16:10:10.017247394-05:00"
     description: A Helm chart for Minecraft Overviewer
-    digest: 62a550c37674cf4d21d07a0b40e441b5dfe527e5ce7c8797fa6f440133f41f1b
+    digest: 99363c3130f44241754ebe3c18d06cd546b41d2b9e637b5e27f0e6907f516e3e
     name: minecraft-overviewer
     type: application
     urls:
@@ -14,14 +14,14 @@ entries:
   openldap:
   - apiVersion: v2
     appVersion: latest
-    created: "2022-09-21T15:53:51.464223206-05:00"
+    created: "2022-09-21T16:10:10.020724023-05:00"
     dependencies:
     - condition: phpldapadmin.enabled
       name: phpldapadmin
       repository: ""
       version: 0.1.3
     description: A Helm chart for Kubernetes
-    digest: 79880d9a63acfe82dcec300383f557515a26d3dee28eafd9e3bd27512b58901e
+    digest: dcfca1665eda4773c95e889d41798d5cc5b223f392fc87a628b1732ed4d0cbf3
     icon: https://img.favpng.com/6/22/16/openldap-lightweight-directory-access-protocol-directory-service-active-directory-computer-configuration-png-favpng-rXDVC6WCDDD8UQ7ZFTDryfGdZ.jpg
     name: openldap
     type: application
@@ -30,7 +30,7 @@ entries:
     version: 0.1.1
   - apiVersion: v2
     appVersion: latest
-    created: "2022-09-21T15:53:51.46237597-05:00"
+    created: "2022-09-21T16:10:10.018956764-05:00"
     dependencies:
     - condition: phpldapadmin.enabled
       name: phpldapadmin
@@ -47,9 +47,9 @@ entries:
   pytivo:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-09-21T15:53:51.465047174-05:00"
+    created: "2022-09-21T16:10:10.021549974-05:00"
     description: A Helm chart for Kubernetes
-    digest: 2fdb4a57a90de70f98b7bd11b274ae23d329ba9fba45f3b7607fd93d33c6f0a2
+    digest: 8498ba296baa1d587a520a65b0e8001b7e435c7b1d3c873cd757f83bca5fbffb
     name: pytivo
     type: application
     urls:
@@ -57,8 +57,19 @@ entries:
     version: 0.1.0
   soft-serve:
   - apiVersion: v2
+    appVersion: v0.4.0
+    created: "2022-09-21T16:10:10.023047546-05:00"
+    description: A Helm chart for CharmCLI soft-serve
+    digest: fb7d77d8c9825b0cb287be1b5c9e65d65ab7b85380eaca8a4db4492b36819062
+    icon: https://camo.githubusercontent.com/13c5b4b96888c7577c8a6d427123a0ca9c32e1c97d390baf76fac311cdce756e/68747470733a2f2f73747566662e636861726d2e73682f736f66742d73657276652f736f66742d73657276652d6865616465722e706e673f30
+    name: soft-serve
+    type: application
+    urls:
+    - soft-serve-0.4.0.tgz
+    version: 0.4.0
+  - apiVersion: v2
     appVersion: v0.3.2
-    created: "2022-09-21T15:53:51.465858208-05:00"
+    created: "2022-09-21T16:10:10.02230009-05:00"
     description: A Helm chart for CharmCLI soft-serve
     digest: 308df07337fe03ca15010cbd4da43af163516e025f83893f6c416873901ff68a
     icon: https://camo.githubusercontent.com/13c5b4b96888c7577c8a6d427123a0ca9c32e1c97d390baf76fac311cdce756e/68747470733a2f2f73747566662e636861726d2e73682f736f66742d73657276652f736f66742d73657276652d6865616465722e706e673f30
@@ -67,4 +78,4 @@ entries:
     urls:
     - soft-serve-0.1.0.tgz
     version: 0.1.0
-generated: "2022-09-21T15:53:51.457951696-05:00"
+generated: "2022-09-21T16:10:10.015658208-05:00"
