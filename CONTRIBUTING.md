@@ -46,6 +46,9 @@ git checkout gh-pages
 git stash pop
 mv build/* .
 rmdir build
+rm index.yaml
 helm repo index .
+git add *.tgz
 git commit -am "Publish charts"
+git push
 ```
