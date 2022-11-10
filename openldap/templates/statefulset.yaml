@@ -45,7 +45,10 @@ spec:
             - {name: LDAPURI      , value: "ldapi://%2fldap%2frun%2fslapd.sock"}
             - {name: LDAPSASL_MECH, value: "EXTERNAL"}
             - {name: LDAPBASE     , value: {{ cat "dc=" .Values.ldapDomain | replace "." ",dc=" | nospace | quote }}}
-            - {name: LDAP_DEBUG   , value: {{ .Values.slapd.debugLevel | default 1 | quote }}}
+            - {name: LDAP_DEBUG   , value: {{ .Values.slapd.debugLevel | default 0 | quote }}}
+            {{- range $key, $value := .Values.slapd.extraEnv }}
+            - {name: {{ $key }}, value: "{{ $value }}"}
+            {{- end }}
 
           ports:
             {{- range $key, $value := .Values.slapd.listeners }}
@@ -55,22 +58,24 @@ spec:
               protocol: {{ $value.protocol | default "TCP" }}
             {{- end }}
             {{- end }}            
-          {{- $continue := true }}
-          {{- range $key, $value := .Values.slapd.listeners }}
-          {{- if and $value.enabled $continue }}
-          {{- $continue := false }}
-          # readinessProbe:
-          #   initialDelaySeconds: 10
-          #   periodSeconds: 20
-          #   tcpSocket:
-          #     port: {{ $key }}
-          # livenessProbe:
-          #   initialDelaySeconds: 10
-          #   periodSeconds: 20
-          #   tcpSocket:
-          #     port: {{ $key }}
-          {{- end }}
-          {{- end }}
+          startupProbe:
+            failureThreshold: 30
+            periodSeconds: 10
+            exec:
+              command:
+              - /healthz
+          readinessProbe:
+            initialDelaySeconds: 10
+            periodSeconds: 60
+            exec:
+              command:
+              - /healthz
+          livenessProbe:
+            initialDelaySeconds: 10
+            periodSeconds: 600
+            exec:
+              command:
+              - /healthz
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:   
@@ -97,7 +102,7 @@ spec:
       - name: {{ include "openldap.fullname" . }}-tls
         secret:
           {{- if eq .Values.tls.type "certificate" }}
-          secretName: {{ include "openldap.fullname" . }}
+          secretName: {{ include "openldap.fullname" . }}-tls
           {{- else if eq .Values.tls.type "secret" }}
           secretName: "{{ .Values.tls.secret }}"
           {{- end }}
