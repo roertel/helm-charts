@@ -5,6 +5,6 @@ metadata:
   labels:
     {{- include "phpldapadmin.labels" . | nindent 4 }}
 data:
-  LDAPBASE: {{ cat "dc=" .Values.ldapDomain | replace "." ",dc=" | nospace | quote }}}
+  LDAPBASE: {{ cat "dc=" .Values.ldapDomain | replace "." ",dc=" | nospace | quote }}
   {{- toYaml .Values.env | nindent 2 }}
   
