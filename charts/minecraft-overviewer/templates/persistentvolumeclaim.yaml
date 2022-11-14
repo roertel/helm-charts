@@ -1,0 +1,16 @@
+{{- if .Values.map.persistent }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "minecraft-overviewer.fullname" . }}
+  labels:
+    {{- include "minecraft-overviewer.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: {{ .Values.map.size }}
+  storageClassName: {{ .Values.map.storageClassName }}
+{{- end }}
