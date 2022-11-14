@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "minecraft-overviewer.fullname" . }}
+  labels:
+    {{- include "minecraft-overviewer.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "minecraft-overviewer.selectorLabels" . | nindent 4 }}
