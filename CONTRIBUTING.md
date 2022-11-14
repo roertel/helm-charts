@@ -39,7 +39,6 @@ There is an action on the repository, but if you want to build and deploy manual
 1. Build the index.
 1. Commit & push.
 ```
-rmdir build
 helm package `ls -d */` -d build
 git stash push -u build
 git checkout gh-pages
