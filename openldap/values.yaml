@@ -2,12 +2,14 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+# -- Number of replicas. Only 1 is currently supported. 
 replicaCount: 1
 
 image:
+  # -- Image to use for deploying.
   repository: roertel/openldap
   pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
+  # -- Override the image tag whose default is the chart appVersion.
   tag: "latest"
 
 imagePullSecrets: []
@@ -28,16 +30,18 @@ securityContext:
   runAsUser: 101
 
 serviceAccount:
-  # Specifies whether a service account should be created
+  # -- Specifies whether a service account should be created
   create: false
-  # Annotations to add to the service account
+  # -- Annotations to add to the service account
   annotations: {}
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
+  # -- The name of the service account to use.
+  # -- If not set and create is true, a name is generated using the fullname template
   name: ""
 
 service:  # Only one service is allowed at this time (LDAP or LDAPS)
+  # -- Service type. Change this to expose outside of K8s
   type: ClusterIP
+  # -- Port to listen on
   port: 389
 
 # ingress:
@@ -70,6 +74,7 @@ resources: {}
   #   memory: 128Mi
 
 autoscaling:
+  # -- Not supported at this time. 
   enabled: false
   minReplicas: 1
   maxReplicas: 100
@@ -92,15 +97,21 @@ affinity: {}
 #     port: 1636  # Set this to a number >1024 to run as non-root
 
 tls:
+  # -- Enable TLS (LDAPS).
   enabled: false
+  # -- TLS source: certificate or secret
   type: certificate  # or secret
-  secret: secret-name  # you create this. must have key, cert & chain values
+  # -- Mandatory and created outside of Helm if `type` is `secret`. Muse have key, cert & chain values.
+  secret: secret-name
+  # -- Mandatory if `type` is `certificate`. 
   certificate:
     issuerRef:
-      name: default  # This is most likely not correct for your setup
+      # -- This is most likely not correct for your setup.
+      name: default
       # kind: Issuer  # ...or ClusterIssuer (not set defaults to Issuer)
       # group:
-    commonName: example.com  # Set to the FQDN of your server
+    # -- Set to the FQDN of your LDAP server
+    commonName: example.com
     optional: {}  # Optional Certificate fields
       # dnsNames: # (optional)
       # - example.com
@@ -115,10 +126,14 @@ tls:
       # keystores:   # (optional)
 
 persistence:
+  # -- Enable the database to persist across restarts. 
   enabled: false
+  # -- Database size. 
   size: 1Gi
+  # -- Storage Class for the persistent volume
   storageClass: local-path
 
+# -- LDAP Domain in FQDN format. For example, `example.com` will convert to `dc=example,dc=com`. 
 ldapDomain: example.com
 
 slapd:
@@ -129,16 +144,24 @@ slapd:
     # SomeOtherSecret: shh!
   listeners: 
     ldap:
+      # -- Enable the LDAP protocol
       enabled: true
-      scheme: ldap   # Only ldap & ldaps is supported
+      # -- Only ldap & ldaps is supported.
+      scheme: ldap
+      # -- Set to >1024 to allow container to run as non-root user for improved security.
       containerPort: 1389
+      # -- External port.
       port: 389
     ldaps:
-      enabled: false  # ldaps requires TLS into to be set, above
+      # -- Enable the LDAPS protocol. LDAPS requires TLS into to be set, above.
+      enabled: false
       scheme: ldaps
+      # -- Set to >1024 to allow container to run as non-root user for improved security.
       containerPort: 1636
       port: 636
-  extraEnv: {}  # Extra environment variables to set
+    # -- Extra environment variables to set.
+    extraEnv: {}
 
 phpldapadmin:
+  # -- Enable PHPLDAPAdmin. See subchart for settings.
   enabled: true
