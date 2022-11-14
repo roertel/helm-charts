@@ -1,4 +1,4 @@
-{{- define "pre-init.ldif" }}
+{{- define "init.ldif" }}
 # One time initialization if the DB is not present. Executed via slapadd
 dn: cn=config
 objectClass: olcGlobal
@@ -36,6 +36,8 @@ objectClass: olcDatabaseConfig
 objectClass: olcFrontendConfig
 olcDatabase: frontend
 olcPasswordHash: $LDAP_admin
+olcAccess: to dn.base="" by * read
+olcAccess: to dn.base="cn=subschema" by * read
 olcAccess: to * 
   by dn.base="gidNumber={{ .Values.securityContext.runAsUser | default 0 }}+uidNumber={{ .Values.securityContext.runAsUser | default 0 }},cn=peercred,cn=external,cn=auth" manage 
   by * none
@@ -45,7 +47,7 @@ objectClass: olcDatabaseConfig
 olcDatabase: config
 olcRootDN: cn=config
 olcAccess: to * 
-  by dn.base="gidNumber={{ .Values.securityContext.runAsUser | default 0 }}+uidNumber={{ .Values.securityContext.runAsUser | default 0 }},cn=peercred,cn=external,cn=auth" manage 
+  by dn.base="gidNumber={{ .Values.securityContext.runAsUser | default 0 }}+uidNumber={{ .Values.securityContext.runAsUser | default 0 }},cn=peercred,cn=external,cn=auth" manage
   by * none
 
 dn: olcDatabase=monitor,cn=config

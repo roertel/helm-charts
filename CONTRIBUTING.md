@@ -44,7 +44,7 @@ helm package `ls -d */` -d build
 git stash push -u build
 git checkout gh-pages
 git stash pop
-mv build/* .
+mv -u build/* .
 rmdir build
 rm index.yaml
 helm repo index .
