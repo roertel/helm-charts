@@ -10,7 +10,3 @@ data:
   # One time init if the DB is absent. Sets up modules and access
   init.ldif: |
     {{- include "init.ldif" . | indent 4 }}
-
-  # Runtime config. Expected to be able to be run over and over (idempotent).
-  config.ldif: |
-    {{- include "config.ldif" . | indent 4 }}
