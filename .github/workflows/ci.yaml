@@ -3,20 +3,23 @@ name: Lint and Test Charts
 on:
   workflow_dispatch:
   pull_request:
-    paths:
-      - './**'
+    branches: ['main']
+
+  push:
+    branches: ['main']
+    tags: ['v*']
 
 env:
-  CHART_PATH: .
+  CHART_PATH: charts
 
 jobs:
   lint-chart:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2.5.0
       - name: Run chart-testing (lint)
-        uses: helm/chart-testing-action@main
+        uses: helm/chart-testing-action@2.3.1
         with:
           command: lint
           config: .github/ct.yaml
@@ -26,7 +29,7 @@ jobs:
     needs: lint-chart
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2.5.0
       - name: Runs helm-docs
         run: bash .github/helm-docs.sh
 
@@ -43,7 +46,7 @@ jobs:
           - v1.23.6
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2.5.0
       - name: Run kubeval
         env:
           KUBERNETES_VERSION: ${{ matrix.k8s }}
@@ -64,13 +67,13 @@ jobs:
           - v1.23.6
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2.5.0
       - name: Create kind ${{ matrix.k8s }} cluster
-        uses: helm/kind-action@main
+        uses: helm/kind-action@1.4.0
         with:
           node_image: kindest/node:${{ matrix.k8s }}
       - name: Run chart-testing (install)
-        uses: helm/chart-testing-action@main
+        uses: helm/chart-testing-action@2.3.1
         with:
           command: install
           config: .github/ct.yaml
