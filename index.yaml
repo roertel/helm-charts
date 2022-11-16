@@ -27,6 +27,26 @@ entries:
     version: 0.1.0
   openldap:
   - apiVersion: v2
+    appVersion: 2.4.57-dfsg-3-deb11u1
+    created: "2022-11-16T21:04:03.733896403Z"
+    dependencies:
+    - condition: phpldapadmin.enabled
+      name: phpldapadmin
+      repository: ""
+      version: 0.1.3
+    description: A Helm chart for OpenLDAP
+    digest: f18ae67de45adb7d8d0b01ca41fb78dd71dfee8939a07d45626c976896ce3f30
+    home: https://github.com/roertel/helm-charts/charts/openldap
+    icon: https://img.favpng.com/6/22/16/openldap-lightweight-directory-access-protocol-directory-service-active-directory-computer-configuration-png-favpng-rXDVC6WCDDD8UQ7ZFTDryfGdZ.jpg
+    maintainers:
+    - email: roertel@users.noreply.github.com
+      name: roertel
+    name: openldap
+    type: application
+    urls:
+    - https://github.com/roertel/helm-charts/releases/download/openldap-2.4.57-1/openldap-2.4.57-1.tgz
+    version: 2.4.57-1
+  - apiVersion: v2
     appVersion: 2.4.57+dfsg-3+deb11u1
     created: "2022-11-16T14:31:16.28762227-06:00"
     dependencies:
@@ -157,4 +177,4 @@ entries:
     urls:
     - soft-serve-0.1.0.tgz
     version: 0.1.0
-generated: "2022-11-16T14:31:16.258830363-06:00"
+generated: "2022-11-16T21:04:03.734227308Z"
