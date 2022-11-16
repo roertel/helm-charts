@@ -1,8 +1,16 @@
 # openldap
 
-![Version: 0.1.2](https://img.shields.io/badge/Version-0.1.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.4.57+dfsg-3+deb11u1](https://img.shields.io/badge/AppVersion-2.4.57+dfsg--3+deb11u1-informational?style=flat-square)
+![Version: 2.4.57-0](https://img.shields.io/badge/Version-2.4.57--0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.4.57+dfsg-3+deb11u1](https://img.shields.io/badge/AppVersion-2.4.57+dfsg--3+deb11u1-informational?style=flat-square)
 
 A Helm chart for OpenLDAP
+
+**Homepage:** <https://github.com/roertel/helm-charts/charts/openldap>
+
+## Maintainers
+
+| Name | Email | Url |
+| ---- | ------ | --- |
+| roertel | <roertel@users.noreply.github.com> |  |
 
 ## Requirements
 
@@ -15,7 +23,7 @@ A Helm chart for OpenLDAP
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
-| autoscaling.enabled | bool | `false` | Not supported at this time.  |
+| autoscaling.enabled | bool | `false` | Not supported at this time. |
 | autoscaling.maxReplicas | int | `100` |  |
 | autoscaling.minReplicas | int | `1` |  |
 | autoscaling.targetCPUUtilizationPercentage | int | `80` |  |
@@ -25,16 +33,16 @@ A Helm chart for OpenLDAP
 | image.repository | string | `"roertel/openldap"` | Image to use for deploying. |
 | image.tag | string | `"latest"` | Override the image tag whose default is the chart appVersion. |
 | imagePullSecrets | list | `[]` |  |
-| ldapDomain | string | `"example.com"` | LDAP Domain in FQDN format. For example, `example.com` will convert to `dc=example,dc=com`.  |
+| ldapDomain | string | `"example.com"` | LDAP Domain in FQDN format. For example, `example.com` will convert to `dc=example,dc=com`. |
 | nameOverride | string | `""` |  |
 | nodeSelector | object | `{}` |  |
-| persistence.enabled | bool | `false` | Enable the database to persist across restarts.  |
-| persistence.size | string | `"1Gi"` | Database size.  |
+| persistence.enabled | bool | `false` | Enable the database to persist across restarts. |
+| persistence.size | string | `"1Gi"` | Database size. |
 | persistence.storageClass | string | `"local-path"` | Storage Class for the persistent volume |
 | phpldapadmin.enabled | bool | `true` | Enable PHPLDAPAdmin. See subchart for settings. |
 | podAnnotations | object | `{}` |  |
 | podSecurityContext | object | `{}` |  |
-| replicaCount | int | `1` | Number of replicas. Only 1 is currently supported.  |
+| replicaCount | int | `1` | Number of replicas. Only 1 is currently supported. |
 | resources | object | `{}` |  |
 | securityContext.runAsNonRoot | bool | `true` |  |
 | securityContext.runAsUser | int | `101` |  |
@@ -53,7 +61,7 @@ A Helm chart for OpenLDAP
 | slapd.listeners.ldaps.port | int | `636` |  |
 | slapd.listeners.ldaps.scheme | string | `"ldaps"` |  |
 | slapd.secrets | object | `{}` |  |
-| tls.certificate | object | `{"commonName":"example.com","issuerRef":{"name":"default"},"optional":{}}` | Mandatory if `type` is `certificate`.  |
+| tls.certificate | object | `{"commonName":"example.com","issuerRef":{"name":"default"},"optional":{}}` | Mandatory if `type` is `certificate`. |
 | tls.certificate.commonName | string | `"example.com"` | Set to the FQDN of your LDAP server |
 | tls.certificate.issuerRef.name | string | `"default"` | This is most likely not correct for your setup. |
 | tls.enabled | bool | `false` | Enable TLS (LDAPS). |
