@@ -59,26 +59,26 @@ jobs:
       - name: Runs helm-docs
         run: bash .github/helm-docs.sh
 
-  kubeval-chart:
-    runs-on: ubuntu-latest
-    needs:
-      - lint-chart
-      - lint-docs
+  # kubeval-chart:
+  #   runs-on: ubuntu-latest
+  #   needs:
+  #     - lint-chart
+  #     - lint-docs
 
-    strategy:
-      matrix:
-        k8s:
-          - v1.19.0
-          - v1.21.3
-          - v1.23.6
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2.5.0
+  #   strategy:
+  #     matrix:
+  #       k8s:
+  #         - v1.19.0
+  #         - v1.21.3
+  #         - v1.23.6
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v2.5.0
 
-      - name: Run kubeval
-        env:
-          KUBERNETES_VERSION: ${{ matrix.k8s }}
-        run: bash .github/kubeval.sh
+  #     - name: Run kubeval
+  #       env:
+  #         KUBERNETES_VERSION: ${{ matrix.k8s }}
+  #       run: bash .github/kubeval.sh
         
   # install-chart:
   #   name: install-chart
