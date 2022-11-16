@@ -3,74 +3,110 @@ name: Lint and Test Charts
 on:
   workflow_dispatch:
   pull_request:
-    paths:
-      - './**'
+    branches: ['main']
 
-env:
-  CHART_PATH: .
+  push:
+    branches: ['main']
+    tags: ['v*']
 
 jobs:
   lint-chart:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
-      - name: Run chart-testing (lint)
-        uses: helm/chart-testing-action@main
+        uses: actions/checkout@v2
         with:
-          command: lint
-          config: .github/ct.yaml
+          fetch-depth: 0
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: v3.10.0
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+          check-latest: true
+
+      - name: Set up chart-testing
+        uses: helm/chart-testing-action@v2.3.1
+
+      - name: Run chart-testing (list-changed)
+        id: list-changed
+        run: |
+          changed=$(ct list-changed --target-branch "${{ github.event.repository.default_branch }}")
+          if [[ -n "$changed" ]]; then
+            echo "::set-output name=changed::true"
+          fi
+
+      - name: Run chart-testing (lint)
+        run: ct lint --target-branch ${{ github.event.repository.default_branch }}
+
+      # - name: Create kind cluster
+      #   uses: helm/kind-action@v1.4.0
+      #   if: steps.list-changed.outputs.changed == 'true'
+
+      # - name: Run chart-testing (install)
+      #   run: ct install --target-branch "${{ github.event.repository.default_branch }}"
 
   lint-docs:
     runs-on: ubuntu-latest
     needs: lint-chart
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2.5.0
+
       - name: Runs helm-docs
         run: bash .github/helm-docs.sh
 
-  kubeval-chart:
-    runs-on: ubuntu-latest
-    needs:
-      - lint-chart
-      - lint-docs
-    strategy:
-      matrix:
-        k8s:
-          - v1.19.0
-          - v1.21.3
-          - v1.23.6
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v1
-      - name: Run kubeval
-        env:
-          KUBERNETES_VERSION: ${{ matrix.k8s }}
-        run: bash .github/kubeval.sh
+  # kubeval-chart:
+  #   runs-on: ubuntu-latest
+  #   needs:
+  #     - lint-chart
+  #     - lint-docs
+
+  #   strategy:
+  #     matrix:
+  #       k8s:
+  #         - v1.19.0
+  #         - v1.21.3
+  #         - v1.23.6
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v2.5.0
+
+  #     - name: Run kubeval
+  #       env:
+  #         KUBERNETES_VERSION: ${{ matrix.k8s }}
+  #       run: bash .github/kubeval.sh
         
-  install-chart:
-    name: install-chart
-    runs-on: ubuntu-latest
-    needs:
-      - lint-chart
-      - lint-docs
-      - kubeval-chart
-    strategy:
-      matrix:
-        k8s:
-          - v1.19.0
-          - v1.21.3
-          - v1.23.6
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v1
-      - name: Create kind ${{ matrix.k8s }} cluster
-        uses: helm/kind-action@main
-        with:
-          node_image: kindest/node:${{ matrix.k8s }}
-      - name: Run chart-testing (install)
-        uses: helm/chart-testing-action@main
-        with:
-          command: install
-          config: .github/ct.yaml
+  # install-chart:
+  #   name: install-chart
+  #   runs-on: ubuntu-latest
+  #   needs:
+  #     - lint-chart
+  #     - lint-docs
+  #     - kubeval-chart
+
+  #   strategy:
+  #     matrix:
+  #       k8s:
+  #         - v1.19.0
+  #         - v1.21.3
+  #         - v1.23.6
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v2
+  #       with:
+  #         fetch-depth: 0
+        
+  #     - name: Create kind ${{ matrix.k8s }} cluster
+  #       uses: helm/kind-action@v1.4.0
+  #       with:
+  #         node_image: kindest/node:${{ matrix.k8s }}
+
+  #     - name: Run chart-testing (install)
+  #       uses: helm/chart-testing-action@v2.3.1
+  #       with:
+  #         command: install
+  #         config: .github/ct.yaml
