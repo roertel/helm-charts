@@ -9,9 +9,6 @@ on:
     branches: ['main']
     tags: ['v*']
 
-env:
-  CHART_PATH: charts
-
 jobs:
   lint-chart:
     runs-on: ubuntu-latest
@@ -26,16 +23,18 @@ jobs:
         with:
           version: v3.10.0
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - uses: actions/setup-python@v4
         with:
           python-version: '3.9'
           check-latest: true
 
-      - name: Set up chart-testing (list-changed)
+      - name: Set up chart-testing
+        uses: helm/chart-testing-action@v2.3.1
+
+      - name: Run chart-testing (list-changed)
         id: list-changed
         run: |
-          changed=$(ct list-changed --target-branch ${{ github.event.repository.default_branch }})
+          changed=$(ct list-changed --target-branch "${{ github.event.repository.default_branch }}")
           if [[ -n "$changed" ]]; then
             echo "::set-output name=changed::true"
           fi
@@ -48,7 +47,7 @@ jobs:
         if: steps.list-changed.outputs.changed == 'true'
 
       - name: Run chart-testing (install)
-        run: ct install
+        run: ct install --target-branch "${{ github.event.repository.default_branch }}"
 
   lint-docs:
     runs-on: ubuntu-latest
@@ -64,6 +63,7 @@ jobs:
     needs:
       - lint-chart
       - lint-docs
+
     strategy:
       matrix:
         k8s:
@@ -85,6 +85,7 @@ jobs:
       - lint-chart
       - lint-docs
       - kubeval-chart
+
     strategy:
       matrix:
         k8s:
@@ -93,11 +94,15 @@ jobs:
           - v1.23.6
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.5.0
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+        
       - name: Create kind ${{ matrix.k8s }} cluster
         uses: helm/kind-action@v1.4.0
         with:
           node_image: kindest/node:${{ matrix.k8s }}
+
       - name: Run chart-testing (install)
         uses: helm/chart-testing-action@v2.3.1
         with:
