@@ -1,8 +1,8 @@
 # openldap
 
-![Version: 0.1.1](https://img.shields.io/badge/Version-0.1.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: latest](https://img.shields.io/badge/AppVersion-latest-informational?style=flat-square)
+![Version: 0.1.2](https://img.shields.io/badge/Version-0.1.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.4.57+dfsg-3+deb11u1](https://img.shields.io/badge/AppVersion-2.4.57+dfsg--3+deb11u1-informational?style=flat-square)
 
-A Helm chart for Kubernetes
+A Helm chart for OpenLDAP
 
 ## Requirements
 
@@ -43,12 +43,15 @@ A Helm chart for Kubernetes
 | serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
 | serviceAccount.create | bool | `false` | Specifies whether a service account should be created |
 | serviceAccount.name | string | `""` | If not set and create is true, a name is generated using the fullname template |
-| slapd.listeners | object | `{"extraEnv":{},"ldap":{"containerPort":1389,"enabled":true,"port":389,"scheme":"ldap"},"ldaps":{"containerPort":1636,"enabled":false,"port":636,"scheme":"ldaps"}}` | Configure one or more listeners (LDAP and/or LDAPS). |
 | slapd.listeners.extraEnv | object | `{}` | Extra environment variables to set. |
 | slapd.listeners.ldap.containerPort | int | `1389` | Set to >1024 to allow container to run as non-root user for improved security. |
+| slapd.listeners.ldap.enabled | bool | `true` | Enable the LDAP protocol |
 | slapd.listeners.ldap.port | int | `389` | External port. |
 | slapd.listeners.ldap.scheme | string | `"ldap"` | Only ldap & ldaps is supported. |
-| slapd.listeners.ldaps.enabled | bool | `false` | LDAPS requires TLS into to be set, above. |
+| slapd.listeners.ldaps.containerPort | int | `1636` | Set to >1024 to allow container to run as non-root user for improved security. |
+| slapd.listeners.ldaps.enabled | bool | `false` | Enable the LDAPS protocol. LDAPS requires TLS into to be set, above. |
+| slapd.listeners.ldaps.port | int | `636` |  |
+| slapd.listeners.ldaps.scheme | string | `"ldaps"` |  |
 | slapd.secrets | object | `{}` |  |
 | tls.certificate | object | `{"commonName":"example.com","issuerRef":{"name":"default"},"optional":{}}` | Mandatory if `type` is `certificate`.  |
 | tls.certificate.commonName | string | `"example.com"` | Set to the FQDN of your LDAP server |
