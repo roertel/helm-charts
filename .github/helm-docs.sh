@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-HELM_DOCS_VERSION="1.6.0"
+HELM_DOCS_VERSION="1.11.0"
 
 # install helm-docs
 curl --silent --show-error --fail --location --output /tmp/helm-docs.tar.gz \
