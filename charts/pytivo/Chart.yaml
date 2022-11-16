@@ -1,6 +1,10 @@
 apiVersion: v2
 name: pytivo
 description: A Helm chart for Kubernetes
+maintainers:
+  - name: roertel
+    email: roertel@users.noreply.github.com
+home: https://github.com/roertel/helm-charts/charts/pytivo
 
 # A chart can be either an 'application' or a 'library' chart.
 #
