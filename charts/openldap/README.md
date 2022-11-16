@@ -1,6 +1,6 @@
 # openldap
 
-![Version: 2.4.57-0](https://img.shields.io/badge/Version-2.4.57--0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.4.57+dfsg-3+deb11u1](https://img.shields.io/badge/AppVersion-2.4.57+dfsg--3+deb11u1-informational?style=flat-square)
+![Version: 2.4.57-1](https://img.shields.io/badge/Version-2.4.57--1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.4.57-dfsg-3-deb11u1](https://img.shields.io/badge/AppVersion-2.4.57--dfsg--3--deb11u1-informational?style=flat-square)
 
 A Helm chart for OpenLDAP
 
@@ -39,7 +39,7 @@ A Helm chart for OpenLDAP
 | persistence.enabled | bool | `false` | Enable the database to persist across restarts. |
 | persistence.size | string | `"1Gi"` | Database size. |
 | persistence.storageClass | string | `"local-path"` | Storage Class for the persistent volume |
-| phpldapadmin.enabled | bool | `true` | Enable PHPLDAPAdmin. See subchart for settings. |
+| phpldapadmin.enabled | bool | `true` | Enable PHPLDAPAdmin. See sub-chart for settings. |
 | podAnnotations | object | `{}` |  |
 | podSecurityContext | object | `{}` |  |
 | replicaCount | int | `1` | Number of replicas. Only 1 is currently supported. |

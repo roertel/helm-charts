@@ -162,5 +162,5 @@ slapd:
     extraEnv: {}
 
 phpldapadmin:
-  # -- Enable PHPLDAPAdmin. See subchart for settings.
+  # -- Enable PHPLDAPAdmin. See sub-chart for settings.
   enabled: true
