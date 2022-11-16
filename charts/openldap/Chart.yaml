@@ -20,13 +20,18 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 2.4.57-0
+version: 2.4.57-1
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
-appVersion: "2.4.57+dfsg-3+deb11u1"
+
+# This is used in a label. A valid label must be an empty string or consist of
+# alphanumeric characters, '-', '_' or '.', and must start and end with an
+# alphanumeric character (e.g. 'MyValue',  or 'my_value',  or '12345', regex
+# used for validation is '(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])?')
+appVersion: "2.4.57-dfsg-3-deb11u1"
 
 dependencies:
   - name: phpldapadmin
