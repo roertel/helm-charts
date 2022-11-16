@@ -10,7 +10,7 @@ tar -xf /tmp/helm-docs.tar.gz helm-docs
 
 # validate docs (Generate "gold standard", then compare against pushed version)
 ./helm-docs --log-level error
-if git diff --quiet; then
+if git diff --stat --exit-code; then
   echo "Helm docs linting passed"
 else
   echo "ERROR: Run helm-docs linting failed. Re-run helm-docs before committing."
