@@ -1,4 +1,4 @@
-{{- define "init.ldif" }}
+{{ define "init.ldif" }}
 # One time initialization if the DB is not present. Executed via slapadd
 dn: cn=config
 objectClass: olcGlobal
@@ -53,34 +53,10 @@ olcAccess: to *
 dn: olcDatabase=monitor,cn=config
 objectClass: olcDatabaseConfig
 olcDatabase: monitor
+olcRootDN: cn=admin,$LDAPBASE
+olcRootPW: $LDAP_admin
 olcAccess: to *
   by dn.subtree="gidNumber={{ .Values.securityContext.runAsUser | default 0 }}+uidNumber={{ .Values.securityContext.runAsUser | default 0 }},cn=peercred,cn=external,cn=auth" manage
   by * none
 
-dn: olcDatabase=mdb,cn=config
-objectClass: olcDatabaseConfig
-objectClass: olcMdbConfig
-olcDatabase: mdb
-olcSuffix: $LDAPBASE
-olcRootDN: cn=admin,$LDAPBASE
-olcRootPW: $LDAP_admin
-olcDbDirectory: /ldap/slapd.d
-olcDbIndex: objectClass,uid,uidNumber,gidNumber eq
-olcDbMaxSize: 10485760
-olcAccess: to attrs=userPassword
-  by self write
-  by anonymous auth
-  by dn.subtree="gidNumber={{ .Values.securityContext.runAsUser | default 0 }}+uidNumber={{ .Values.securityContext.runAsUser | default 0 }},cn=peercred,cn=external,cn=auth" manage
-  by * none
-olcAccess: to attrs=shadowLastChange by self write
-  by dn.subtree="uidNumber={{ .Values.securityContext.runAsUser | default 0 }},cn=peercred,cn=external,cn=auth" manage
-  by dn.subtree="ou=system,$LDAPBASE" read
-  by * none
-olcAccess: to dn.subtree="ou=system,$LDAPBASE" 
-  by dn.subtree="uidNumber={{ .Values.securityContext.runAsUser | default 0 }},cn=peercred,cn=external,cn=auth" manage
-  by * none
-olcAccess: to dn.subtree="$LDAPBASE" 
-  by dn.subtree="uidNumber={{ .Values.securityContext.runAsUser | default 0 }},cn=peercred,cn=external,cn=auth" manage
-  by users read 
-  by * none
-{{- end }}
+{{ end }}

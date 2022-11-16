@@ -1,0 +1,5 @@
+View your admin password with the following command:
+
+    kubectl get secret -n {{.Release.Namespace}} {{ include "openldap.fullname" . }} -o jsonpath='{.data.admin}'|base64 -d
+
+{{ include "openldap.fullname" . }} is now set up!
