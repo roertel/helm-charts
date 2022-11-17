@@ -10,7 +10,7 @@ image:
   repository: roertel/openldap
   pullPolicy: IfNotPresent
   # -- Override the image tag whose default is the chart appVersion.
-  tag: "latest"
+  tag: nil
 
 imagePullSecrets: []
 nameOverride: ""
