@@ -55,7 +55,7 @@ spec:
               containerPort: {{ $value.containerPort | int }}
               protocol: {{ $value.protocol | default "TCP" }}
             {{- end }}
-            {{- end }}            
+            {{- end }}
           startupProbe:
             failureThreshold: 30
             periodSeconds: 10
@@ -76,7 +76,7 @@ spec:
               - /healthz
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-          volumeMounts:   
+          volumeMounts:
           - name: {{ include "openldap.fullname" . }}-config
             mountPath: /ldap/config
             readOnly: true
