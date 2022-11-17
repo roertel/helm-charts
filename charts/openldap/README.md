@@ -1,6 +1,6 @@
 # openldap
 
-![Version: 2.4.57-2](https://img.shields.io/badge/Version-2.4.57--2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.1.3](https://img.shields.io/badge/AppVersion-0.1.3-informational?style=flat-square)
+![Version: 2.4.57-3](https://img.shields.io/badge/Version-2.4.57--3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.1.4](https://img.shields.io/badge/AppVersion-0.1.4-informational?style=flat-square)
 
 A Helm chart for OpenLDAP
 
@@ -31,7 +31,7 @@ A Helm chart for OpenLDAP
 | fullnameOverride | string | `""` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `"roertel/openldap"` | Image to use for deploying. |
-| image.tag | string | `"latest"` | Override the image tag whose default is the chart appVersion. |
+| image.tag | string | `nil` | Override the image tag whose default is the chart appVersion. |
 | imagePullSecrets | list | `[]` |  |
 | ldapDomain | string | `"example.com"` | LDAP Domain in FQDN format. For example, `example.com` will convert to `dc=example,dc=com`. |
 | nameOverride | string | `""` |  |
