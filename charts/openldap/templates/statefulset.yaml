@@ -35,14 +35,12 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           # command: ["sleep", "infinity"]  # for debugging
-          args:
-            - "-h"
-            - "ldapi://%2fldap%2frun%2fslapd.sock
-            {{- range values .Values.slapd.listeners }}
-            {{- if .enabled }} {{ .scheme }}://0.0.0.0:{{ .containerPort }}/{{ end -}}
-            {{- end }}"
           env:
-            - {name: LDAPURI      , value: "ldapi://%2fldap%2frun%2fslapd.sock"}
+            - name: LDAPURI,
+              value: "ldapi://%2fldap%2frun%2fslapd.sock
+                {{- range values .Values.slapd.listeners }}
+                {{- if .enabled }} {{ .scheme }}://0.0.0.0:{{ .containerPort }}/{{ end }}
+                {{- end }}"
             - {name: LDAPSASL_MECH, value: "EXTERNAL"}
             - {name: LDAPBASE     , value: {{ cat "dc=" .Values.ldapDomain | replace "." ",dc=" | nospace | quote }}}
             - {name: LDAP_DEBUG   , value: {{ .Values.slapd.debugLevel | default 0 | quote }}}
