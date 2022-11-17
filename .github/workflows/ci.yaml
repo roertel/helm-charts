@@ -23,7 +23,8 @@ jobs:
         with:
           version: v3.10.0
 
-      - uses: actions/setup-python@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
           python-version: '3.9'
           check-latest: true
@@ -42,6 +43,19 @@ jobs:
       - name: Run chart-testing (lint)
         run: ct lint --target-branch ${{ github.event.repository.default_branch }}
 
+      - name: Generate manifests
+        run: |
+          mkdir -p "manifests"
+          for CHART in $(ls -d charts/*/); do
+            helm template "${CHART}" --generate-name --output-dir "manifests"
+          done
+
+      - name: Check kube-score
+        uses: piraces/kube-score-ga@v0.1.3
+        with:
+          manifests-folders: manifests/*/*.yaml
+
+
       # - name: Create kind cluster
       #   uses: helm/kind-action@v1.4.0
       #   if: steps.list-changed.outputs.changed == 'true'
@@ -56,7 +70,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2.5.0
 
-      - name: Runs helm-docs
+      - name: Lint helm docs
         run: bash .github/helm-docs.sh
 
   # kubeval-chart:
