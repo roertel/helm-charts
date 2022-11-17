@@ -33,11 +33,12 @@ spec:
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          imagePullPolicy: {{ .Values.image.pullPolicy | default "Always" }}
           # command: ["sleep", "infinity"]  # for debugging
+          # args:
           env:
-            - name: LDAPURI,
-              value: "ldapi://%2fldap%2frun%2fslapd.sock"
+            - name: LDAPURI
+              value: "ldapi://%2fldap%2frun%2fslapd.sock
                 {{- range values .Values.slapd.listeners }}
                 {{- if .enabled }} {{ .scheme }}://0.0.0.0:{{ .containerPort }}/{{ end }}
                 {{- end }}"

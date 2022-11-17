@@ -31,7 +31,7 @@ A Helm chart for OpenLDAP
 | fullnameOverride | string | `""` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `"roertel/openldap"` | Image to use for deploying. |
-| image.tag | string | `"nil"` | Override the image tag whose default is the chart appVersion. |
+| image.tag | string | `nil` | Override the image tag whose default is the chart appVersion. |
 | imagePullSecrets | list | `[]` |  |
 | ldapDomain | string | `"example.com"` | LDAP Domain in FQDN format. For example, `example.com` will convert to `dc=example,dc=com`. |
 | nameOverride | string | `""` |  |
