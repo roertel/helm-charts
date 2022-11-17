@@ -53,8 +53,6 @@ olcAccess: to *
 dn: olcDatabase=monitor,cn=config
 objectClass: olcDatabaseConfig
 olcDatabase: monitor
-olcRootDN: cn=admin,$LDAPBASE
-olcRootPW: $LDAP_admin
 olcAccess: to *
   by dn.subtree="gidNumber={{ .Values.securityContext.runAsUser | default 0 }}+uidNumber={{ .Values.securityContext.runAsUser | default 0 }},cn=peercred,cn=external,cn=auth" manage
   by * none
