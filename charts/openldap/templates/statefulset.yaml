@@ -37,7 +37,7 @@ spec:
           # command: ["sleep", "infinity"]  # for debugging
           env:
             - name: LDAPURI,
-              value: "ldapi://%2fldap%2frun%2fslapd.sock
+              value: "ldapi://%2fldap%2frun%2fslapd.sock"
                 {{- range values .Values.slapd.listeners }}
                 {{- if .enabled }} {{ .scheme }}://0.0.0.0:{{ .containerPort }}/{{ end }}
                 {{- end }}"
