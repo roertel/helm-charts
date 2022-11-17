@@ -23,7 +23,8 @@ jobs:
         with:
           version: v3.10.0
 
-      - uses: actions/setup-python@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
           python-version: '3.9'
           check-latest: true
@@ -42,12 +43,18 @@ jobs:
       - name: Run chart-testing (lint)
         run: ct lint --target-branch ${{ github.event.repository.default_branch }}
 
-      # - name: Create kind cluster
-      #   uses: helm/kind-action@v1.4.0
-      #   if: steps.list-changed.outputs.changed == 'true'
+      - name: Generate manifests
+        run: |
+          mkdir -p "manifests"
+          for CHART in $(ls -d charts/*/); do
+            helm template "${CHART}" --generate-name --output-dir "manifests"
+          done
 
-      # - name: Run chart-testing (install)
-      #   run: ct install --target-branch "${{ github.event.repository.default_branch }}"
+      - name: Check kube-score
+        uses: piraces/kube-score-ga@v0.1.3
+        with:
+          manifests-folders: manifests/**/*.yaml
+          ignore-exit-code: true
 
   lint-docs:
     runs-on: ubuntu-latest
@@ -55,58 +62,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2.5.0
+        with:
+          fetch-depth: 0
 
-      - name: Runs helm-docs
+      - name: Lint helm docs
         run: bash .github/helm-docs.sh
-
-  # kubeval-chart:
-  #   runs-on: ubuntu-latest
-  #   needs:
-  #     - lint-chart
-  #     - lint-docs
-
-  #   strategy:
-  #     matrix:
-  #       k8s:
-  #         - v1.19.0
-  #         - v1.21.3
-  #         - v1.23.6
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v2.5.0
-
-  #     - name: Run kubeval
-  #       env:
-  #         KUBERNETES_VERSION: ${{ matrix.k8s }}
-  #       run: bash .github/kubeval.sh
-        
-  # install-chart:
-  #   name: install-chart
-  #   runs-on: ubuntu-latest
-  #   needs:
-  #     - lint-chart
-  #     - lint-docs
-  #     - kubeval-chart
-
-  #   strategy:
-  #     matrix:
-  #       k8s:
-  #         - v1.19.0
-  #         - v1.21.3
-  #         - v1.23.6
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v2
-  #       with:
-  #         fetch-depth: 0
-        
-  #     - name: Create kind ${{ matrix.k8s }} cluster
-  #       uses: helm/kind-action@v1.4.0
-  #       with:
-  #         node_image: kindest/node:${{ matrix.k8s }}
-
-  #     - name: Run chart-testing (install)
-  #       uses: helm/chart-testing-action@v2.3.1
-  #       with:
-  #         command: install
-  #         config: .github/ct.yaml
