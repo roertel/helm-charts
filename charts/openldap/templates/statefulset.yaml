@@ -57,24 +57,24 @@ spec:
               protocol: {{ $value.protocol | default "TCP" }}
             {{- end }}
             {{- end }}
-          startupProbe:
-            failureThreshold: 30
-            periodSeconds: 10
-            exec:
-              command:
-              - /healthz
-          readinessProbe:
-            initialDelaySeconds: 10
-            periodSeconds: 60
-            exec:
-              command:
-              - /healthz
-          livenessProbe:
-            initialDelaySeconds: 10
-            periodSeconds: 600
-            exec:
-              command:
-              - /healthz
+          # startupProbe:
+          #   failureThreshold: 30
+          #   periodSeconds: 10
+          #   exec:
+          #     command:
+          #     - /healthz
+          # readinessProbe:
+          #   initialDelaySeconds: 10
+          #   periodSeconds: 60
+          #   exec:
+          #     command:
+          #     - /healthz
+          # livenessProbe:
+          #   initialDelaySeconds: 10
+          #   periodSeconds: 600
+          #   exec:
+          #     command:
+          #     - /healthz
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:

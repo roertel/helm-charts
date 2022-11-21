@@ -11,7 +11,7 @@ spec:
     - name: test
       image: kroniak/ssh-client
       command: ['ssh']
-      args: 
+      args:
         - '-p {{ .Values.service.port }}'
         - '-o'
         - 'StrictHostKeyChecking=accept-new'

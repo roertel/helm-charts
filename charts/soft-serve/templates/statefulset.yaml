@@ -44,7 +44,7 @@ spec:
           volumeMounts:
           {{- if .Values.persistentVolume.enabled }}
             - name: {{ include "soft-serve.fullname" . }}
-              mountPath: /soft-serve 
+              mountPath: /soft-serve
           {{- end }}
           ports:
             - name: ssh

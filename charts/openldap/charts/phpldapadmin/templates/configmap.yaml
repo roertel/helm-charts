@@ -7,4 +7,3 @@ metadata:
 data:
   LDAPBASE: {{ cat "dc=" .Values.ldapDomain | replace "." ",dc=" | nospace | quote }}
   {{- toYaml .Values.env | nindent 2 }}
-  

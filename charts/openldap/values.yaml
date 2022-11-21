@@ -135,6 +135,7 @@ persistence:
 
 # -- LDAP Domain in FQDN format. For example, `example.com` will convert to `dc=example,dc=com`.
 ldapDomain: example.com
+ldapOrganization: "Example Organization"
 
 slapd:
   # debugLevel: 1  # Must be integer >=0 or else slapd will background itself
