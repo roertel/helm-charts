@@ -62,6 +62,8 @@ objectClass: olcDatabaseConfig
 objectClass: olcMdbConfig
 olcDatabase: mdb
 olcSuffix: {{ cat "dc=" .Values.ldapDomain | replace "." ",dc=" | nospace }}
+olcRootDN: cn=admin,{{ cat "dc=" .Values.ldapDomain | replace "." ",dc=" | nospace }}
+olcRootPW: ${LDAP_admin}
 olcDbDirectory: ${LDAPDIR}
 olcDbIndex: objectClass,uid,uidNumber,gidNumber eq
 olcDbMaxSize: 10485760
