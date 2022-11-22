@@ -3,9 +3,9 @@ entries:
   minecraft-overviewer:
   - apiVersion: v2
     appVersion: 0.17.0
-    created: "2022-11-22T18:33:26.884448909Z"
+    created: "2022-11-22T21:57:33.651460577Z"
     description: A Helm chart for Minecraft Overviewer
-    digest: 02fc31d116103bd5553b78819b6d097d60cb34bef416f5565ce35be886c05739
+    digest: 56a216a8340f26a075153bb28e3a685d7024d0f068151fdf601724722532782f
     home: https://github.com/roertel/helm-charts/charts/minecraft-overviewer
     maintainers:
     - email: roertel@users.noreply.github.com
@@ -26,6 +26,26 @@ entries:
     - minecraft-overviewer-0.1.0.tgz
     version: 0.1.0
   openldap:
+  - apiVersion: v2
+    appVersion: 1.0.0-0
+    created: "2022-11-22T21:57:33.654064177Z"
+    dependencies:
+    - condition: phpldapadmin.enabled
+      name: phpldapadmin
+      repository: file://../phpldapadmin
+      version: 0.1.4-0
+    description: A Helm chart for OpenLDAP
+    digest: 5762aac5b069df8dcd18536d14819844f5a86522ec301c1e2b1c924020c8e5bb
+    home: https://github.com/roertel/helm-charts/charts/openldap
+    icon: https://img.favpng.com/6/22/16/openldap-lightweight-directory-access-protocol-directory-service-active-directory-computer-configuration-png-favpng-rXDVC6WCDDD8UQ7ZFTDryfGdZ.jpg
+    maintainers:
+    - email: roertel@users.noreply.github.com
+      name: roertel
+    name: openldap
+    type: application
+    urls:
+    - https://roertel.github.io/helm-charts/openldap-2.4.57-5.tgz
+    version: 2.4.57-5
   - apiVersion: v2
     appVersion: 1.0.0-0
     created: "2022-11-22T18:33:26.886062321Z"
@@ -177,6 +197,21 @@ entries:
   phpldapadmin:
   - apiVersion: v2
     appVersion: 0.7.1
+    created: "2022-11-22T21:57:33.654789877Z"
+    description: Web management of LDAP
+    digest: 39c2be32231835fbbde5e3ab4d7235e41edd4144598600fa5208c766666b9682
+    home: https://phpldapadmin.sourceforge.net
+    icon: https://phpldapadmin.sourceforge.net/wiki/images/d/d4/Logo.jpg
+    maintainers:
+    - email: roertel@users.noreply.github.com
+      name: roertel
+    name: phpldapadmin
+    type: application
+    urls:
+    - https://roertel.github.io/helm-charts/phpldapadmin-0.1.4-0.tgz
+    version: 0.1.4-0
+  - apiVersion: v2
+    appVersion: 0.7.1
     created: "2022-11-22T18:33:26.886590625Z"
     description: Web management of LDAP
     digest: d85709c14983731e798900c8b620042a464b0271c81129e5eccb7fe3439a96ef
@@ -193,9 +228,9 @@ entries:
   pytivo:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-11-22T18:33:26.88716773Z"
+    created: "2022-11-22T21:57:33.655364277Z"
     description: A Helm chart for Kubernetes
-    digest: 43af1a4f9ce86a0f99066a647c904f5a37b1636d262503f04f0385cd0e1e46b3
+    digest: ae5573dc7ddafbbef797aaaaa5db723751d40c141dd48b8372fa9d885169da6b
     home: https://github.com/roertel/helm-charts/charts/pytivo
     maintainers:
     - email: roertel@users.noreply.github.com
@@ -218,9 +253,9 @@ entries:
   soft-serve:
   - apiVersion: v2
     appVersion: v0.4.0
-    created: "2022-11-22T18:33:26.887686034Z"
+    created: "2022-11-22T21:57:33.655916877Z"
     description: A Helm chart for CharmCLI soft-serve
-    digest: 374695f492eecce773a13bf6ad5c115de47986a5bb768fc05cfa3edadbdafaae
+    digest: fb382696f9c256ee864cb785e494c7f412e7b4b503715744f551ae956739a31b
     home: https://github.com/roertel/helm-charts/charts/soft-serve
     icon: https://camo.githubusercontent.com/13c5b4b96888c7577c8a6d427123a0ca9c32e1c97d390baf76fac311cdce756e/68747470733a2f2f73747566662e636861726d2e73682f736f66742d73657276652f736f66742d73657276652d6865616465722e706e673f30
     maintainers:
@@ -268,4 +303,4 @@ entries:
     urls:
     - soft-serve-0.1.0.tgz
     version: 0.1.0
-generated: "2022-11-22T18:33:26.883541002Z"
+generated: "2022-11-22T21:57:33.650605177Z"
