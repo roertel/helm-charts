@@ -16,7 +16,7 @@ A Helm chart for OpenLDAP
 
 | Repository | Name | Version |
 |------------|------|---------|
-| file://../phpldapadmin | phpldapadmin | 0.1.3 |
+| file://../phpldapadmin | phpldapadmin | 0.1.4-0 |
 
 ## Values
 
