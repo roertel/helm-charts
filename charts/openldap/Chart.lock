@@ -1,6 +1,6 @@
 dependencies:
 - name: phpldapadmin
   repository: file://../phpldapadmin
-  version: 0.1.3
-digest: sha256:3a35e7c7fef7799e6dfc1dc00506934c97ddb578a5a16782e457f50a414c7a9e
-generated: "2022-11-22T13:32:27.672828398-06:00"
+  version: 0.1.4-0
+digest: sha256:915eb1af712c924c20b818aba616f1ad107a10ee7d2b11fe6370f60faa40a1a6
+generated: "2022-11-22T15:05:51.958060931-06:00"
