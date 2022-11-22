@@ -2,7 +2,7 @@ apiVersion: v2
 name: phpldapadmin
 description: Web management of LDAP
 type: application
-version: 0.1.3
+version: 0.1.4-0
 appVersion: "0.7.1"
 home: https://phpldapadmin.sourceforge.net
 icon: https://phpldapadmin.sourceforge.net/wiki/images/d/d4/Logo.jpg
