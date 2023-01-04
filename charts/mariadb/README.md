@@ -1,10 +1,10 @@
-# openldap
+# mariadb
 
-![Version: 2.4.58-1](https://img.shields.io/badge/Version-2.4.58--1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.1-1](https://img.shields.io/badge/AppVersion-1.0.1--1-informational?style=flat-square)
+![Version: 0.0.1](https://img.shields.io/badge/Version-0.0.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1-10.5.18-0-deb11u1](https://img.shields.io/badge/AppVersion-1--10.5.18--0--deb11u1-informational?style=flat-square)
 
-A Helm chart for OpenLDAP
+A Helm chart for MariaDB
 
-**Homepage:** <https://github.com/roertel/helm-charts/charts/openldap>
+**Homepage:** <https://github.com/roertel/helm-charts/charts/mariadb>
 
 ## Maintainers
 
@@ -12,61 +12,45 @@ A Helm chart for OpenLDAP
 | ---- | ------ | --- |
 | roertel | <roertel@users.noreply.github.com> |  |
 
-## Requirements
-
-| Repository | Name | Version |
-|------------|------|---------|
-| file://../phpldapadmin | phpldapadmin | 0.1.4-0 |
-
 ## Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
 | autoscaling.enabled | bool | `false` | Not supported at this time. |
-| autoscaling.maxReplicas | int | `100` |  |
+| autoscaling.maxReplicas | int | `1` |  |
 | autoscaling.minReplicas | int | `1` |  |
 | autoscaling.targetCPUUtilizationPercentage | int | `80` |  |
 | autoscaling.targetMemoryUtilizationPercentage | int | `80` |  |
 | fullnameOverride | string | `""` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
-| image.repository | string | `"roertel/openldap"` | Image to use for deploying. |
+| image.repository | string | `"roertel/mariadb"` | Image to use for deploying. |
 | image.tag | string | `nil` | Override the image tag whose default is the chart appVersion. |
 | imagePullSecrets | list | `[]` |  |
-| ldapDomain | string | `"example.com"` | LDAP Domain in FQDN format. For example, `example.com` will convert to `dc=example,dc=com`. |
-| ldapOrganization | string | `"Example Organization"` |  |
+| mysqld.debugLevel | int | `3` | Debug levels 0-5 (off, fatal, warn, info, debug, trace) |
+| mysqld.extraEnv | object | `{}` | Extra environment variables to set. |
+| mysqld.rootPassword | string | `nil` | Administrative (root) password or one will be generated for you |
 | nameOverride | string | `""` |  |
 | nodeSelector | object | `{}` |  |
 | persistence.enabled | bool | `false` | Enable the database to persist across restarts. |
 | persistence.size | string | `"1Gi"` | Database size. |
 | persistence.storageClass | string | `"local-path"` | Storage Class for the persistent volume |
-| phpldapadmin.enabled | bool | `true` | Enable PHPLDAPAdmin. See sub-chart for settings. |
 | podAnnotations | object | `{}` |  |
 | podSecurityContext | object | `{}` |  |
 | replicaCount | int | `1` | Number of replicas. Only 1 is currently supported. |
 | resources | object | `{}` |  |
 | securityContext.runAsNonRoot | bool | `true` |  |
 | securityContext.runAsUser | int | `101` |  |
-| service.port | int | `389` | Port to listen on |
+| service.port | int | `3306` | Port to listen on |
 | service.type | string | `"ClusterIP"` | Service type. Change this to expose outside of K8s |
 | serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
 | serviceAccount.create | bool | `false` | Specifies whether a service account should be created |
 | serviceAccount.name | string | `""` | If not set and create is true, a name is generated using the fullname template |
-| slapd.listeners.extraEnv | object | `{}` | Extra environment variables to set. |
-| slapd.listeners.ldap.containerPort | int | `1389` | Set to >1024 to allow container to run as non-root user for improved security. |
-| slapd.listeners.ldap.enabled | bool | `true` | Enable the LDAP protocol |
-| slapd.listeners.ldap.port | int | `389` | External port. |
-| slapd.listeners.ldap.scheme | string | `"ldap"` | Only ldap & ldaps is supported. |
-| slapd.listeners.ldaps.containerPort | int | `1636` | Set to >1024 to allow container to run as non-root user for improved security. |
-| slapd.listeners.ldaps.enabled | bool | `false` | Enable the LDAPS protocol. LDAPS requires TLS into to be set, above. |
-| slapd.listeners.ldaps.port | int | `636` |  |
-| slapd.listeners.ldaps.scheme | string | `"ldaps"` |  |
-| slapd.secrets | object | `{}` |  |
 | tls.certificate | object | `{"commonName":"example.com","issuerRef":{"name":"default"},"optional":{}}` | Mandatory if `type` is `certificate`. |
-| tls.certificate.commonName | string | `"example.com"` | Set to the FQDN of your LDAP server |
+| tls.certificate.commonName | string | `"example.com"` | Set to the FQDN of your server |
 | tls.certificate.issuerRef.name | string | `"default"` | This is most likely not correct for your setup. |
-| tls.enabled | bool | `false` | Enable TLS (LDAPS). |
-| tls.secret | string | `"secret-name"` | Mandatory and created outside of Helm if `type` is `secret`. Must have key, cert & chain values. |
+| tls.enabled | bool | `false` | Enable TLS. |
+| tls.secret | string | `"secret-name"` | key, cert & chain values. |
 | tls.type | string | `"certificate"` | TLS source: certificate or secret |
 | tolerations | list | `[]` |  |
 

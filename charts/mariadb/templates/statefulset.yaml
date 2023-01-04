@@ -1,0 +1,121 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "mariadb.fullname" . }}
+  labels:
+    {{- include "mariadb.labels" . | nindent 4 }}
+spec:
+  serviceName: {{ include "mariadb.fullname" . }}
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "mariadb.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "mariadb.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "mariadb.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy | default "Always" }}
+          # command: ["sleep", "infinity"]  # for debugging
+          # args:
+          env:
+            - name: LDAPURI
+              value: "ldapi://%2fldap%2frun%2fslapd.sock
+                {{- range values .Values.slapd.listeners }}
+                {{- if .enabled }} {{ .scheme }}://0.0.0.0:{{ .containerPort }}/{{ end }}
+                {{- end }}"
+            - {name: LDAPSASL_MECH, value: "EXTERNAL"}
+            - {name: LDAPBASE     , value: {{ cat "dc=" .Values.ldapDomain | replace "." ",dc=" | nospace | quote }}}
+            - {name: LDAP_DEBUG   , value: {{ .Values.slapd.debugLevel | default 0 | quote }}}
+            {{- range $key, $value := .Values.slapd.extraEnv }}
+            - {name: {{ $key }}, value: "{{ $value }}"}
+            {{- end }}
+
+          ports:
+            {{- range $key, $value := .Values.slapd.listeners }}
+            {{- if $value.enabled }}
+            - name: {{ $key }}
+              containerPort: {{ $value.containerPort | int }}
+              protocol: {{ $value.protocol | default "TCP" }}
+            {{- end }}
+            {{- end }}
+          startupProbe:
+            failureThreshold: 30
+            periodSeconds: 10
+            exec:
+              command:
+              - /healthz
+          readinessProbe:
+            initialDelaySeconds: 10
+            periodSeconds: 60
+            exec:
+              command:
+              - /healthz
+          livenessProbe:
+            initialDelaySeconds: 10
+            periodSeconds: 600
+            exec:
+              command:
+              - /healthz
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+          - name: {{ include "mariadb.fullname" . }}-config
+            mountPath: /ldap/config
+            readOnly: true
+          - name: {{ include "mariadb.fullname" . }}-secret
+            mountPath: /ldap/secrets
+            readOnly: true
+          {{- if .Values.tls.enabled }}
+          - name: {{ include "mariadb.fullname" . }}-tls
+            mountPath: /ldap/tls
+            readOnly: true
+          {{- end }}
+      volumes:
+      - name: {{ include "mariadb.fullname" . }}-config
+        configMap:
+          name: {{ include "mariadb.fullname" . }}
+      - name: {{ include "mariadb.fullname" . }}-secret
+        secret:
+          secretName: {{ include "mariadb.fullname" . }}
+          defaultMode: 0444
+      {{- if .Values.tls.enabled }}
+      - name: {{ include "mariadb.fullname" . }}-tls
+        secret:
+          {{- if eq .Values.tls.type "certificate" }}
+          secretName: {{ include "mariadb.fullname" . }}-tls
+          {{- else if eq .Values.tls.type "secret" }}
+          secretName: "{{ .Values.tls.secret }}"
+          {{- end }}
+          defaultMode: 0444
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
