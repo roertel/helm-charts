@@ -1,5 +1,7 @@
-View your admin password with the following command:
-
-    kubectl get secret -n {{.Release.Namespace}} {{ include "mariadb.fullname" . }} -o jsonpath='{.data.admin}'|base64 -d
-
 {{ include "mariadb.fullname" . }} is now set up!
+
+Fetch the root password with:
+kubectl get secret --namespace {{ .Release.Namespace}} {{ include "mariadb.fullname" . }} --output jsonpath='{.data.mariadb-root-password}'|base64 -d
+
+Connect to your database with:
+mysql -h<hostname> -u<user> -p

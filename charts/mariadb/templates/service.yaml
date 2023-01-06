@@ -1,4 +1,3 @@
-{{- if len .Values.slapd.listeners }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -8,14 +7,9 @@ metadata:
 spec:
   type: {{ .Values.service.type | default "ClusterIP" }}
   ports:
-    {{- range $key, $value := .Values.slapd.listeners }}
-    {{- if $value.enabled }}
-    - name: {{ $key }}
-      targetPort: {{ $key }}
-      protocol: {{ $value.protocol | default "TCP" }}
-      port: {{ $value.port | int }}
-    {{- end }}
-    {{- end }}
+    - name: mysql
+      targetPort: 3306
+      protocol: TCP
+      port: 3306
   selector:
     {{- include "mariadb.selectorLabels" . | nindent 4 }}
-{{- end }}

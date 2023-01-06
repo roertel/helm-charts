@@ -7,10 +7,10 @@ replicaCount: 1
 
 image:
   # -- Image to use for deploying.
-  repository: roertel/mariadb
+  repository: mariadb
   pullPolicy: IfNotPresent
   # -- Override the image tag whose default is the chart appVersion.
-  tag:
+  tag: 
 
 imagePullSecrets: []
 nameOverride: ""
@@ -27,7 +27,7 @@ securityContext:
   #   - ALL
   # readOnlyRootFilesystem: true
   runAsNonRoot: true
-  runAsUser: 101
+  runAsUser: 999
 
 serviceAccount:
   # -- Specifies whether a service account should be created
@@ -73,6 +73,10 @@ affinity: {}
 tls:
   # -- Enable TLS.
   enabled: false
+  # -- Require clients to connect with TLS?
+  required: true
+  # -- Allowed TLS versions (TLSv1.2,TLSv1.3)
+  versions:
   # -- TLS source: certificate or secret
   type: certificate  # or secret
   # -- Mandatory and created outside of Helm if `type` is `secret`. Must have
@@ -108,10 +112,24 @@ persistence:
   # -- Storage Class for the persistent volume
   storageClass: local-path
 
+startupProbe:
+  # -- Enable the startup probe
+  enabled: true
+
+readinessProbe:
+  # -- Enable the readiness probe
+  enabled: true
+
+livenessProbe:
+  # -- Enable the liveness probe
+  enabled: true
+
+
 mysqld:
-  # -- Debug levels 0-5 (off, fatal, warn, info, debug, trace)
-  debugLevel: 3
   # -- Administrative (root) password or one will be generated for you
-  rootPassword: null
+  rootPassword: 
   # -- Extra environment variables to set.
+  # -- See https://github.com/docker-library/docs/tree/master/mariadb#environment-variables
   extraEnv: {}
+  # -- Extra arguments to pass to mysqld
+  extraArgs: []

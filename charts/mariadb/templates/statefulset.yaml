@@ -35,64 +35,84 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy | default "Always" }}
           # command: ["sleep", "infinity"]  # for debugging
-          # args:
+          # command: ["bash", "-x", "/usr/local/bin/docker-entrypoint.sh", "mariadbd"]
+          args: {{- range .Values.mysqld.extraArgs }}{{ . }}{{- end }}
           env:
-            - name: LDAPURI
-              value: "ldapi://%2fldap%2frun%2fslapd.sock
-                {{- range values .Values.slapd.listeners }}
-                {{- if .enabled }} {{ .scheme }}://0.0.0.0:{{ .containerPort }}/{{ end }}
-                {{- end }}"
-            - {name: LDAPSASL_MECH, value: "EXTERNAL"}
-            - {name: LDAPBASE     , value: {{ cat "dc=" .Values.ldapDomain | replace "." ",dc=" | nospace | quote }}}
-            - {name: LDAP_DEBUG   , value: {{ .Values.slapd.debugLevel | default 0 | quote }}}
-            {{- range $key, $value := .Values.slapd.extraEnv }}
+            - name: MARIADB_ROOT_PASSWORD_FILE
+              value: /run/credentials/mariadb-root-password
+            {{- range $key, $value := .Values.mysqld.extraEnv }}
             - {name: {{ $key }}, value: "{{ $value }}"}
             {{- end }}
-
           ports:
-            {{- range $key, $value := .Values.slapd.listeners }}
-            {{- if $value.enabled }}
-            - name: {{ $key }}
-              containerPort: {{ $value.containerPort | int }}
-              protocol: {{ $value.protocol | default "TCP" }}
-            {{- end }}
-            {{- end }}
+            - name: mysql
+              containerPort: 3306
+              protocol: TCP
+          {{- if .Values.startupProbe.enabled }}
           startupProbe:
             failureThreshold: 30
             periodSeconds: 10
             exec:
               command:
-              - /healthz
+              - /usr/local/bin/healthcheck.sh
+          {{- end }}
+          {{- if .Values.readinessProbe.enabled }}
           readinessProbe:
             initialDelaySeconds: 10
             periodSeconds: 60
             exec:
               command:
-              - /healthz
+              - /usr/local/bin/healthcheck.sh
+          {{- end }}
+          {{- if .Values.livenessProbe.enabled }}
           livenessProbe:
             initialDelaySeconds: 10
             periodSeconds: 600
             exec:
               command:
-              - /healthz
+              - /usr/local/bin/healthcheck.sh
+          {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
-          - name: {{ include "mariadb.fullname" . }}-config
-            mountPath: /ldap/config
+          - name: {{ include "mariadb.fullname" . }}-rundir
+            mountPath: /run/mysqld
+            readOnly: false
+          - name: {{ include "mariadb.fullname" . }}-data
+            mountPath: /var/lib/mysql
+            readOnly: false
+          - name: {{ include "mariadb.fullname" . }}-server
+            mountPath: /etc/mysql/conf.d
+            readOnly: true
+          - name: {{ include "mariadb.fullname" . }}-client
+            mountPath: /home/mysql/
             readOnly: true
           - name: {{ include "mariadb.fullname" . }}-secret
-            mountPath: /ldap/secrets
+            mountPath: /run/credentials
             readOnly: true
           {{- if .Values.tls.enabled }}
           - name: {{ include "mariadb.fullname" . }}-tls
-            mountPath: /ldap/tls
+            mountPath: /run/tls
             readOnly: true
           {{- end }}
+        {{- if .Values.tls.enabled }}
+        # Add container for TLS refreshes
+        {{- end }}
       volumes:
-      - name: {{ include "mariadb.fullname" . }}-config
+      - name: {{ include "mariadb.fullname" . }}-rundir
+        emptyDir:
+      - name: {{ include "mariadb.fullname" . }}-data
+      {{- if .Values.persistence.enabled }}
+        persistentVolumeClaim:
+          claimName: {{ include "mariadb.fullname" . }}
+      {{- else }}
+        emptyDir:
+      {{- end }}
+      - name: {{ include "mariadb.fullname" . }}-server
         configMap:
-          name: {{ include "mariadb.fullname" . }}
+          name: {{ include "mariadb.fullname" . }}-server
+      - name: {{ include "mariadb.fullname" . }}-client
+        configMap:
+          name: {{ include "mariadb.fullname" . }}-client
       - name: {{ include "mariadb.fullname" . }}-secret
         secret:
           secretName: {{ include "mariadb.fullname" . }}
