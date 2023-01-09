@@ -5,3 +5,6 @@ kubectl get secret --namespace {{ .Release.Namespace}} {{ include "mariadb.fulln
 
 Connect to your database with:
 mysql -h<hostname> -u<user> -p
+
+alternatively:
+kubectl exec -tin {{ .Release.Namespace }} sts/{{ include "mariadb.fullname" . }} -- bash -c 'mysql --user=root --password="$(cat $MARIADB_ROOT_PASSWORD_FILE)"'

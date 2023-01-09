@@ -49,27 +49,24 @@ spec:
               protocol: TCP
           {{- if .Values.startupProbe.enabled }}
           startupProbe:
-            failureThreshold: 30
-            periodSeconds: 10
-            exec:
-              command:
-              - /usr/local/bin/healthcheck.sh
+            failureThreshold: 10
+            periodSeconds: 30
+            tcpSocket:
+              port: mysql
           {{- end }}
           {{- if .Values.readinessProbe.enabled }}
           readinessProbe:
-            initialDelaySeconds: 10
+            initialDelaySeconds: 30
             periodSeconds: 60
-            exec:
-              command:
-              - /usr/local/bin/healthcheck.sh
+            tcpSocket:
+              port: mysql
           {{- end }}
           {{- if .Values.livenessProbe.enabled }}
           livenessProbe:
-            initialDelaySeconds: 10
+            initialDelaySeconds: 30
             periodSeconds: 600
-            exec:
-              command:
-              - /usr/local/bin/healthcheck.sh
+            tcpSocket:
+              port: mysql
           {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
@@ -80,11 +77,8 @@ spec:
           - name: {{ include "mariadb.fullname" . }}-data
             mountPath: /var/lib/mysql
             readOnly: false
-          - name: {{ include "mariadb.fullname" . }}-server
+          - name: {{ include "mariadb.fullname" . }}-config
             mountPath: /etc/mysql/conf.d
-            readOnly: true
-          - name: {{ include "mariadb.fullname" . }}-client
-            mountPath: /home/mysql/
             readOnly: true
           - name: {{ include "mariadb.fullname" . }}-secret
             mountPath: /run/credentials
@@ -94,8 +88,34 @@ spec:
             mountPath: /run/tls
             readOnly: true
           {{- end }}
+          {{- if .Values.ldap.enabled }}
+          - name: {{ include "mariadb.fullname" . }}-ldap-rundir
+            mountPath: /run/nslcd
+          {{- end }}
         {{- if .Values.tls.enabled }}
         # Add container for TLS refreshes
+        {{- end }}
+        {{- if .Values.ldap.enabled }}
+        - name: {{ .Chart.Name }}-ldap
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.ldap.image.repository }}:{{ .Values.ldap.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.ldap.image.pullPolicy | default "Always" }}
+          env:
+            - {name: LDAP_URI, value: {{ .Values.ldap.uri }}}
+            - {name: LDAP_BASE, values {{ .Values.ldap.base }}}
+            - {name: LDAP_BINDDN, values {{ .Values.ldap.bindDn }}}
+          resources:
+            {{- toYaml .Values.ldap.resources | nindent 12 }}
+          volumeMounts:
+          - name: {{ include "mariadb.fullname" . }}-ldap-templates
+            mountPath: /templates
+          - name: {{ include "mariadb.fullname" . }}-ldap-rundir
+            mountPath: /run/nslcd
+          - name: {{ include "mariadb.fullname" . }}-secret
+            mountPath: /run/secrets
+          - name: {{ include "mariadb.fullname" . }}-tls
+            mountPath: /run/tls
         {{- end }}
       volumes:
       - name: {{ include "mariadb.fullname" . }}-rundir
@@ -107,12 +127,9 @@ spec:
       {{- else }}
         emptyDir:
       {{- end }}
-      - name: {{ include "mariadb.fullname" . }}-server
+      - name: {{ include "mariadb.fullname" . }}-config
         configMap:
-          name: {{ include "mariadb.fullname" . }}-server
-      - name: {{ include "mariadb.fullname" . }}-client
-        configMap:
-          name: {{ include "mariadb.fullname" . }}-client
+          name: {{ include "mariadb.fullname" . }}
       - name: {{ include "mariadb.fullname" . }}-secret
         secret:
           secretName: {{ include "mariadb.fullname" . }}
@@ -126,6 +143,13 @@ spec:
           secretName: "{{ .Values.tls.secret }}"
           {{- end }}
           defaultMode: 0444
+      {{- end }}
+      {{- if .Values.ldap.enabled }}
+      - name: {{ include "mariadb.fullname" . }}-ldap-templates
+        configMap:
+          name: {{ include "mariadb.fullname" . }}-ldap
+      - name: {{ include "mariadb.fullname" . }}-ldap-rundir
+        emptyDir:
       {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:

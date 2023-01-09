@@ -61,3 +61,16 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/*
+Fetch or generate the root password
+*/}}
+{{- define "mariadb.rootPassword" }}
+{{- if .Values.mysqld.rootPassword }}
+    {{- .Values.mysqld.rootPassword }}
+{{- else }}
+    {{- $secretDict := (lookup "v1" "Secret" .Release.Namespace (include "mariadb.fullname" .)) | default dict }}
+    {{- $secretPass := get (get $secretDict "data" | default dict) "mariadb-root-password" | b64dec }}
+    {{- $secretPass | default (randAlphaNum 32) }}
+{{- end }}
+{{- end }}

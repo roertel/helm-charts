@@ -124,6 +124,24 @@ livenessProbe:
   # -- Enable the liveness probe
   enabled: true
 
+ldap:
+  # -- Enable LDAP authentication to MariaDB
+  enabled: false
+  image:
+    # -- Image to use for the LDAP sidecar
+    repository: roertel/nslcd-sidecar
+    # -- Image pull policy
+    pullPolicy: IfNotPresent
+    # -- Image tag
+    tag: latest
+  # -- LDAP URI or comma-delimited URI list
+  uri: ldaps://ldap.example.com/
+  # -- LDAP search base in DC= format
+  base: dc=example,dc=com
+  # -- LDAP bind user
+  bindDn: cn=bind,ou=system,dc=example,dc=com
+  # -- LDAP bind password
+  bindPw: "SecretPasswordChangeMe"
 
 mysqld:
   # -- Administrative (root) password or one will be generated for you

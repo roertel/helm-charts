@@ -5,6 +5,9 @@ metadata:
   labels:
     {{- include "mariadb.labels" . | nindent 4 }}
 spec:
+  {{- if eq .Values.service.type "LoadBalancer" }}
+  externalTrafficPolicy: Local
+  {{- end }}
   type: {{ .Values.service.type | default "ClusterIP" }}
   ports:
     - name: mysql
