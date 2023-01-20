@@ -2,17 +2,15 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ include "mariadb.fullname" . }}
-  labels:
-    {{- include "mariadb.labels" . | nindent 4 }}
+  labels: {{ include "mariadb.labels" . | nindent 4 }}
 spec:
   {{- if eq .Values.service.type "LoadBalancer" }}
   externalTrafficPolicy: Local
-  {{- end }}
+  {{ end -}}
   type: {{ .Values.service.type | default "ClusterIP" }}
   ports:
     - name: mysql
       targetPort: 3306
       protocol: TCP
       port: 3306
-  selector:
-    {{- include "mariadb.selectorLabels" . | nindent 4 }}
+  selector: {{ include "mariadb.selectorLabels" . | nindent 4 }}

@@ -103,6 +103,20 @@ tls:
       # emailAddresses:   # (optional)
       # secretTemplate:   # (optional)
       # keystores:   # (optional)
+  image:
+    # -- Image to use for the TLS refresher sidecar
+    repository: ghcr.io/roertel/docker-mariadb-tls-sidecar
+    # -- Image pull policy
+    pullPolicy: IfNotPresent
+    # -- Image tag
+    tag: unstable
+  securityContext:
+    # capabilities:
+    #   drop:
+    #   - ALL
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    runAsUser: 999
 
 persistence:
   # -- Enable the database to persist across restarts.
@@ -129,19 +143,30 @@ ldap:
   enabled: false
   image:
     # -- Image to use for the LDAP sidecar
-    repository: roertel/nslcd-sidecar
+    repository: ghcr.io/roertel/docker-nslcd-sidecar
     # -- Image pull policy
     pullPolicy: IfNotPresent
     # -- Image tag
-    tag: latest
+    tag: unstable
+  securityContext:
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+    # runAsUser: 999
   # -- LDAP URI or comma-delimited URI list
-  uri: ldaps://ldap.example.com/
+  uri: "ldaps://ldap.example.com/"
   # -- LDAP search base in DC= format
-  base: dc=example,dc=com
+  base: "dc=example,dc=com"
   # -- LDAP bind user
-  bindDn: cn=bind,ou=system,dc=example,dc=com
+  bindDn: "cn=bind,ou=system,dc=example,dc=com"
   # -- LDAP bind password
   bindPw: "SecretPasswordChangeMe"
+  # -- Extra environment variables to set.
+  extraEnv: {}
+  # -- Extra arguments to pass to nslcd
+  extraArgs: []
 
 mysqld:
   # -- Administrative (root) password or one will be generated for you

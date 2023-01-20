@@ -74,3 +74,12 @@ Fetch or generate the root password
     {{- $secretPass | default (randAlphaNum 32) }}
 {{- end }}
 {{- end }}
+
+{{/*
+Fetch or generate the connection admin password
+*/}}
+{{- define "mariadb.connection-admin-password" }}
+{{- $secretDict := (lookup "v1" "Secret" .Release.Namespace (include "mariadb.fullname" .)) | default dict }}
+{{- $secretPass := get (get $secretDict "data" | default dict) "mariadb-connection-admin-password" | b64dec }}
+{{- $secretPass | default (randAlphaNum 32) }}
+{{- end }}
