@@ -12,8 +12,9 @@ resources: {{ toYaml .Values.tls.resources | nindent 2 }}
 volumeMounts:
 - name: {{ include "mariadb.fullname" . }}-run-db
   mountPath: /run/mysqld
-- name: {{ include "mariadb.fullname" . }}-creds
-  mountPath: /run/credentials
-- name: {{ include "mariadb.fullname" . }}-tls
+- name: {{ include "mariadb.fullname" . }}-tls-certs
   mountPath: /run/tls
+- name: {{ include "mariadb.fullname" . }}-tls-home
+  mountPath: /home/mysql/.my.cnf
+  subPath: .my.cnf
 {{- end -}}

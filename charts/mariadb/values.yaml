@@ -111,9 +111,9 @@ tls:
     # -- Image tag
     tag: unstable
   securityContext:
-    # capabilities:
-    #   drop:
-    #   - ALL
+    capabilities:
+      drop:
+      - ALL
     readOnlyRootFilesystem: true
     runAsNonRoot: true
     runAsUser: 999
@@ -149,12 +149,13 @@ ldap:
     # -- Image tag
     tag: unstable
   securityContext:
-    # capabilities:
-    #   drop:
-    #   - ALL
-    # readOnlyRootFilesystem: true
-    # runAsNonRoot: true
-    # runAsUser: 999
+    capabilities:
+      drop:
+      - ALL
+    # -- Needs to be false if templates are in use
+    readOnlyRootFilesystem: false
+    runAsNonRoot: true
+    runAsUser: 999
   # -- LDAP URI or comma-delimited URI list
   uri: "ldaps://ldap.example.com/"
   # -- LDAP search base in DC= format

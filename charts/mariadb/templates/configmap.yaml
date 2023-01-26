@@ -6,17 +6,11 @@ metadata:
 data:
   my.cnf: |
     {{- include "my.cnf" . | nindent 4 }}
-{{- if .Values.tls.enabled }}
-  tls-init.sql: |
-    {{- include "tls-init.sql" . | nindent 4 }}
-{{- end }}
-{{- if .Values.ldap.enabled }}
-  nslcd.conf.tpl: |
-    {{- include "nslcd.conf" . | nindent 4 }}
+  {{- if .Values.ldap.enabled }}
   nsswitch.conf: |
     {{- include "nsswitch.conf" . | nindent 4 }}
   mariadb: |
     {{- include "pam-mariadb" . | nindent 4 }}
   ldap-init.sql: |
     {{- include "ldap-init.sql" . | nindent 4 }}
-{{ end -}}
+  {{ end -}}

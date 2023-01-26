@@ -7,10 +7,6 @@
     - key: "ldap-init.sql"
       path: "ldap-init.sql"
     {{- end }}
-    {{- if .Values.tls.enabled }}
-    - key: "tls-init.sql"
-      path: "tls-init.sql"
-    {{- end }}
 - name: {{ include "mariadb.fullname" . }}-config
   configMap:
     name: {{ include "mariadb.fullname" . }}
@@ -38,8 +34,11 @@
   secret:
     secretName: {{ include "mariadb.fullname" . }}
     defaultMode: 0444
+    items:
+    - key: "mariadb-root-password"
+      path: "mariadb-root-password"
 {{- if .Values.tls.enabled }}
-- name: {{ include "mariadb.fullname" . }}-tls
+- name: {{ include "mariadb.fullname" . }}-tls-certs
   secret:
     {{- if eq .Values.tls.type "certificate" }}
     secretName: {{ include "mariadb.fullname" . }}-tls
@@ -47,11 +46,26 @@
     secretName: {{ .Values.tls.secret | quote }}
     {{- end }}
     defaultMode: 0444
+- name: {{ include "mariadb.fullname" . }}-tls-home
+  secret:
+    secretName: {{ include "mariadb.fullname" . }}
+    defaultMode: 0444
+    items:
+    - key: "connection-admin-my.cnf"
+      path: ".my.cnf"
+- name: {{ include "mariadb.fullname" . }}-tls-init
+  secret:
+    secretName: {{ include "mariadb.fullname" . }}
+    defaultMode: 0444
+    items:
+    - key: "tls-init.sql"
+      path: "tls-init.sql"
 {{- end }}
 {{- if .Values.ldap.enabled }}
 - name: {{ include "mariadb.fullname" . }}-ldap
-  configMap:
-    name: {{ include "mariadb.fullname" . }}
+  secret:
+    secretName: {{ include "mariadb.fullname" . }}
+    defaultMode: 0444
     items:
     - key: "nslcd.conf.tpl"
       path: "nslcd.conf.tpl"

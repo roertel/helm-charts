@@ -6,11 +6,11 @@ metadata:
 spec:
   {{- if eq .Values.service.type "LoadBalancer" }}
   externalTrafficPolicy: Local
-  {{ end -}}
+  {{- end }}
   type: {{ .Values.service.type | default "ClusterIP" }}
-  ports:
-    - name: mysql
-      targetPort: 3306
-      protocol: TCP
-      port: 3306
   selector: {{ include "mariadb.selectorLabels" . | nindent 4 }}
+  ports:
+  - name: mysql
+    targetPort: 3306
+    protocol: TCP
+    port: 3306
