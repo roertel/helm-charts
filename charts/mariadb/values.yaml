@@ -111,7 +111,7 @@ tls:
     # -- Image pull policy
     pullPolicy: IfNotPresent
     # -- Image tag
-    tag: sha-2381010
+    tag: v1.0.0-1
   securityContext:
     capabilities:
       drop:
