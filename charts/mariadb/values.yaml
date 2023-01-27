@@ -10,7 +10,7 @@ image:
   repository: mariadb
   pullPolicy: IfNotPresent
   # -- Override the image tag whose default is the chart appVersion.
-  tag: 
+  tag:
 
 imagePullSecrets: []
 nameOverride: ""
@@ -176,7 +176,7 @@ ldap:
 
 mysqld:
   # -- Administrative (root) password or one will be generated for you
-  rootPassword: 
+  rootPassword:
   # -- Extra environment variables to set.
   # -- See https://github.com/docker-library/docs/tree/master/mariadb#environment-variables
   extraEnv: {}
