@@ -33,7 +33,7 @@
 - name: {{ include "mariadb.fullname" . }}-creds
   secret:
     secretName: {{ include "mariadb.fullname" . }}
-    defaultMode: 0444
+    defaultMode: 0400
     items:
     - key: "mariadb-root-password"
       path: "mariadb-root-password"
@@ -45,18 +45,18 @@
     {{- else if eq .Values.tls.type "secret" }}
     secretName: {{ .Values.tls.secret | quote }}
     {{- end }}
-    defaultMode: 0444
+    defaultMode: 0400
 - name: {{ include "mariadb.fullname" . }}-tls-home
   secret:
     secretName: {{ include "mariadb.fullname" . }}
-    defaultMode: 0444
+    defaultMode: 0400
     items:
     - key: "connection-admin-my.cnf"
       path: ".my.cnf"
 - name: {{ include "mariadb.fullname" . }}-tls-init
   secret:
     secretName: {{ include "mariadb.fullname" . }}
-    defaultMode: 0444
+    defaultMode: 0400
     items:
     - key: "tls-init.sql"
       path: "tls-init.sql"
@@ -65,7 +65,7 @@
 - name: {{ include "mariadb.fullname" . }}-ldap
   secret:
     secretName: {{ include "mariadb.fullname" . }}
-    defaultMode: 0444
+    defaultMode: 0400
     items:
     - key: "nslcd.conf.tpl"
       path: "nslcd.conf.tpl"

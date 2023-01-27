@@ -15,6 +15,6 @@ volumeMounts:
 - name: {{ include "mariadb.fullname" . }}-tls-certs
   mountPath: /run/tls
 - name: {{ include "mariadb.fullname" . }}-tls-home
-  mountPath: /home/mysql/.my.cnf
+  mountPath: /home/.my.cnf
   subPath: .my.cnf
 {{- end -}}

@@ -18,16 +18,18 @@ fullnameOverride: ""
 
 podAnnotations: {}
 
-podSecurityContext: {}
-  # fsGroup: 2000
+podSecurityContext:
+  fsGroup: 999
 
 securityContext:
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
+  capabilities:
+    drop:
+    - ALL
+  # -- Some temp files are required. You can mount a temp to emptyDir or RW root
+  readOnlyRootFilesystem: false
   runAsNonRoot: true
   runAsUser: 999
+  runAsGroup: 999
 
 serviceAccount:
   # -- Specifies whether a service account should be created
@@ -109,7 +111,7 @@ tls:
     # -- Image pull policy
     pullPolicy: IfNotPresent
     # -- Image tag
-    tag: unstable
+    tag: sha-2381010
   securityContext:
     capabilities:
       drop:
@@ -117,6 +119,7 @@ tls:
     readOnlyRootFilesystem: true
     runAsNonRoot: true
     runAsUser: 999
+    runAsGroup: 999
 
 persistence:
   # -- Enable the database to persist across restarts.
@@ -147,7 +150,7 @@ ldap:
     # -- Image pull policy
     pullPolicy: IfNotPresent
     # -- Image tag
-    tag: unstable
+    tag: v1.0.0-1
   securityContext:
     capabilities:
       drop:
@@ -156,6 +159,8 @@ ldap:
     readOnlyRootFilesystem: false
     runAsNonRoot: true
     runAsUser: 999
+    runAsGroup: 999
+
   # -- LDAP URI or comma-delimited URI list
   uri: "ldaps://ldap.example.com/"
   # -- LDAP search base in DC= format
