@@ -1,4 +1,4 @@
-# Default values for openldap.
+# Default values for mariadb.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
@@ -7,7 +7,7 @@ replicaCount: 1
 
 image:
   # -- Image to use for deploying.
-  repository: roertel/openldap
+  repository: mariadb
   pullPolicy: IfNotPresent
   # -- Override the image tag whose default is the chart appVersion.
   tag:
@@ -18,16 +18,18 @@ fullnameOverride: ""
 
 podAnnotations: {}
 
-podSecurityContext: {}
-  # fsGroup: 2000
+podSecurityContext:
+  fsGroup: 999
 
 securityContext:
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
+  capabilities:
+    drop:
+    - ALL
+  # -- Some temp files are required. You can mount a temp to emptyDir or RW root
+  readOnlyRootFilesystem: false
   runAsNonRoot: true
-  runAsUser: 101
+  runAsUser: 999
+  runAsGroup: 999
 
 serviceAccount:
   # -- Specifies whether a service account should be created
@@ -38,28 +40,11 @@ serviceAccount:
   # -- If not set and create is true, a name is generated using the fullname template
   name: ""
 
-service:  # Only one service is allowed at this time (LDAP or LDAPS)
+service:
   # -- Service type. Change this to expose outside of K8s
   type: ClusterIP
   # -- Port to listen on
-  port: 389
-
-# ingress:
-#   enabled: false
-#   annotations: {}
-#     # kubernetes.io/ingress.class: nginx
-#     # kubernetes.io/tls-acme: "true"
-#   hosts:
-#     - host: openldap.local
-#       paths:
-#       - path: /
-#         backend:
-#           serviceName: openldap.local
-#           servicePort: 389
-#   tls: []
-#   #  - secretName: openldap-tls
-#   #    hosts:
-#   #      - openldap.local
+  port: 3306
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -77,7 +62,7 @@ autoscaling:
   # -- Not supported at this time.
   enabled: false
   minReplicas: 1
-  maxReplicas: 100
+  maxReplicas: 1
   targetCPUUtilizationPercentage: 80
   targetMemoryUtilizationPercentage: 80
 
@@ -87,21 +72,17 @@ tolerations: []
 
 affinity: {}
 
-# TCP:  # UDP not supported
-#   LDAP:
-#     enabled: true
-#     port: 1389  # Set this to a number >1024 to run as non-root
-
-#   LDAPS:
-#     enabled: false  # Certificate infrastructure must be in place (ex: cert-manager)
-#     port: 1636  # Set this to a number >1024 to run as non-root
-
 tls:
-  # -- Enable TLS (LDAPS).
+  # -- Enable TLS.
   enabled: false
+  # -- Require clients to connect with TLS?
+  required: true
+  # -- Allowed TLS versions (TLSv1.2,TLSv1.3)
+  versions:
   # -- TLS source: certificate or secret
   type: certificate  # or secret
-  # -- Mandatory and created outside of Helm if `type` is `secret`. Must have key, cert & chain values.
+  # -- Mandatory and created outside of Helm if `type` is `secret`. Must have
+  # -- key, cert & chain values.
   secret: secret-name
   # -- Mandatory if `type` is `certificate`.
   certificate:
@@ -110,7 +91,7 @@ tls:
       name: default
       # kind: Issuer  # ...or ClusterIssuer (not set defaults to Issuer)
       # group:
-    # -- Set to the FQDN of your LDAP server
+    # -- Set to the FQDN of your server
     commonName: example.com
     optional: {}  # Optional Certificate fields
       # dnsNames: # (optional)
@@ -124,6 +105,21 @@ tls:
       # emailAddresses:   # (optional)
       # secretTemplate:   # (optional)
       # keystores:   # (optional)
+  image:
+    # -- Image to use for the TLS refresher sidecar
+    repository: ghcr.io/roertel/docker-mariadb-tls-sidecar
+    # -- Image pull policy
+    pullPolicy: IfNotPresent
+    # -- Image tag
+    tag: sha-2381010
+  securityContext:
+    capabilities:
+      drop:
+      - ALL
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    runAsUser: 999
+    runAsGroup: 999
 
 persistence:
   # -- Enable the database to persist across restarts.
@@ -133,35 +129,56 @@ persistence:
   # -- Storage Class for the persistent volume
   storageClass: local-path
 
-# -- LDAP Domain in FQDN format. For example, `example.com` will convert to `dc=example,dc=com`.
-ldapDomain: example.com
-ldapOrganization: "Example Organization"
-
-slapd:
-  # debugLevel: 1  # Must be integer >=0 or else slapd will background itself
-  # adminPassword: password1234  # Administrative (RW) password or one will be generated for you
-  secrets: {}  # Additional secrets to mount for use in your config files as environment variables
-    # SomeOtherSecret: shh!
-  listeners:
-    ldap:
-      # -- Enable the LDAP protocol
-      enabled: true
-      # -- Only ldap & ldaps is supported.
-      scheme: ldap
-      # -- Set to >1024 to allow container to run as non-root user for improved security.
-      containerPort: 1389
-      # -- External port.
-      port: 389
-    ldaps:
-      # -- Enable the LDAPS protocol. LDAPS requires TLS into to be set, above.
-      enabled: false
-      scheme: ldaps
-      # -- Set to >1024 to allow container to run as non-root user for improved security.
-      containerPort: 1636
-      port: 636
-    # -- Extra environment variables to set.
-    extraEnv: {}
-
-phpldapadmin:
-  # -- Enable PHPLDAPAdmin. See sub-chart for settings.
+startupProbe:
+  # -- Enable the startup probe
   enabled: true
+
+readinessProbe:
+  # -- Enable the readiness probe
+  enabled: true
+
+livenessProbe:
+  # -- Enable the liveness probe
+  enabled: true
+
+ldap:
+  # -- Enable LDAP authentication to MariaDB
+  enabled: false
+  image:
+    # -- Image to use for the LDAP sidecar
+    repository: ghcr.io/roertel/docker-nslcd-sidecar
+    # -- Image pull policy
+    pullPolicy: IfNotPresent
+    # -- Image tag
+    tag: v1.0.0-1
+  securityContext:
+    capabilities:
+      drop:
+      - ALL
+    # -- Needs to be false if templates are in use
+    readOnlyRootFilesystem: false
+    runAsNonRoot: true
+    runAsUser: 999
+    runAsGroup: 999
+
+  # -- LDAP URI or comma-delimited URI list
+  uri: "ldaps://ldap.example.com/"
+  # -- LDAP search base in DC= format
+  base: "dc=example,dc=com"
+  # -- LDAP bind user
+  bindDn: "cn=bind,ou=system,dc=example,dc=com"
+  # -- LDAP bind password
+  bindPw: "SecretPasswordChangeMe"
+  # -- Extra environment variables to set.
+  extraEnv: {}
+  # -- Extra arguments to pass to nslcd
+  extraArgs: []
+
+mysqld:
+  # -- Administrative (root) password or one will be generated for you
+  rootPassword:
+  # -- Extra environment variables to set.
+  # -- See https://github.com/docker-library/docs/tree/master/mariadb#environment-variables
+  extraEnv: {}
+  # -- Extra arguments to pass to mysqld
+  extraArgs: []

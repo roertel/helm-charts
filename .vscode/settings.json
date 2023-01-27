@@ -1,0 +1,7 @@
+{
+    "cSpell.words": [
+        "binddn", "rootpwmoddn", "reqcert", "cacertfile", "nsswitch", "libc",
+        "gshadow", "netgroup", "soname", "statefulset", "mariadbd", "creds",
+        "rundir", "initdb", "certmanager"
+    ]
+}

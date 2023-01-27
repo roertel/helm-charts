@@ -1,6 +1,6 @@
 # openldap
 
-![Version: 2.4.58-1](https://img.shields.io/badge/Version-2.4.58--1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.1-1](https://img.shields.io/badge/AppVersion-1.0.1--1-informational?style=flat-square)
+![Version: 2.4.58-2](https://img.shields.io/badge/Version-2.4.58--2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.1-1](https://img.shields.io/badge/AppVersion-1.0.1--1-informational?style=flat-square)
 
 A Helm chart for OpenLDAP
 
@@ -66,7 +66,7 @@ A Helm chart for OpenLDAP
 | tls.certificate.commonName | string | `"example.com"` | Set to the FQDN of your LDAP server |
 | tls.certificate.issuerRef.name | string | `"default"` | This is most likely not correct for your setup. |
 | tls.enabled | bool | `false` | Enable TLS (LDAPS). |
-| tls.secret | string | `"secret-name"` | Mandatory and created outside of Helm if `type` is `secret`. Muse have key, cert & chain values. |
+| tls.secret | string | `"secret-name"` | Mandatory and created outside of Helm if `type` is `secret`. Must have key, cert & chain values. |
 | tls.type | string | `"certificate"` | TLS source: certificate or secret |
 | tolerations | list | `[]` |  |
 
