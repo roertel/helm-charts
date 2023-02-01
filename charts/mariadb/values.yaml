@@ -111,7 +111,7 @@ tls:
     # -- Image pull policy
     pullPolicy: IfNotPresent
     # -- Image tag
-    tag: 1.0.0-1
+    tag: 1.0.0
   securityContext:
     capabilities:
       drop:
@@ -150,7 +150,7 @@ ldap:
     # -- Image pull policy
     pullPolicy: IfNotPresent
     # -- Image tag
-    tag: v1.0.0-1
+    tag: v1.0.0
   securityContext:
     capabilities:
       drop:
