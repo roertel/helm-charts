@@ -26,14 +26,14 @@ securityContext:
     drop:
     - ALL
   # -- Some temp files are required. You can mount a temp to emptyDir or RW root
-  readOnlyRootFilesystem: false
+  readOnlyRootFilesystem: true
   runAsNonRoot: true
   runAsUser: 999
   runAsGroup: 999
 
 serviceAccount:
   # -- Specifies whether a service account should be created
-  create: false
+  create: true
   # -- Annotations to add to the service account
   annotations: {}
   # -- The name of the service account to use.
@@ -56,7 +56,7 @@ resources: {}
   #   memory: 128Mi
   # requests:
   #   cpu: 100m
-  #   memory: 128Mi
+  #   memory: 1Gi
 
 autoscaling:
   # -- Not supported at this time.
@@ -111,7 +111,7 @@ tls:
     # -- Image pull policy
     pullPolicy: IfNotPresent
     # -- Image tag
-    tag: v1.0.0-1
+    tag: 1.0.0-1
   securityContext:
     capabilities:
       drop:

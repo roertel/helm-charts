@@ -10,7 +10,10 @@
 - name: {{ include "mariadb.fullname" . }}-config
   configMap:
     name: {{ include "mariadb.fullname" . }}
+    defaultMode: 0775
     items:
+    - key: "entrypoint.sh"
+      path: "entrypoint.sh"
     - key: "my.cnf"
       path: "my.cnf"
     {{- if .Values.ldap.enabled }}
@@ -26,6 +29,8 @@
   {{- else }}
   emptyDir:
   {{- end }}
+- name: {{ include "mariadb.fullname" . }}-temp
+  emptyDir:
 - name: {{ include "mariadb.fullname" . }}-run-db
   emptyDir:
 - name: {{ include "mariadb.fullname" . }}-run-ldap
