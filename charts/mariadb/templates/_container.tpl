@@ -4,8 +4,8 @@ securityContext: {{ toYaml .Values.securityContext | nindent 2 }}
 image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
 imagePullPolicy: {{ .Values.image.pullPolicy | default "Always" }}
 # command: ["sleep", "infinity"]  # for debugging
-# command: ["bash", "-x", "/usr/local/bin/docker-entrypoint.sh", "mariadbd"]
-args: {{- range .Values.mysqld.extraArgs }}{{ . }}{{- end }}
+command: ["/usr/local/bin/entrypoint.sh"]
+args: {{ range .Values.mysqld.extraArgs }}{{ . }}{{- end }}
 env:
 - name: MYSQL_ROOT_PASSWORD_FILE
   value: /run/credentials/mariadb-root-password
@@ -50,10 +50,13 @@ resources: {{ toYaml .Values.resources | nindent 2 }}
 volumeMounts:
 - name: {{ include "mariadb.fullname" . }}-run-db
   mountPath: /run/mysqld
-  readOnly: false
 - name: {{ include "mariadb.fullname" . }}-data
   mountPath: /var/lib/mysql
-  readOnly: false
+- name: {{ include "mariadb.fullname" . }}-temp
+  mountPath: /tmp
+- name: {{ include "mariadb.fullname" . }}-config
+  mountPath: /usr/local/bin/entrypoint.sh
+  subPath: entrypoint.sh
 - name: {{ include "mariadb.fullname" . }}-config
   mountPath: /etc/mysql/conf.d/my.cnf
   subPath: my.cnf

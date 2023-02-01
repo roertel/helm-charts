@@ -1,6 +1,6 @@
 # mariadb
 
-![Version: 10.10.2-2](https://img.shields.io/badge/Version-10.10.2--2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 10.10.2](https://img.shields.io/badge/AppVersion-10.10.2-informational?style=flat-square)
+![Version: 10.10.2](https://img.shields.io/badge/Version-10.10.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 10.10.2](https://img.shields.io/badge/AppVersion-10.10.2-informational?style=flat-square)
 
 A Helm chart for MariaDB
 
@@ -35,7 +35,7 @@ A Helm chart for MariaDB
 | ldap.extraEnv | object | `{}` | Extra environment variables to set. |
 | ldap.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
 | ldap.image.repository | string | `"ghcr.io/roertel/docker-nslcd-sidecar"` | Image to use for the LDAP sidecar |
-| ldap.image.tag | string | `"v1.0.0-1"` | Image tag |
+| ldap.image.tag | string | `"v1.0.0"` | Image tag |
 | ldap.securityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | ldap.securityContext.readOnlyRootFilesystem | bool | `false` | Needs to be false if templates are in use |
 | ldap.securityContext.runAsGroup | int | `999` |  |
@@ -57,14 +57,14 @@ A Helm chart for MariaDB
 | replicaCount | int | `1` | Number of replicas. Only 1 is currently supported. |
 | resources | object | `{}` |  |
 | securityContext.capabilities.drop[0] | string | `"ALL"` |  |
-| securityContext.readOnlyRootFilesystem | bool | `false` | Some temp files are required. You can mount a temp to emptyDir or RW root |
+| securityContext.readOnlyRootFilesystem | bool | `true` | Some temp files are required. You can mount a temp to emptyDir or RW root |
 | securityContext.runAsGroup | int | `999` |  |
 | securityContext.runAsNonRoot | bool | `true` |  |
 | securityContext.runAsUser | int | `999` |  |
 | service.port | int | `3306` | Port to listen on |
 | service.type | string | `"ClusterIP"` | Service type. Change this to expose outside of K8s |
 | serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
-| serviceAccount.create | bool | `false` | Specifies whether a service account should be created |
+| serviceAccount.create | bool | `true` | Specifies whether a service account should be created |
 | serviceAccount.name | string | `""` | If not set and create is true, a name is generated using the fullname template |
 | startupProbe.enabled | bool | `true` | Enable the startup probe |
 | tls.certificate | object | `{"commonName":"example.com","issuerRef":{"name":"default"},"optional":{}}` | Mandatory if `type` is `certificate`. |
@@ -73,7 +73,7 @@ A Helm chart for MariaDB
 | tls.enabled | bool | `false` | Enable TLS. |
 | tls.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
 | tls.image.repository | string | `"ghcr.io/roertel/docker-mariadb-tls-sidecar"` | Image to use for the TLS refresher sidecar |
-| tls.image.tag | string | `"v1.0.0-1"` | Image tag |
+| tls.image.tag | string | `"1.0.0"` | Image tag |
 | tls.required | bool | `true` | Require clients to connect with TLS? |
 | tls.secret | string | `"secret-name"` | key, cert & chain values. |
 | tls.securityContext.capabilities.drop[0] | string | `"ALL"` |  |

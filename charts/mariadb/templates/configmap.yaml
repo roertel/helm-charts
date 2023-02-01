@@ -6,6 +6,8 @@ metadata:
 data:
   my.cnf: |
     {{- include "my.cnf" . | nindent 4 }}
+  entrypoint.sh: |
+    {{- include "entrypoint.sh" . | nindent 4 }}
   {{- if .Values.ldap.enabled }}
   nsswitch.conf: |
     {{- include "nsswitch.conf" . | nindent 4 }}
