@@ -5,7 +5,6 @@ A repository for helm charts. See the documentation for each chart in it's subdi
 |Chart Name|Chart Description|
 |-|-|
 |minecraft-overviewer|Overviewer will generate Google maps-style pages for your Minecraft world.|
-|pytivo|Service to share videos with your TiVo.|
 |openldap|OpenLDAP server including PHPLDAPAdmin.|
 |mariadb|MariaDB server.|
 
