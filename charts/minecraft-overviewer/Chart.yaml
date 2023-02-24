@@ -5,6 +5,7 @@ maintainers:
   - name: roertel
     email: roertel@users.noreply.github.com
 home: https://github.com/roertel/helm-charts/charts/minecraft-overviewer
+icon: https://image.winudf.com/v1/image/bmV0LmFscGF5Lm1jbWFwc19pY29uXzBfNDE1MjhhZWM/icon=170x.png
 
 # A chart can be either an 'application' or a 'library' chart.
 #

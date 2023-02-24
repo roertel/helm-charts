@@ -1,7 +1,20 @@
 {
     "cSpell.words": [
-        "binddn", "rootpwmoddn", "reqcert", "cacertfile", "nsswitch", "libc",
-        "gshadow", "netgroup", "soname", "statefulset", "mariadbd", "creds",
-        "rundir", "initdb", "certmanager"
+        "binddn",
+        "cacertfile",
+        "certmanager",
+        "creds",
+        "fredbcode",
+        "gshadow",
+        "initdb",
+        "libc",
+        "mariadbd",
+        "netgroup",
+        "nsswitch",
+        "reqcert",
+        "rootpwmoddn",
+        "rundir",
+        "soname",
+        "statefulset"
     ]
 }

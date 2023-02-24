@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "{{ include "squidGuardian.fullname" . }}-test-connection"
+  labels:
+    {{- include "squidGuardian.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  ttlSecondsAfterFinished: 600
+  backoffLimit: 1
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: wget
+          image: busybox
+          env:
+            - name: 'HTTP_PROXY'
+              value: '{{ include "squidGuardian.fullname" . }}:{{ .Values.service.port }}'
+          command: ['wget']
+          args: ['http://detectportal.firefox.com']
