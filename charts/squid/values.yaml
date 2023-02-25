@@ -122,3 +122,8 @@ readinessProbe:
   terminationGracePeriodSeconds:
   # -- (int) Number of seconds after which the probe times out. Defaults to 1 second. Minimum value is 1. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
   timeoutSeconds:
+
+# -- Settings for e2Guardian sub-chart
+e2guardian:
+  # -- Enable e2Guardian
+  enabled: false
