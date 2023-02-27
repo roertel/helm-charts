@@ -37,4 +37,4 @@ dependencies:
   - name: phpldapadmin
     version: 0.1.4-0
     condition: phpldapadmin.enabled
-    repository: https://github.com/roertel/helm-charts/charts/
+    repository: https://github.com/roertel/helm-charts/
