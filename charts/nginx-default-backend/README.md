@@ -1,6 +1,6 @@
 # nginx-default-backend
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v20230215-helm-chart-4.5.2-3-g15ecd2531](https://img.shields.io/badge/AppVersion-v20230215--helm--chart--4.5.2--3--g15ecd2531-informational?style=flat-square)
+![Version: 0.1.1](https://img.shields.io/badge/Version-0.1.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v20230215-helm-chart-4.5.2-3-g15ecd2531](https://img.shields.io/badge/AppVersion-v20230215--helm--chart--4.5.2--3--g15ecd2531-informational?style=flat-square)
 
 A Helm chart to create a custom backend for your Nginx ingress
 
