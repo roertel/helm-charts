@@ -25,7 +25,7 @@ A Helm chart to create a custom backend for your Nginx ingress
 | securityContext.runAsNonRoot | bool | `true` |  |
 | securityContext.runAsUser | int | `1000` |  |
 | service.type | string | `"ClusterIP"` |  |
-| service.port | int | `80` |  |
+| service.port | int | `8080` |  |
 | resources | object | `{}` |  |
 | autoscaling.enabled | bool | `false` |  |
 | autoscaling.minReplicas | int | `1` |  |
