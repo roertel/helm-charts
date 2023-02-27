@@ -27,8 +27,8 @@ if [ "$allownonascii" != "true" ] &&
 	# Note that the use of brackets around a tr range is ok here, (it's
 	# even required, for portability to Solaris 10's /usr/bin/tr), since
 	# the square bracket bytes happen to fall in the designated range.
-	test $(git diff --cached --name-only --diff-filter=A -z $against |
-	  LC_ALL=C tr -d '[ -~]\0' | wc -c) != 0
+	test "$(git diff --cached --name-only --diff-filter=A -z "$against" |
+	  LC_ALL=C tr -d '[ -~]\0' | wc -c)" != 0
 then
 	cat <<\EOF
 Error: Attempt to add a non-ASCII file name.
@@ -45,12 +45,13 @@ EOF
 fi
 
 if which helm-docs>/dev/null; then
-   helm-docs --log-level warning --sort-values-order file
+   helm-docs --log-level error --sort-values-order file --document-dependency-values
 fi
 
-if which helm xargs>/dev/null; then
-   ls charts | xargs -I{} helm lint "charts/{}" --strict --with-subcharts --quiet
+if which helm xargs find > /dev/null; then
+   find ./charts -mindepth 1 -maxdepth 1 -type d -print0 \
+   | xargs --null -I{} helm lint '{}' --strict --with-subcharts --quiet
 fi
 
 # If there are whitespace errors, print the offending file names and fail.
-exec git diff-index --check --cached $against --
+exec git diff-index --check --cached "$against" --

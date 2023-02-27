@@ -65,9 +65,9 @@ tolerations: []
 
 affinity: {}
 
-# -- Define the list of error pages. See 
+# -- Define the list of error pages. See
 # -- https://github.com/kubernetes/ingress-nginx/tree/main/images/custom-error-pages/rootfs/www
-# -- for examples. 
+# -- for examples.
 errorPages: {}
 
 
