@@ -4,6 +4,12 @@
 
 A Helm chart to create a custom backend for your Nginx ingress
 
+## Maintainers
+
+| Name | Email | Url |
+| ---- | ------ | --- |
+| roertel | <roertel@users.noreply.github.com> |  |
+
 ## Values
 
 | Key | Type | Default | Description |
@@ -34,7 +40,7 @@ A Helm chart to create a custom backend for your Nginx ingress
 | nodeSelector | object | `{}` |  |
 | tolerations | list | `[]` |  |
 | affinity | object | `{}` |  |
-| errorPages | object | `{}` | for examples.  |
+| errorPages | object | `{}` | for examples. |
 | readinessProbe.enabled | bool | `true` | Enable the probe |
 | livenessProbe.enabled | bool | `true` | Enable the probe |
 
