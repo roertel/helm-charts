@@ -4,6 +4,10 @@ description: A Helm chart to create a custom backend for your Nginx ingress
 icon: https://docs.nginx.com/nginx-ingress-controller/images/icons/NGINX-Ingress-Controller-product-icon.svg
 type: application
 
+maintainers:
+  - name: roertel
+    email: roertel@users.noreply.github.com
+
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
