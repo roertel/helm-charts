@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "e2guardian.fullname" . }}
+  labels:
+    {{- include "e2guardian.labels" . | nindent 4 }}
+data:
+  e2guardian.conf: |-
+    {{- if or .Values.config .Values.rawConfig }}
+      {{- if .Values.config }}
+        {{- print "# Values from helm configuration." | nindent 4 }}
+        {{- range .Values.config }}
+          {{- range $name, $value := . }}
+            {{- print $name " = " $value | nindent 4 }}
+          {{- end }}
+        {{- end }}
+      {{- end }}
+
+      {{- if .Values.rawConfig }}
+        {{- print "# Values from helm raw configuration." | nindent 4 }}
+        {{- .Values.rawConfig | nindent 4 }}
+      {{- end }}
+
+    {{- else }}
+      {{- print "# Values from default (helm) configuration." | nindent 4 }}
+      {{- include "e2guardian.conf" . | nindent 4 }}
+    {{- end }}
+
+    {{- if .Values.extraConfig }}
+      {{- print "# Values from helm extra configuration." | nindent 4 }}
+      {{- range .Values.extraConfig }}
+        {{- range $name, $value := . }}
+          {{- print $name " = " $value | nindent 4 }}
+        {{- end }}
+      {{- end }}
+    {{- end }}
+
+    {{- if .Values.rawExtraConfig }}
+      {{- print "# Values from helm raw extra configuration." | nindent 4 }}
+      {{- .Values.rawExtraConfig | nindent 4 }}
+    {{- end }}

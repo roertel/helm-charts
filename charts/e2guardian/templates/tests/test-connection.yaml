@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "{{ include "e2guardian.fullname" . }}-test-connection"
+  labels:
+    {{- include "e2guardian.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  ttlSecondsAfterFinished: 600
+  backoffLimit: 1
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: wget
+          image: busybox
+          env:
+            - name: 'HTTP_PROXY'
+              value: '{{ include "e2guardian.fullname" . }}:{{ .Values.service.port }}'
+          command: ['wget']
+          args: ['-qO-', 'http://detectportal.firefox.com', ]

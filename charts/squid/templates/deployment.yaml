@@ -1,0 +1,96 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "squidGuardian.fullname" . }}
+  labels: {{ include "squidGuardian.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels: {{ include "squidGuardian.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations: {{ toYaml . | nindent 8 }}
+      {{- end }}
+      labels: {{ include "squidGuardian.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets: {{ toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "squidGuardian.serviceAccountName" . }}
+      securityContext: {{ toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext: {{ toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            {{- range $name, $value := .Values.extraEnv }}
+            - name: {{ $name }}
+              value:  {{ $value }}
+            {{- end }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          volumeMounts:
+            {{- if .Values.extraConfiguration }}
+            - name: squid-conf
+              mountPath: /etc/squid/squid.conf
+              subPath: squid.conf
+            {{- end }}
+            {{- if .Values.extraConfiguration }}
+            - name: squid-conf-d
+              mountPath: /etc/squid/conf.d/
+            {{- end }}
+          {{- if .Values.livenessProbe.enabled }}
+          livenessProbe:
+            {{- range $key, $value := omit .Values.livenessProbe "enabled" }}
+            {{- if $value }}
+            $key: $value
+            {{- end }}
+            {{- end }}
+            tcpSocket:
+              port: http
+          {{- end }}
+          {{- if .Values.readinessProbe.enabled }}
+          readinessProbe:
+            {{- range $key, $value := omit .Values.readinessProbe "enabled" }}
+            {{- if $value }}
+            $key: $value
+            {{- end }}
+            {{- end }}
+            tcpSocket:
+              port: http
+          {{- end }}
+          resources: {{ toYaml .Values.resources | nindent 12 }}
+      volumes:
+      {{- if .Values.extraConfiguration }}
+      - name: squid-conf-d
+        configMap:
+          name: {{ include "squidGuardian.fullname" . }}
+          items:
+          {{- range $key := .Values.extraConfiguration }}
+          - key: {{ $key }}
+            path: {{ $key }}
+          {{- end }}
+      {{- end }}
+      {{- if .Values.configuration }}
+      - name: squid-conf
+        configMap:
+          name: {{ include "squidGuardian.fullname" . }}
+          items:
+          - key: squid.conf
+            path: squid.conf
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector: {{ toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity: {{ toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations: {{ toYaml . | nindent 8 }}
+      {{- end }}

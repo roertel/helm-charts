@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "squidGuardian.fullname" . }}-config
+  labels:
+    {{- include "squidGuardian.labels" . | nindent 4 }}
+data:
+  {{- if .Values.configuration }}
+  squid.conf: |-
+  {{ .Values.configuration | nindent 2 }}
+  {{- end }}
+  {{- .Values.extraConfiguration | toYaml | nindent 2 }}
