@@ -6,6 +6,7 @@ metadata:
   labels:
     {{- include "minecraft-overviewer.labels" . | nindent 4 }}
 data:
+  config.py: |-
   {{- range $key, $val := .Values.config.files }}
   {{ $key }}: |
     {{- $val | nindent 4 }}
