@@ -1,6 +1,6 @@
 # minecraft-overviewer
 
-![Version: 0.17.0-1](https://img.shields.io/badge/Version-0.17.0--1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.17.0](https://img.shields.io/badge/AppVersion-0.17.0-informational?style=flat-square)
+![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: latest](https://img.shields.io/badge/AppVersion-latest-informational?style=flat-square)
 
 A Helm chart for Minecraft Overviewer
 
@@ -27,6 +27,7 @@ A Helm chart for Minecraft Overviewer
 | regenerationSchedule | string | `"@daily"` | @daily, @midnight or @hourly. |
 | config | string | `nil` | Configuration override. Replaces the default configuration file. |
 | extraConfig | string | `nil` | previously-specified configuration. |
+| extraEnv | object | `{}` | See https://github.com/mide/minecraft-overviewer for options. |
 | imagePullSecrets | list | `[]` |  |
 | nameOverride | string | `""` |  |
 | fullnameOverride | string | `""` |  |
@@ -34,8 +35,10 @@ A Helm chart for Minecraft Overviewer
 | serviceAccount.annotations | object | `{}` |  |
 | serviceAccount.name | string | `""` |  |
 | podAnnotations | object | `{}` |  |
-| podSecurityContext.fsGroup | int | `2000` |  |
-| securityContext | object | `{}` |  |
+| podSecurityContext | object | `{}` |  |
+| securityContext.capabilities.drop[0] | string | `"ALL"` |  |
+| securityContext.runAsNonRoot | bool | `true` |  |
+| securityContext.runAsUser | int | `1000` |  |
 | service.type | string | `"ClusterIP"` |  |
 | service.port | int | `80` |  |
 | ingress.enabled | bool | `false` |  |
