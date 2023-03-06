@@ -1,4 +1,3 @@
-{{- if .Values.config }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -7,8 +6,16 @@ metadata:
     {{- include "minecraft-overviewer.labels" . | nindent 4 }}
 data:
   config.py: |-
-  {{- range $key, $val := .Values.config.files }}
-  {{ $key }}: |
-    {{- $val | nindent 4 }}
-  {{- end }}
-{{- end }}
+    {{- if .Values.config }}
+      {{- print "# Values from user-specified." | nindent 4 }}
+      {{- .Values.config | nindent 4 }}
+      
+    {{- else }}
+      {{- print "# Values from default (helm) configuration." | nindent 4 }}
+      {{- include "config.py" . | nindent 4 }}
+    {{- end }}
+
+    {{- if .Values.extraConfig }}
+      {{- print "# Values from user-specified extra configuration." | nindent 4 }}
+      {{- .Values.extraConfig | nindent 4 }}
+    {{- end }}

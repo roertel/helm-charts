@@ -2,9 +2,11 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+# -- (int) Number of replicas to start. It only makes sense to have 1.
 replicaCount: 1
 
-minecraftVersion: "1.17"
+# -- (string) Minecraft version for game save file.
+minecraftVersion: "1.19.3"
 
 image:
   renderer:
@@ -30,7 +32,21 @@ image:
 # CRON_TZ=UTC * * * * *
 #
 # Or @yearly, @annually, @monthly, @weekly, @daily, @midnight or @hourly
+# -- (string) Regeneration schedule. Use a cron-compatible schedule or consider
+# -- @daily, @midnight or @hourly.
 regenerationSchedule: "@daily"
+
+# -- (string) Configuration override. Replaces the default configuration file.
+config:
+
+# -- (string) Extra configuration settings to append to the default or
+# -- previously-specified configuration.
+extraConfig:
+
+# -- Extra environment variables to pass to Overviewer.
+# -- See https://github.com/mide/minecraft-overviewer for options.
+extraEnv: {}
+  # RENDER_POI: false
 
 imagePullSecrets: []
 nameOverride: ""
@@ -47,10 +63,16 @@ serviceAccount:
 
 podAnnotations: {}
 
-podSecurityContext:
-  fsGroup: 2000
+podSecurityContext: {}
 
-securityContext: {}
+securityContext:
+  capabilities:
+    drop:
+    - ALL
+  # readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 1000
+  # fsGroup: 2000
 
 service:
   type: ClusterIP
@@ -103,30 +125,5 @@ world: {}  # Name of volume from minecraft server
 
 map:  # where to store generated map
   persistent: false
-  storageClassName: ""
+  storageClassName:
   size: 1Gi
-
-config:
-  files:
-    config.py: |-
-      worlds["World"] = "/srv/world"
-      outputdir = "/tmp/overviewer"
-      texturepath = "/srv/minecraft_server.1.17.1.jar"
-      renders["day"] = {
-              "world": "World",
-              "title": "Daytime",
-              "rendermode": "smooth_lighting",
-              "dimension": "overworld"
-      }
-      renders["night"] = {
-              "world": "World",
-              "title": "Nighttime",
-              "rendermode": "smooth_night",
-              "dimension": "overworld"
-      }
-      renders["nether"] = {
-              "world": "World",
-              "title": "Nether",
-              "rendermode": "nether_smooth_lighting",
-              "dimension": "nether"
-      }
