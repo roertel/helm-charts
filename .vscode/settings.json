@@ -1,5 +1,6 @@
 {
     "cSpell.words": [
+        "piraces"
         "binddn",
         "cacertfile",
         "certmanager",
@@ -9,12 +10,16 @@
         "initdb",
         "libc",
         "mariadbd",
+        "mide",
         "netgroup",
         "nsswitch",
+        "outputdir",
+        "overworld",
         "reqcert",
         "rootpwmoddn",
         "rundir",
         "soname",
-        "statefulset"
+        "statefulset",
+        "texturepath"
     ]
 }

@@ -15,5 +15,5 @@ spec:
         - name: wget
           image: busybox
           command: ['wget']
-          args: ['{{ include "minecraft-overviewer.fullname" . }}:{{ .Values.service.port }}']
+          args: ['-S', '-O/dev/null', 'http://{{ include "minecraft-overviewer.fullname" . }}:{{ .Values.service.port }}']
       restartPolicy: Never
