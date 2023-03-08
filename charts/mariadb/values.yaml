@@ -1,0 +1,184 @@
+# Default values for mariadb.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# -- Number of replicas. Only 1 is currently supported.
+replicaCount: 1
+
+image:
+  # -- Image to use for deploying.
+  repository: mariadb
+  pullPolicy: IfNotPresent
+  # -- Override the image tag whose default is the chart appVersion.
+  tag:
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+podAnnotations: {}
+
+podSecurityContext:
+  fsGroup: 999
+
+securityContext:
+  capabilities:
+    drop:
+    - ALL
+  # -- Some temp files are required. You can mount a temp to emptyDir or RW root
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 999
+  runAsGroup: 999
+
+serviceAccount:
+  # -- Specifies whether a service account should be created
+  create: true
+  # -- Annotations to add to the service account
+  annotations: {}
+  # -- The name of the service account to use.
+  # -- If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+service:
+  # -- Service type. Change this to expose outside of K8s
+  type: ClusterIP
+  # -- Port to listen on
+  port: 3306
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 1Gi
+
+autoscaling:
+  # -- Not supported at this time.
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 1
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+tls:
+  # -- Enable TLS.
+  enabled: false
+  # -- Require clients to connect with TLS?
+  required: true
+  # -- Allowed TLS versions (TLSv1.2,TLSv1.3)
+  versions:
+  # -- TLS source: certificate or secret
+  type: certificate  # or secret
+  # -- Mandatory and created outside of Helm if `type` is `secret`. Must have
+  # -- key, cert & chain values.
+  secret: secret-name
+  # -- Mandatory if `type` is `certificate`.
+  certificate:
+    issuerRef:
+      # -- This is most likely not correct for your setup.
+      name: default
+      # kind: Issuer  # ...or ClusterIssuer (not set defaults to Issuer)
+      # group:
+    # -- Set to the FQDN of your server
+    commonName: example.com
+    optional: {}  # Optional Certificate fields
+      # dnsNames: # (optional)
+      # - example.com
+      # ipAddresses:  # (optional)
+      # - 127.0.0.1
+      # subject: #(optional)
+      # duration: 24h #(optional)
+      # renewBefore: 8h #(optional)
+      # uris:   # (optional)
+      # emailAddresses:   # (optional)
+      # secretTemplate:   # (optional)
+      # keystores:   # (optional)
+  image:
+    # -- Image to use for the TLS refresher sidecar
+    repository: ghcr.io/roertel/docker-mariadb-tls-sidecar
+    # -- Image pull policy
+    pullPolicy: IfNotPresent
+    # -- Image tag
+    tag: 1.0.0
+  securityContext:
+    capabilities:
+      drop:
+      - ALL
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    runAsUser: 999
+    runAsGroup: 999
+
+persistence:
+  # -- Enable the database to persist across restarts.
+  enabled: false
+  # -- Database size.
+  size: 1Gi
+  # -- Storage Class for the persistent volume
+  storageClass: local-path
+
+startupProbe:
+  # -- Enable the startup probe
+  enabled: true
+
+readinessProbe:
+  # -- Enable the readiness probe
+  enabled: true
+
+livenessProbe:
+  # -- Enable the liveness probe
+  enabled: true
+
+ldap:
+  # -- Enable LDAP authentication to MariaDB
+  enabled: false
+  image:
+    # -- Image to use for the LDAP sidecar
+    repository: ghcr.io/roertel/docker-nslcd-sidecar
+    # -- Image pull policy
+    pullPolicy: IfNotPresent
+    # -- Image tag
+    tag: v1.0.0
+  securityContext:
+    capabilities:
+      drop:
+      - ALL
+    # -- Needs to be false if templates are in use
+    readOnlyRootFilesystem: false
+    runAsNonRoot: true
+    runAsUser: 999
+    runAsGroup: 999
+
+  # -- LDAP URI or comma-delimited URI list
+  uri: "ldaps://ldap.example.com/"
+  # -- LDAP search base in DC= format
+  base: "dc=example,dc=com"
+  # -- LDAP bind user
+  bindDn: "cn=bind,ou=system,dc=example,dc=com"
+  # -- LDAP bind password
+  bindPw: "SecretPasswordChangeMe"
+  # -- Extra environment variables to set.
+  extraEnv: {}
+  # -- Extra arguments to pass to nslcd
+  extraArgs: []
+
+mysqld:
+  # -- Administrative (root) password or one will be generated for you
+  rootPassword:
+  # -- Extra environment variables to set.
+  # -- See https://github.com/docker-library/docs/tree/master/mariadb#environment-variables
+  extraEnv: {}
+  # -- Extra arguments to pass to mysqld
+  extraArgs: []

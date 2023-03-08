@@ -10,7 +10,7 @@ image:
   repository: roertel/openldap
   pullPolicy: IfNotPresent
   # -- Override the image tag whose default is the chart appVersion.
-  tag: "latest"
+  tag:
 
 imagePullSecrets: []
 nameOverride: ""
@@ -101,7 +101,7 @@ tls:
   enabled: false
   # -- TLS source: certificate or secret
   type: certificate  # or secret
-  # -- Mandatory and created outside of Helm if `type` is `secret`. Muse have key, cert & chain values.
+  # -- Mandatory and created outside of Helm if `type` is `secret`. Must have key, cert & chain values.
   secret: secret-name
   # -- Mandatory if `type` is `certificate`.
   certificate:
@@ -135,6 +135,7 @@ persistence:
 
 # -- LDAP Domain in FQDN format. For example, `example.com` will convert to `dc=example,dc=com`.
 ldapDomain: example.com
+ldapOrganization: "Example Organization"
 
 slapd:
   # debugLevel: 1  # Must be integer >=0 or else slapd will background itself

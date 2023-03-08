@@ -1,6 +1,0 @@
-dependencies:
-- name: phpldapadmin
-  repository: ""
-  version: 0.1.3
-digest: sha256:83124102990e6e7cd09f1ee0e7a9ca0bbaa3547abd4bc918c42f76e8e2499ad9
-generated: "2022-09-15T11:32:41.605820946-05:00"

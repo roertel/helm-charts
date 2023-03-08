@@ -1,6 +1,6 @@
 # minecraft-overviewer
 
-![Version: 0.17.0-0](https://img.shields.io/badge/Version-0.17.0--0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.17.0](https://img.shields.io/badge/AppVersion-0.17.0-informational?style=flat-square)
+![Version: 0.17.1-0](https://img.shields.io/badge/Version-0.17.1--0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: latest](https://img.shields.io/badge/AppVersion-latest-informational?style=flat-square)
 
 A Helm chart for Minecraft Overviewer
 
@@ -16,46 +16,50 @@ A Helm chart for Minecraft Overviewer
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| affinity | object | `{}` |  |
-| autoscaling.enabled | bool | `false` |  |
-| autoscaling.maxReplicas | int | `100` |  |
-| autoscaling.minReplicas | int | `1` |  |
-| autoscaling.targetCPUUtilizationPercentage | int | `80` |  |
-| config.files."config.py" | string | `"worlds[\"World\"] = \"/srv/world\"\noutputdir = \"/tmp/overviewer\"\ntexturepath = \"/srv/minecraft_server.1.17.1.jar\"\nrenders[\"day\"] = {\n        \"world\": \"World\",\n        \"title\": \"Daytime\",\n        \"rendermode\": \"smooth_lighting\",\n        \"dimension\": \"overworld\"\n}\nrenders[\"night\"] = {\n        \"world\": \"World\",\n        \"title\": \"Nighttime\",\n        \"rendermode\": \"smooth_night\",\n        \"dimension\": \"overworld\"\n}\nrenders[\"nether\"] = {\n        \"world\": \"World\",\n        \"title\": \"Nether\",\n        \"rendermode\": \"nether_smooth_lighting\",\n        \"dimension\": \"nether\"\n}\n"` |  |
-| fullnameOverride | string | `""` |  |
-| image.display.pullPolicy | string | `"IfNotPresent"` |  |
-| image.display.repository | string | `"nginx"` |  |
-| image.display.tag | string | `"stable"` |  |
-| image.renderer.pullPolicy | string | `"IfNotPresent"` |  |
+| replicaCount | int | `1` | Number of replicas to start. It only makes sense to have 1. |
+| minecraftVersion | string | `"1.19.3"` | Minecraft version for game save file. |
 | image.renderer.repository | string | `"mide/minecraft-overviewer"` |  |
+| image.renderer.pullPolicy | string | `"IfNotPresent"` |  |
 | image.renderer.tag | string | `"latest"` |  |
+| image.display.repository | string | `"nginx"` |  |
+| image.display.pullPolicy | string | `"IfNotPresent"` |  |
+| image.display.tag | string | `"stable"` |  |
+| regenerationSchedule | string | `"@daily"` | @daily, @midnight or @hourly. |
+| config | string | `nil` | Configuration override. Replaces the default configuration file. |
+| extraConfig | string | `nil` | previously-specified configuration. |
+| extraEnv | object | `{}` | See https://github.com/mide/minecraft-overviewer for options. |
 | imagePullSecrets | list | `[]` |  |
-| ingress.annotations | object | `{}` |  |
+| nameOverride | string | `""` |  |
+| fullnameOverride | string | `""` |  |
+| serviceAccount.create | bool | `true` |  |
+| serviceAccount.annotations | object | `{}` |  |
+| serviceAccount.name | string | `""` |  |
+| podAnnotations | object | `{}` |  |
+| podSecurityContext | object | `{}` |  |
+| securityContext.capabilities.drop[0] | string | `"ALL"` |  |
+| securityContext.runAsNonRoot | bool | `true` |  |
+| securityContext.runAsUser | int | `1000` |  |
+| service.type | string | `"ClusterIP"` |  |
+| service.port | int | `80` |  |
 | ingress.enabled | bool | `false` |  |
+| ingress.annotations | object | `{}` |  |
 | ingress.hosts[0].host | string | `"minecraft-overviewer.local"` |  |
+| ingress.hosts[0].paths[0].path | string | `"/"` |  |
 | ingress.hosts[0].paths[0].backend.serviceName | string | `"minecraft-overviewer.local"` |  |
 | ingress.hosts[0].paths[0].backend.servicePort | int | `80` |  |
-| ingress.hosts[0].paths[0].path | string | `"/"` |  |
 | ingress.tls | list | `[]` |  |
-| map.persistent | bool | `false` |  |
-| map.size | string | `"1Gi"` |  |
-| map.storageClassName | string | `""` |  |
-| minecraftVersion | string | `"1.17"` |  |
-| nameOverride | string | `""` |  |
-| nodeSelector | object | `{}` |  |
-| podAnnotations | object | `{}` |  |
-| podSecurityContext.fsGroup | int | `2000` |  |
-| regenerationSchedule | string | `"@daily"` |  |
-| replicaCount | int | `1` |  |
 | resources | object | `{}` |  |
-| securityContext | object | `{}` |  |
-| service.port | int | `80` |  |
-| service.type | string | `"ClusterIP"` |  |
-| serviceAccount.annotations | object | `{}` |  |
-| serviceAccount.create | bool | `true` |  |
-| serviceAccount.name | string | `""` |  |
+| autoscaling.enabled | bool | `false` |  |
+| autoscaling.minReplicas | int | `1` |  |
+| autoscaling.maxReplicas | int | `100` |  |
+| autoscaling.targetCPUUtilizationPercentage | int | `80` |  |
+| nodeSelector | object | `{}` |  |
 | tolerations | list | `[]` |  |
+| affinity | object | `{}` |  |
 | world | object | `{}` |  |
+| map.persistent | bool | `false` |  |
+| map.storageClassName | string | `nil` |  |
+| map.size | string | `"1Gi"` |  |
 
 ----------------------------------------------
 Autogenerated from chart metadata using [helm-docs v1.11.0](https://github.com/norwoodj/helm-docs/releases/v1.11.0)
