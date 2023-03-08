@@ -1,6 +1,6 @@
 # openldap
 
-![Version: 2.4.58-3](https://img.shields.io/badge/Version-2.4.58--3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.1-1](https://img.shields.io/badge/AppVersion-1.0.1--1-informational?style=flat-square)
+![Version: 2.4.58-4](https://img.shields.io/badge/Version-2.4.58--4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.1-1](https://img.shields.io/badge/AppVersion-1.0.1--1-informational?style=flat-square)
 
 A Helm chart for OpenLDAP
 
@@ -31,8 +31,11 @@ A Helm chart for OpenLDAP
 | fullnameOverride | string | `""` |  |
 | podAnnotations | object | `{}` |  |
 | podSecurityContext | object | `{}` |  |
+| securityContext.capabilities.drop[0] | string | `"ALL"` |  |
+| securityContext.readOnlyRootFilesystem | bool | `true` |  |
 | securityContext.runAsNonRoot | bool | `true` |  |
-| securityContext.runAsUser | int | `101` |  |
+| securityContext.runAsUser | int | `100000` |  |
+| securityContext.runAsGroup | int | `10000` |  |
 | serviceAccount.create | bool | `false` | Specifies whether a service account should be created |
 | serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
 | serviceAccount.name | string | `""` | If not set and create is true, a name is generated using the fullname template |

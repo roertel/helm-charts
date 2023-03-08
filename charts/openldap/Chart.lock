@@ -1,0 +1,6 @@
+dependencies:
+- name: phpldapadmin
+  repository: https://roertel.github.io/helm-charts/
+  version: 0.1.4-0
+digest: sha256:7a399f7a96b4c85790f8c732655df3693a86798c32e6095c3e7e0f2b3f441681
+generated: "2023-03-08T21:35:33.232504896Z"

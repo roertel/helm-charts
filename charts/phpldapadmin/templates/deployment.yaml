@@ -52,12 +52,6 @@ spec:
             httpGet:
               path: /
               port: http
-          livenessProbe:
-            initialDelaySeconds: 10
-            periodSeconds: 600
-            httpGet:
-              path: /
-              port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

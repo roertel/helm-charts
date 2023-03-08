@@ -2,10 +2,10 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: "{{ include "soft-serve.fullname" . }}-test-connection"
-  labels:
-    {{- include "soft-serve.labels" . | nindent 4 }}
+  labels: {{ include "soft-serve.labels" . | nindent 4 }}
   annotations:
     "helm.sh/hook": test
+    kube-score/ignore: container-image-tag
 spec:
   ttlSecondsAfterFinished: 600
   backoffLimit: 1
@@ -21,4 +21,5 @@ spec:
             - 'StrictHostKeyChecking=accept-new'
             - '{{ include "soft-serve.fullname" . }}'
             - 'help'
+          securityContext: {{ toYaml .Values.securityContext | nindent 12 }}
       restartPolicy: Never

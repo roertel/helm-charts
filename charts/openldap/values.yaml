@@ -22,12 +22,13 @@ podSecurityContext: {}
   # fsGroup: 2000
 
 securityContext:
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
+  capabilities:
+    drop:
+    - ALL
+  readOnlyRootFilesystem: true
   runAsNonRoot: true
-  runAsUser: 101
+  runAsUser: 100000
+  runAsGroup: 10000
 
 serviceAccount:
   # -- Specifies whether a service account should be created

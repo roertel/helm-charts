@@ -6,6 +6,7 @@ metadata:
     {{- include "openldap.labels" . | nindent 4 }}
   annotations:
     "helm.sh/hook": test
+    kube-score/ignore: container-image-tag
 spec:
   ttlSecondsAfterFinished: 600
   backoffLimit: 1
@@ -26,3 +27,5 @@ spec:
           {{ .scheme }}://{{ $fullname }}:{{ .port }}/,
           {{- end -}}
           {{- end -}}"
+        securityContext: {{ toYaml .Values.securityContext | nindent 12 }}
+

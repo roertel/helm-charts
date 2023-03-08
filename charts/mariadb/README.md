@@ -1,6 +1,6 @@
 # mariadb
 
-![Version: 10.10.3](https://img.shields.io/badge/Version-10.10.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 10.10.2](https://img.shields.io/badge/AppVersion-10.10.2-informational?style=flat-square)
+![Version: 10.10.4-0](https://img.shields.io/badge/Version-10.10.4--0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 10.10.2](https://img.shields.io/badge/AppVersion-10.10.2-informational?style=flat-square)
 
 A Helm chart for MariaDB
 
@@ -24,12 +24,12 @@ A Helm chart for MariaDB
 | nameOverride | string | `""` |  |
 | fullnameOverride | string | `""` |  |
 | podAnnotations | object | `{}` |  |
-| podSecurityContext.fsGroup | int | `999` |  |
+| podSecurityContext.fsGroup | int | `10000` |  |
 | securityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | securityContext.readOnlyRootFilesystem | bool | `true` | Some temp files are required. You can mount a temp to emptyDir or RW root |
 | securityContext.runAsNonRoot | bool | `true` |  |
-| securityContext.runAsUser | int | `999` |  |
-| securityContext.runAsGroup | int | `999` |  |
+| securityContext.runAsUser | int | `10000` |  |
+| securityContext.runAsGroup | int | `10000` |  |
 | serviceAccount.create | bool | `true` | Specifies whether a service account should be created |
 | serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
 | serviceAccount.name | string | `""` | If not set and create is true, a name is generated using the fullname template |
@@ -58,14 +58,13 @@ A Helm chart for MariaDB
 | tls.securityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | tls.securityContext.readOnlyRootFilesystem | bool | `true` |  |
 | tls.securityContext.runAsNonRoot | bool | `true` |  |
-| tls.securityContext.runAsUser | int | `999` |  |
-| tls.securityContext.runAsGroup | int | `999` |  |
+| tls.securityContext.runAsUser | int | `10000` |  |
+| tls.securityContext.runAsGroup | int | `10000` |  |
 | persistence.enabled | bool | `false` | Enable the database to persist across restarts. |
 | persistence.size | string | `"1Gi"` | Database size. |
 | persistence.storageClass | string | `"local-path"` | Storage Class for the persistent volume |
 | startupProbe.enabled | bool | `true` | Enable the startup probe |
 | readinessProbe.enabled | bool | `true` | Enable the readiness probe |
-| livenessProbe.enabled | bool | `true` | Enable the liveness probe |
 | ldap.enabled | bool | `false` | Enable LDAP authentication to MariaDB |
 | ldap.image.repository | string | `"ghcr.io/roertel/docker-nslcd-sidecar"` | Image to use for the LDAP sidecar |
 | ldap.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy |

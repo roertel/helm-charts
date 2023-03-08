@@ -36,16 +36,6 @@ readinessProbe:
     - -c
     - "mysqladmin ping -uroot -p\"$(cat $MYSQL_ROOT_PASSWORD_FILE)\""
 {{- end }}
-{{- if .Values.livenessProbe.enabled }}
-livenessProbe:
-  initialDelaySeconds: 30
-  periodSeconds: 600
-  exec:
-    command:
-    - /usr/bin/bash
-    - -c
-    - "mysqladmin ping -uroot -p\"$(cat $MYSQL_ROOT_PASSWORD_FILE)\""
-{{- end }}
 resources: {{ toYaml .Values.resources | nindent 2 }}
 volumeMounts:
 - name: {{ include "mariadb.fullname" . }}-run-db
