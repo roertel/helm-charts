@@ -1,28 +1,42 @@
 makefile_dir := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 root_branch != git -C "$(makefile_dir)" symbolic-ref refs/remotes/origin/HEAD | sed 's@^.*/@@'
+changed_charts != find '$(makefile_dir)/charts' -mindepth 1 -maxdepth 1 -execdir sh -c "git diff --quiet refs/remotes/origin/HEAD . || echo 'charts/{}'" \;
+changed_charts := $(subst /./,/,$(changed_charts))
 
-lint:
-#	Regenerate docs
-	helm-docs --log-level error --sort-values-order file --document-dependency-values
+comma := ,
+null := 
+space := $(null) #
 
-# 	Lint chart
-	docker run --rm --tty --volume $(makefile_dir):/data --workdir=/data \
-		quay.io/helmpack/chart-testing ct lint \
-		--config /data/.github/ct.yaml --target-branch '$(root_branch)'
-
-#	Generate and score manifests
-	docker run --rm --tty --volume $(makefile_dir):/project --entrypoint /bin/sh \
-		zegl/kube-score -c "find /project/charts \
-		-mindepth 1 -maxdepth 1 -type d -exec helm template '{}' --generate-name \; \
-		| kube-score score --ignore-test container-resources \
-		--ignore-test container-image-pull-policy,pod-networkpolicy \
-		--ignore-test container-ephemeral-storage-request-and-limit -"
-
-#	Scan code repository for vulnerabilities
-	docker run --rm --tty --volume $(makefile_dir):/src \
-		docker.io/aquasec/trivy --config /src/.github/trivy.yaml fs /src
+.PHONY: all clean distclean $(changed_charts)
+all: $(changed_charts)
 
 clean:
 	
 distclean:
-	docker rmi quay.io/helmpack/chart-testing docker.io/zegl/kube-score
+	docker rmi \
+		quay.io/helmpack/chart-testing \
+		docker.io/zegl/kube-score \
+		docker.io/ibmcom/helm
+
+$(changed_charts):
+	@echo -e '\e[1;33m*\n* Regenerating README.md for $@\n*\e[0m'
+	helm-docs --document-dependency-values --log-level error \
+		--sort-values-order file --chart-to-generate '$(makefile_dir)$@' 
+
+	@echo -e '\e[1;33m*\n* Linting $@\n*\e[0m'
+	docker run --rm --tty --volume $(makefile_dir):/repo --workdir /repo \
+		--env "TERM=${TERM}" --env "COLORTERM=${COLORTERM}" \
+		quay.io/helmpack/chart-testing ct lint --config .github/ct.yaml \
+		--target-branch '$(root_branch)' --check-version-increment --charts '$@'
+
+	@echo -e '\e[1;33m*\n* Generate and score manifests for $@\n*\e[0m'
+	docker run --rm --volume $(makefile_dir)$@:/chart --env "TERM=${TERM}" \
+		--env "COLORTERM=${COLORTERM}" --tty --entrypoint /bin/sh \
+		docker.io/zegl/kube-score -c 'helm template /chart --generate-name |\
+		kube-score score --ignore-test container-resources -'
+
+scan:
+	@echo Scan changed charts for vulnerabilities
+	docker run --rm --tty --volume $(makefile_dir):/src \
+		--env "TERM=${TERM}" --env "COLORTERM=${COLORTERM}" \
+		docker.io/aquasec/trivy --config /src/.github/trivy.yaml fs /src
