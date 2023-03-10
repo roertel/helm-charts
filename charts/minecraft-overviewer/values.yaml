@@ -62,7 +62,7 @@ serviceAccount:
   name: ""
 
 podAnnotations:
-  kube-score/ignore: container-image-tag,container-image-pull-policy
+  kube-score/ignore: container-image-tag,container-image-pull-policy,container-security-context-readonlyrootfilesystem
 
 podSecurityContext: {}
 
@@ -70,7 +70,7 @@ securityContext:
   capabilities:
     drop:
     - ALL
-  # readOnlyRootFilesystem: true
+  readOnlyRootFilesystem: true
   runAsNonRoot: true
   runAsUser: 10000
   runAsGroup: 10000

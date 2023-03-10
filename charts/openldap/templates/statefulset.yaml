@@ -57,12 +57,6 @@ spec:
               protocol: {{ $value.protocol | default "TCP" }}
             {{- end }}
             {{- end }}
-          startupProbe:
-            failureThreshold: 30
-            periodSeconds: 10
-            exec:
-              command:
-              - /healthz
           readinessProbe:
             initialDelaySeconds: 10
             periodSeconds: 60

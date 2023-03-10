@@ -28,7 +28,7 @@ securityContext:
   readOnlyRootFilesystem: true
   runAsNonRoot: true
   runAsUser: 100000
-  runAsGroup: 10000
+  runAsGroup: 100000
 
 serviceAccount:
   # -- Specifies whether a service account should be created

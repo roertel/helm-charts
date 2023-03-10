@@ -129,10 +129,6 @@ persistence:
   # -- Storage Class for the persistent volume
   storageClass: local-path
 
-startupProbe:
-  # -- Enable the startup probe
-  enabled: true
-
 readinessProbe:
   # -- Enable the readiness probe
   enabled: true

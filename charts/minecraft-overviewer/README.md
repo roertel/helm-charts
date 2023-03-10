@@ -33,7 +33,7 @@ A Helm chart for Minecraft Overviewer
 | serviceAccount.create | bool | `true` |  |
 | serviceAccount.annotations | object | `{}` |  |
 | serviceAccount.name | string | `""` |  |
-| podAnnotations.kube-score/ignore | string | `"container-image-tag,container-image-pull-policy"` |  |
+| podAnnotations.kube-score/ignore | string | `"container-image-tag,container-image-pull-policy,container-security-context-readonlyrootfilesystem"` |  |
 | podSecurityContext | object | `{}` |  |
 | securityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | securityContext.runAsNonRoot | bool | `true` |  |

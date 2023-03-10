@@ -26,7 +26,8 @@ serviceAccount:
   # -- If not set and create is true, a name is generated using the fullname template
   name: ""
 
-podAnnotations: {}
+podAnnotations:
+  kube-score/ignore: container-security-context-readonlyrootfilesystem,container-security-context-user-group-id
 
 podSecurityContext:
   allowPrivilegeEscalation: false

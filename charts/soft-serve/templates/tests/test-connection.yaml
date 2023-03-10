@@ -11,6 +11,7 @@ spec:
   backoffLimit: 1
   template:
     spec:
+      restartPolicy: Never
       containers:
         - name: test
           image: kroniak/ssh-client
@@ -21,5 +22,9 @@ spec:
             - 'StrictHostKeyChecking=accept-new'
             - '{{ include "soft-serve.fullname" . }}'
             - 'help'
-          securityContext: {{ toYaml .Values.securityContext | nindent 12 }}
-      restartPolicy: Never
+          securityContext:   
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            runAsUser: 10000
+            runAsGroup: 10000
+            readOnlyRootFilesystem: true

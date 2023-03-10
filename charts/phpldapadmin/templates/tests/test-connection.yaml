@@ -2,8 +2,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: "{{ include "phpldapadmin.fullname" . }}-test-connection"
-  labels:
-    {{- include "phpldapadmin.labels" . | nindent 4 }}
+  labels: {{ include "phpldapadmin.labels" . | nindent 4 }}
   annotations:
     "helm.sh/hook": test
     kube-score/ignore: container-image-tag

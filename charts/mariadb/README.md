@@ -63,7 +63,6 @@ A Helm chart for MariaDB
 | persistence.enabled | bool | `false` | Enable the database to persist across restarts. |
 | persistence.size | string | `"1Gi"` | Database size. |
 | persistence.storageClass | string | `"local-path"` | Storage Class for the persistent volume |
-| startupProbe.enabled | bool | `true` | Enable the startup probe |
 | readinessProbe.enabled | bool | `true` | Enable the readiness probe |
 | ldap.enabled | bool | `false` | Enable LDAP authentication to MariaDB |
 | ldap.image.repository | string | `"ghcr.io/roertel/docker-nslcd-sidecar"` | Image to use for the LDAP sidecar |

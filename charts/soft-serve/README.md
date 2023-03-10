@@ -26,7 +26,7 @@ A Helm chart for CharmCLI soft-serve
 | serviceAccount.create | bool | `true` | Specifies whether a service account should be created |
 | serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
 | serviceAccount.name | string | `""` | If not set and create is true, a name is generated using the fullname template |
-| podAnnotations | object | `{}` |  |
+| podAnnotations.kube-score/ignore | string | `"container-security-context-readonlyrootfilesystem,container-security-context-user-group-id"` |  |
 | podSecurityContext.allowPrivilegeEscalation | bool | `false` |  |
 | podSecurityContext.runAsNonRoot | bool | `true` |  |
 | podSecurityContext.runAsUser | int | `10000` |  |
