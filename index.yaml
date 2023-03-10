@@ -3,6 +3,21 @@ entries:
   mariadb:
   - apiVersion: v2
     appVersion: 10.10.2
+    created: "2023-03-10T18:55:52.240611978Z"
+    description: A Helm chart for MariaDB
+    digest: c10259735dc21265e19cd8a00d86ca09f1866b5b7462c287505d536e3a41984f
+    home: https://github.com/roertel/helm-charts/charts/mariadb
+    icon: https://www.custombespoke.co.uk/images/tools/mariadb.jpg
+    maintainers:
+    - email: roertel@users.noreply.github.com
+      name: roertel
+    name: mariadb
+    type: application
+    urls:
+    - https://roertel.github.io/helm-charts/mariadb-10.10.4-0.tgz
+    version: 10.10.4-0
+  - apiVersion: v2
+    appVersion: 10.10.2
     created: "2023-03-08T17:22:31.168883852Z"
     description: A Helm chart for MariaDB
     digest: 0fddd1466bafd446ab8cb7fccf6b8171951441113f2eddf9330fcb6941b82338
@@ -64,6 +79,21 @@ entries:
   minecraft-overviewer:
   - apiVersion: v2
     appVersion: latest
+    created: "2023-03-10T18:55:52.241810586Z"
+    description: A Helm chart for Minecraft Overviewer
+    digest: 9551b78f6f78c15f0c3a4b90c6c4ff8191fa4a6747e24bb9d472d80a5024bd95
+    home: https://github.com/roertel/helm-charts/charts/minecraft-overviewer
+    icon: https://image.winudf.com/v1/image/bmV0LmFscGF5Lm1jbWFwc19pY29uXzBfNDE1MjhhZWM/icon=170x.png
+    maintainers:
+    - email: roertel@users.noreply.github.com
+      name: roertel
+    name: minecraft-overviewer
+    type: application
+    urls:
+    - https://roertel.github.io/helm-charts/minecraft-overviewer-0.17.1-2.tgz
+    version: 0.17.1-2
+  - apiVersion: v2
+    appVersion: latest
     created: "2023-03-08T17:22:31.169783825Z"
     description: A Helm chart for Minecraft Overviewer
     digest: 96c8fb65b543cb3c3f9a4cd55ac96b67955affb385ae155ef92d565310824980
@@ -120,6 +150,20 @@ entries:
   nginx-default-backend:
   - apiVersion: v2
     appVersion: v20230215-helm-chart-4.5.2-3-g15ecd2531
+    created: "2023-03-10T18:55:52.242584291Z"
+    description: A Helm chart to create a custom backend for your Nginx ingress
+    digest: d9fd13ec5874b8549b3638e40041278f26fa3757b20327a7b1fd319cdec8ec0d
+    icon: https://docs.nginx.com/nginx-ingress-controller/images/icons/NGINX-Ingress-Controller-product-icon.svg
+    maintainers:
+    - email: roertel@users.noreply.github.com
+      name: roertel
+    name: nginx-default-backend
+    type: application
+    urls:
+    - https://roertel.github.io/helm-charts/nginx-default-backend-0.1.2-0.tgz
+    version: 0.1.2-0
+  - apiVersion: v2
+    appVersion: v20230215-helm-chart-4.5.2-3-g15ecd2531
     created: "2023-03-08T17:22:31.170460079Z"
     description: A Helm chart to create a custom backend for your Nginx ingress
     digest: 8fc9b5f824d5a5b1431fa6323fed9c6c9079d5d7a28fc50a623465e4053349b9
@@ -144,6 +188,26 @@ entries:
     - nginx-default-backend-0.1.0.tgz
     version: 0.1.0
   openldap:
+  - apiVersion: v2
+    appVersion: 1.0.1-1
+    created: "2023-03-10T18:55:52.245060607Z"
+    dependencies:
+    - condition: phpldapadmin.enabled
+      name: phpldapadmin
+      repository: https://roertel.github.io/helm-charts/
+      version: 0.1.4-0
+    description: A Helm chart for OpenLDAP
+    digest: 39720845f6cae01a5a05d9f077fe3f3455d067b1eb527df32ee5ed169b77a461
+    home: https://github.com/roertel/helm-charts/charts/openldap
+    icon: https://img.favpng.com/6/22/16/openldap-lightweight-directory-access-protocol-directory-service-active-directory-computer-configuration-png-favpng-rXDVC6WCDDD8UQ7ZFTDryfGdZ.jpg
+    maintainers:
+    - email: roertel@users.noreply.github.com
+      name: roertel
+    name: openldap
+    type: application
+    urls:
+    - https://roertel.github.io/helm-charts/openldap-2.4.58-4.tgz
+    version: 2.4.58-4
   - apiVersion: v2
     appVersion: 1.0.1-1
     created: "2023-03-08T17:22:31.172353132Z"
@@ -455,6 +519,21 @@ entries:
   phpldapadmin:
   - apiVersion: v2
     appVersion: 0.7.1
+    created: "2023-03-10T18:55:52.245880712Z"
+    description: Web management of LDAP
+    digest: c8ee97444b7593d64dad4c745a9a8080255c3938811c081846db24077128baf5
+    home: https://phpldapadmin.sourceforge.net
+    icon: https://phpldapadmin.sourceforge.net/wiki/images/d/d4/Logo.jpg
+    maintainers:
+    - email: roertel@users.noreply.github.com
+      name: roertel
+    name: phpldapadmin
+    type: application
+    urls:
+    - https://roertel.github.io/helm-charts/phpldapadmin-0.1.4-2.tgz
+    version: 0.1.4-2
+  - apiVersion: v2
+    appVersion: 0.7.1
     created: "2023-03-08T17:22:31.173036186Z"
     description: Web management of LDAP
     digest: ec5b05802986c2c677e870596871291ad108877a45b09bc5de25dfb6c1fee328
@@ -499,6 +578,21 @@ entries:
     - phpldapadmin-0.1.3.tgz
     version: 0.1.3
   soft-serve:
+  - apiVersion: v2
+    appVersion: v0.4.0
+    created: "2023-03-10T18:55:52.246838519Z"
+    description: A Helm chart for CharmCLI soft-serve
+    digest: 9253e37a8d7d530c212098ad317e2272efc5e9ebe83be8a802bf887aab1ace3c
+    home: https://github.com/roertel/helm-charts/charts/soft-serve
+    icon: https://camo.githubusercontent.com/13c5b4b96888c7577c8a6d427123a0ca9c32e1c97d390baf76fac311cdce756e/68747470733a2f2f73747566662e636861726d2e73682f736f66742d73657276652f736f66742d73657276652d6865616465722e706e673f30
+    maintainers:
+    - email: roertel@users.noreply.github.com
+      name: roertel
+    name: soft-serve
+    type: application
+    urls:
+    - https://roertel.github.io/helm-charts/soft-serve-0.4.1-3.tgz
+    version: 0.4.1-3
   - apiVersion: v2
     appVersion: v0.4.0
     created: "2023-03-08T17:22:31.173997064Z"
@@ -566,4 +660,4 @@ entries:
     urls:
     - soft-serve-0.1.0.tgz
     version: 0.1.0
-generated: "2023-03-08T17:22:31.166471858Z"
+generated: "2023-03-10T18:55:52.236937555Z"
