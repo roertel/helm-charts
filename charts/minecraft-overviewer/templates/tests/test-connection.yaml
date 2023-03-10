@@ -2,10 +2,10 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: "{{ include "minecraft-overviewer.fullname" . }}-test-connection"
-  labels:
-    {{- include "minecraft-overviewer.labels" . | nindent 4 }}
+  labels: {{ include "minecraft-overviewer.labels" . | nindent 4 }}
   annotations:
     "helm.sh/hook": test
+    kube-score/ignore: container-image-tag
 spec:
   ttlSecondsAfterFinished: 600
   backoffLimit: 1
@@ -16,4 +16,5 @@ spec:
           image: busybox
           command: ['wget']
           args: ['-S', '-O/dev/null', 'http://{{ include "minecraft-overviewer.fullname" . }}:{{ .Values.service.port }}']
+          securityContext: {{ toYaml .Values.securityContext | nindent 12 }}
       restartPolicy: Never

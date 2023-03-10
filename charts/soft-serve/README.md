@@ -1,6 +1,6 @@
 # soft-serve
 
-![Version: 0.4.1-2](https://img.shields.io/badge/Version-0.4.1--2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v0.4.0](https://img.shields.io/badge/AppVersion-v0.4.0-informational?style=flat-square)
+![Version: 0.4.1-3](https://img.shields.io/badge/Version-0.4.1--3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v0.4.0](https://img.shields.io/badge/AppVersion-v0.4.0-informational?style=flat-square)
 
 A Helm chart for CharmCLI soft-serve
 
@@ -26,7 +26,7 @@ A Helm chart for CharmCLI soft-serve
 | serviceAccount.create | bool | `true` | Specifies whether a service account should be created |
 | serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
 | serviceAccount.name | string | `""` | If not set and create is true, a name is generated using the fullname template |
-| podAnnotations | object | `{}` |  |
+| podAnnotations.kube-score/ignore | string | `"container-security-context-readonlyrootfilesystem,container-security-context-user-group-id"` |  |
 | podSecurityContext.allowPrivilegeEscalation | bool | `false` |  |
 | podSecurityContext.runAsNonRoot | bool | `true` |  |
 | podSecurityContext.runAsUser | int | `10000` |  |

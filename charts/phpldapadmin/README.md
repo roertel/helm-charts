@@ -1,6 +1,6 @@
 # phpldapadmin
 
-![Version: 0.1.4-1](https://img.shields.io/badge/Version-0.1.4--1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.7.1](https://img.shields.io/badge/AppVersion-0.7.1-informational?style=flat-square)
+![Version: 0.1.4-2](https://img.shields.io/badge/Version-0.1.4--2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.7.1](https://img.shields.io/badge/AppVersion-0.7.1-informational?style=flat-square)
 
 Web management of LDAP
 
@@ -28,7 +28,11 @@ Web management of LDAP
 | serviceAccount.name | string | `""` |  |
 | podAnnotations | object | `{}` |  |
 | podSecurityContext | object | `{}` |  |
-| securityContext | object | `{}` |  |
+| securityContext.capabilities.drop[0] | string | `"ALL"` |  |
+| securityContext.readOnlyRootFilesystem | bool | `true` |  |
+| securityContext.runAsNonRoot | bool | `true` |  |
+| securityContext.runAsUser | int | `10000` |  |
+| securityContext.runAsGroup | int | `10000` |  |
 | service.type | string | `"ClusterIP"` |  |
 | service.port | int | `80` |  |
 | service.annotations | object | `{}` |  |

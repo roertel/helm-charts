@@ -1,6 +1,6 @@
 # minecraft-overviewer
 
-![Version: 0.17.1-0](https://img.shields.io/badge/Version-0.17.1--0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: latest](https://img.shields.io/badge/AppVersion-latest-informational?style=flat-square)
+![Version: 0.17.1-2](https://img.shields.io/badge/Version-0.17.1--2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: latest](https://img.shields.io/badge/AppVersion-latest-informational?style=flat-square)
 
 A Helm chart for Minecraft Overviewer
 
@@ -20,7 +20,6 @@ A Helm chart for Minecraft Overviewer
 | minecraftVersion | string | `"1.19.3"` | Minecraft version for game save file. |
 | image.renderer.repository | string | `"mide/minecraft-overviewer"` |  |
 | image.renderer.pullPolicy | string | `"IfNotPresent"` |  |
-| image.renderer.tag | string | `"latest"` |  |
 | image.display.repository | string | `"nginx"` |  |
 | image.display.pullPolicy | string | `"IfNotPresent"` |  |
 | image.display.tag | string | `"stable"` |  |
@@ -34,11 +33,12 @@ A Helm chart for Minecraft Overviewer
 | serviceAccount.create | bool | `true` |  |
 | serviceAccount.annotations | object | `{}` |  |
 | serviceAccount.name | string | `""` |  |
-| podAnnotations | object | `{}` |  |
+| podAnnotations.kube-score/ignore | string | `"container-image-tag,container-image-pull-policy,container-security-context-readonlyrootfilesystem"` |  |
 | podSecurityContext | object | `{}` |  |
 | securityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | securityContext.runAsNonRoot | bool | `true` |  |
-| securityContext.runAsUser | int | `1000` |  |
+| securityContext.runAsUser | int | `10000` |  |
+| securityContext.runAsGroup | int | `10000` |  |
 | service.type | string | `"ClusterIP"` |  |
 | service.port | int | `80` |  |
 | ingress.enabled | bool | `false` |  |

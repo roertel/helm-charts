@@ -2,15 +2,16 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: "{{ include "soft-serve.fullname" . }}-test-connection"
-  labels:
-    {{- include "soft-serve.labels" . | nindent 4 }}
+  labels: {{ include "soft-serve.labels" . | nindent 4 }}
   annotations:
     "helm.sh/hook": test
+    kube-score/ignore: container-image-tag
 spec:
   ttlSecondsAfterFinished: 600
   backoffLimit: 1
   template:
     spec:
+      restartPolicy: Never
       containers:
         - name: test
           image: kroniak/ssh-client
@@ -21,4 +22,9 @@ spec:
             - 'StrictHostKeyChecking=accept-new'
             - '{{ include "soft-serve.fullname" . }}'
             - 'help'
-      restartPolicy: Never
+          securityContext:   
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            runAsUser: 10000
+            runAsGroup: 10000
+            readOnlyRootFilesystem: true

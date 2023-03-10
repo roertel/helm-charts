@@ -13,7 +13,7 @@ image:
     repository: "mide/minecraft-overviewer"
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
-    tag: "latest"
+    # tag: "latest"
   display:
     repository: nginx
     pullPolicy: IfNotPresent
@@ -61,7 +61,8 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name: ""
 
-podAnnotations: {}
+podAnnotations:
+  kube-score/ignore: container-image-tag,container-image-pull-policy,container-security-context-readonlyrootfilesystem
 
 podSecurityContext: {}
 
@@ -69,10 +70,11 @@ securityContext:
   capabilities:
     drop:
     - ALL
-  # readOnlyRootFilesystem: true
+  readOnlyRootFilesystem: true
   runAsNonRoot: true
-  runAsUser: 1000
-  # fsGroup: 2000
+  runAsUser: 10000
+  runAsGroup: 10000
+  # fsGroup: 20000
 
 service:
   type: ClusterIP

@@ -16,30 +16,10 @@ ports:
 - name: mysql
   containerPort: 3306
   protocol: TCP
-{{- if .Values.startupProbe.enabled }}
-startupProbe:
-  failureThreshold: 10
-  periodSeconds: 30
-  exec:
-    command:
-    - /usr/bin/bash
-    - -c
-    - "mysqladmin ping -uroot -p\"$(cat $MYSQL_ROOT_PASSWORD_FILE)\""
-{{- end }}
 {{- if .Values.readinessProbe.enabled }}
 readinessProbe:
   initialDelaySeconds: 30
   periodSeconds: 60
-  exec:
-    command:
-    - /usr/bin/bash
-    - -c
-    - "mysqladmin ping -uroot -p\"$(cat $MYSQL_ROOT_PASSWORD_FILE)\""
-{{- end }}
-{{- if .Values.livenessProbe.enabled }}
-livenessProbe:
-  initialDelaySeconds: 30
-  periodSeconds: 600
   exec:
     command:
     - /usr/bin/bash
