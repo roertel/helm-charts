@@ -3,9 +3,9 @@ entries:
   mariadb:
   - apiVersion: v2
     appVersion: 10.10.2
-    created: "2023-03-10T18:55:52.240611978Z"
+    created: "2023-03-16T17:35:55.782547405Z"
     description: A Helm chart for MariaDB
-    digest: c10259735dc21265e19cd8a00d86ca09f1866b5b7462c287505d536e3a41984f
+    digest: 156fcd482f95f31efa703230eab1d2eeb0b08f2acd55fe220fd2db4384dd0846
     home: https://github.com/roertel/helm-charts/charts/mariadb
     icon: https://www.custombespoke.co.uk/images/tools/mariadb.jpg
     maintainers:
@@ -79,9 +79,9 @@ entries:
   minecraft-overviewer:
   - apiVersion: v2
     appVersion: latest
-    created: "2023-03-10T18:55:52.241810586Z"
+    created: "2023-03-16T17:35:55.78326772Z"
     description: A Helm chart for Minecraft Overviewer
-    digest: 9551b78f6f78c15f0c3a4b90c6c4ff8191fa4a6747e24bb9d472d80a5024bd95
+    digest: b61a82a5d98b11fe9a19720596b79c606c1fa80f6c7b70556e5b653bc71f33b3
     home: https://github.com/roertel/helm-charts/charts/minecraft-overviewer
     icon: https://image.winudf.com/v1/image/bmV0LmFscGF5Lm1jbWFwc19pY29uXzBfNDE1MjhhZWM/icon=170x.png
     maintainers:
@@ -150,9 +150,9 @@ entries:
   nginx-default-backend:
   - apiVersion: v2
     appVersion: v20230215-helm-chart-4.5.2-3-g15ecd2531
-    created: "2023-03-10T18:55:52.242584291Z"
+    created: "2023-03-16T17:35:55.783774031Z"
     description: A Helm chart to create a custom backend for your Nginx ingress
-    digest: d9fd13ec5874b8549b3638e40041278f26fa3757b20327a7b1fd319cdec8ec0d
+    digest: e48bff84566afef517255fd49ecca8cf5cdf958d3244e7fc5d67e7ac5bde3ff2
     icon: https://docs.nginx.com/nginx-ingress-controller/images/icons/NGINX-Ingress-Controller-product-icon.svg
     maintainers:
     - email: roertel@users.noreply.github.com
@@ -190,14 +190,14 @@ entries:
   openldap:
   - apiVersion: v2
     appVersion: 1.0.1-1
-    created: "2023-03-10T18:55:52.245060607Z"
+    created: "2023-03-16T17:35:55.785330964Z"
     dependencies:
     - condition: phpldapadmin.enabled
       name: phpldapadmin
       repository: https://roertel.github.io/helm-charts/
       version: 0.1.4-0
     description: A Helm chart for OpenLDAP
-    digest: 39720845f6cae01a5a05d9f077fe3f3455d067b1eb527df32ee5ed169b77a461
+    digest: 4dc2cb763cc0779faeaf4316505459fa2a13380aa65e439647c32be3414e409f
     home: https://github.com/roertel/helm-charts/charts/openldap
     icon: https://img.favpng.com/6/22/16/openldap-lightweight-directory-access-protocol-directory-service-active-directory-computer-configuration-png-favpng-rXDVC6WCDDD8UQ7ZFTDryfGdZ.jpg
     maintainers:
@@ -519,9 +519,9 @@ entries:
   phpldapadmin:
   - apiVersion: v2
     appVersion: 0.7.1
-    created: "2023-03-10T18:55:52.245880712Z"
+    created: "2023-03-16T17:35:55.785860475Z"
     description: Web management of LDAP
-    digest: c8ee97444b7593d64dad4c745a9a8080255c3938811c081846db24077128baf5
+    digest: f13e16a8a7e8af8e28e02e09d2811d23d9a518f18e10af5d359947b794f9c551
     home: https://phpldapadmin.sourceforge.net
     icon: https://phpldapadmin.sourceforge.net/wiki/images/d/d4/Logo.jpg
     maintainers:
@@ -578,6 +578,21 @@ entries:
     - phpldapadmin-0.1.3.tgz
     version: 0.1.3
   soft-serve:
+  - apiVersion: v2
+    appVersion: v0.4.6
+    created: "2023-03-16T17:35:55.786458087Z"
+    description: A tasty, self-hostable Git server for the command line
+    digest: 1f94b9b0cdfc566b211f6ceac199156ddaa81b5ed4e41f024a9c0b27c641e31f
+    home: https://github.com/roertel/helm-charts/charts/soft-serve
+    icon: https://camo.githubusercontent.com/13c5b4b96888c7577c8a6d427123a0ca9c32e1c97d390baf76fac311cdce756e/68747470733a2f2f73747566662e636861726d2e73682f736f66742d73657276652f736f66742d73657276652d6865616465722e706e673f30
+    maintainers:
+    - email: roertel@users.noreply.github.com
+      name: roertel
+    name: soft-serve
+    type: application
+    urls:
+    - https://roertel.github.io/helm-charts/soft-serve-0.4.6-0.tgz
+    version: 0.4.6-0
   - apiVersion: v2
     appVersion: v0.4.0
     created: "2023-03-10T18:55:52.246838519Z"
@@ -660,4 +675,4 @@ entries:
     urls:
     - soft-serve-0.1.0.tgz
     version: 0.1.0
-generated: "2023-03-10T18:55:52.236937555Z"
+generated: "2023-03-16T17:35:55.781462782Z"
