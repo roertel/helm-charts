@@ -4,9 +4,12 @@ A repository for helm charts. See the documentation for each chart in it's subdi
 
 |Chart Name|Chart Description|
 |-|-|
-|minecraft-overviewer|Overviewer will generate Google maps-style pages for your Minecraft world.|
-|openldap|OpenLDAP server including PHPLDAPAdmin.|
 |mariadb|MariaDB server.|
+|minecraft-overviewer|Overviewer will generate Google maps-style pages for your Minecraft world.|
+|nginx-default-backend|Default backend for nginx. Used for customizing HTTP error messages.|
+|openldap|OpenLDAP server including PHPLDAPAdmin.|
+|phpldapadmin|Web management of LDAP.|
+|soft-serve|A tasty, self-hostable Git server for the command line|
 
 ## General usage instructions
 
@@ -17,3 +20,5 @@ A repository for helm charts. See the documentation for each chart in it's subdi
 
 Alternatively, you can do it all in one command:
 `helm install <local name> <chart name> --repo https://roertel.github.io/helm-charts`
+
+Check each chart's README.md for customizable settings.

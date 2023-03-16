@@ -1,8 +1,8 @@
 # soft-serve
 
-![Version: 0.4.1-3](https://img.shields.io/badge/Version-0.4.1--3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v0.4.0](https://img.shields.io/badge/AppVersion-v0.4.0-informational?style=flat-square)
+![Version: 0.4.6-0](https://img.shields.io/badge/Version-0.4.6--0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v0.4.6](https://img.shields.io/badge/AppVersion-v0.4.6-informational?style=flat-square)
 
-A Helm chart for CharmCLI soft-serve
+A tasty, self-hostable Git server for the command line
 
 **Homepage:** <https://github.com/roertel/helm-charts/charts/soft-serve>
 
@@ -17,9 +17,9 @@ A Helm chart for CharmCLI soft-serve
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | replicaCount | int | `1` | number of replicas to create |
-| image.repository | string | `"charmcli/soft-serve"` | repository for container image |
+| image.repository | string | `"ghcr.io/charmbracelet/soft-serve"` | repository for container image |
 | image.pullPolicy | string | `"IfNotPresent"` | default pull policy |
-| image.tag | string | `"v0.4.0"` | Overrides the image tag whose default is the chart appVersion. |
+| image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion. |
 | imagePullSecrets | list | `[]` |  |
 | nameOverride | string | `""` |  |
 | fullnameOverride | string | `""` |  |
@@ -27,21 +27,17 @@ A Helm chart for CharmCLI soft-serve
 | serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
 | serviceAccount.name | string | `""` | If not set and create is true, a name is generated using the fullname template |
 | podAnnotations.kube-score/ignore | string | `"container-security-context-readonlyrootfilesystem,container-security-context-user-group-id"` |  |
-| podSecurityContext.allowPrivilegeEscalation | bool | `false` |  |
 | podSecurityContext.runAsNonRoot | bool | `true` |  |
 | podSecurityContext.runAsUser | int | `10000` |  |
 | podSecurityContext.runAsGroup | int | `10000` |  |
-| podSecurityContext.readOnlyRootFilesystem | bool | `true` |  |
-| podSecurityContext.capabilities.drop | string | `"ALL"` |  |
-| podSecurityContext.capabilities.add | string | `"NET_BIND_SERVICE"` |  |
-| securityContext | object | `{}` |  |
+| podSecurityContext.fsGroup | int | `10000` |  |
+| podSecurityContext.fsGroupChangePolicy | string | `"OnRootMismatch"` |  |
+| securityContext.readOnlyRootFilesystem | bool | `true` |  |
+| securityContext.capabilities.drop[0] | string | `"NET_BIND_SERVICE"` |  |
 | service.type | string | `"ClusterIP"` | service type (LoadBalancer, ClusterIP, etc) |
 | service.port | int | `23231` | port to listen on |
 | ingress.enabled | bool | `false` | enable ingress (probably not useful unless you have a fancy ssh-enabled configuration) |
-| resources.limits.cpu | string | `"10m"` |  |
-| resources.limits.memory | string | `"16Mi"` |  |
-| resources.requests.cpu | string | `"1m"` |  |
-| resources.requests.memory | string | `"11Mi"` |  |
+| resources | object | `{}` |  |
 | autoscaling.enabled | bool | `false` |  |
 | autoscaling.minReplicas | int | `1` |  |
 | autoscaling.maxReplicas | int | `100` |  |

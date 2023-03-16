@@ -8,6 +8,6 @@ spec:
   clusterIP: None  # Headless service
   ports:
     - name: ssh
-      containerPort: {{ .Values.service.port }}
+      port: {{ .Values.service.port }}
       protocol: TCP
   selector: {{ include "soft-serve.selectorLabels" . | nindent 4 }}
