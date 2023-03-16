@@ -35,7 +35,7 @@ A Helm chart for OpenLDAP
 | securityContext.readOnlyRootFilesystem | bool | `true` |  |
 | securityContext.runAsNonRoot | bool | `true` |  |
 | securityContext.runAsUser | int | `100000` |  |
-| securityContext.runAsGroup | int | `10000` |  |
+| securityContext.runAsGroup | int | `100000` |  |
 | serviceAccount.create | bool | `false` | Specifies whether a service account should be created |
 | serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
 | serviceAccount.name | string | `""` | If not set and create is true, a name is generated using the fullname template |

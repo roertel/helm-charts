@@ -9,7 +9,7 @@ A repository for helm charts. See the documentation for each chart in it's subdi
 |nginx-default-backend|Default backend for nginx. Used for customizing HTTP error messages.|
 |openldap|OpenLDAP server including PHPLDAPAdmin.|
 |phpldapadmin|Web management of LDAP.|
-|soft-serve|A Helm chart for CharmCLI soft-serve.|
+|soft-serve|A tasty, self-hostable Git server for the command line|
 
 ## General usage instructions
 

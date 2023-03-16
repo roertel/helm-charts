@@ -36,6 +36,7 @@ A Helm chart for Minecraft Overviewer
 | podAnnotations.kube-score/ignore | string | `"container-image-tag,container-image-pull-policy,container-security-context-readonlyrootfilesystem"` |  |
 | podSecurityContext | object | `{}` |  |
 | securityContext.capabilities.drop[0] | string | `"ALL"` |  |
+| securityContext.readOnlyRootFilesystem | bool | `true` |  |
 | securityContext.runAsNonRoot | bool | `true` |  |
 | securityContext.runAsUser | int | `10000` |  |
 | securityContext.runAsGroup | int | `10000` |  |

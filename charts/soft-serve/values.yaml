@@ -7,11 +7,11 @@ replicaCount: 1
 
 image:
   # -- repository for container image
-  repository: charmcli/soft-serve
+  repository: ghcr.io/charmbracelet/soft-serve
   # -- default pull policy
   pullPolicy: IfNotPresent
   # -- Overrides the image tag whose default is the chart appVersion.
-  tag: "v0.4.0"
+  tag: ""
 
 imagePullSecrets: []
 nameOverride: ""
@@ -30,25 +30,19 @@ podAnnotations:
   kube-score/ignore: container-security-context-readonlyrootfilesystem,container-security-context-user-group-id
 
 podSecurityContext:
-  allowPrivilegeEscalation: false
   runAsNonRoot: true
   runAsUser: 10000
   runAsGroup: 10000
+  fsGroup: 10000
+  fsGroupChangePolicy: "OnRootMismatch"
+
+securityContext:
+# TODO: Need a change to the Dockerfile for non-root before we can enable this.
+# Getting "mkdir /soft-serve/repos: permission denied" currently.
   readOnlyRootFilesystem: true
   capabilities:
-    drop: ALL
-    add: NET_BIND_SERVICE
-  # fsGroup: 2000
-
-securityContext: {}
-# TODO: Need a change to the Dockerfile for non-root before we can enable this.
-# Getting "mkdir /soft-serve/repos: permission denied" currently
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
+    drop:
+    - NET_BIND_SERVICE
 
 service:
   # -- service type (LoadBalancer, ClusterIP, etc)
@@ -74,17 +68,17 @@ ingress:
 #   #    hosts:
 #   #      - chart-example.local
 
-resources:
+resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  limits:
-    cpu: 10m
-    memory: 16Mi
-  requests:
-    cpu: 1m
-    memory: 11Mi
+  # limits:
+  #   cpu: 10m
+  #   memory: 16Mi
+  # requests:
+  #   cpu: 1m
+  #   memory: 11Mi
 
 autoscaling:
   enabled: false
