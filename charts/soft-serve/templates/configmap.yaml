@@ -22,7 +22,7 @@ data:
       if ! flock "${SOFT_SERVE_REPO_PATH/.lock}" test 1 2>/dev/null \
         || ! flock "${SOFT_SERVE_KEY_PATH}" test 1 2>/dev/null; then
         # ...then initialize the repo in an ephemeral volume...
-        echo "$(date +"%x %X") Pre-initializing filesystem due to file locking issue"
+        echo "$(date +"%F %R") Pre-initializing filesystem due to file locking issue"
         # Read output from soft until the server says it's started
         while read -r line; do
           echo "$line"
@@ -33,5 +33,5 @@ data:
         cp --recursive /working/* / && rm -rf /working/*
       fi
     fi
-    echo "$(date +"%x %X") Starting server"
+    echo "$(date +"%F %R") Starting server"
     soft serve "$@"
