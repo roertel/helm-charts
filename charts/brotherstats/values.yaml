@@ -1,0 +1,92 @@
+# Default values for brotherstats.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# -- number of replicas to create. It only makes sense to have 1 since this is a batch job. 
+replicaCount: 1
+
+image:
+  # -- Repository for container image.
+  repository: docker.io/keinos/sqlite3
+  # -- Default pull policy.
+  pullPolicy: IfNotPresent
+  # -- Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+# -- Host name or IP address for the printer. Alpine sometimes has trouble with name resolution; Try adding a dot to the end of the address.
+printerHostname: brother.local
+
+# -- Cron schedule. Try `"@daily"`
+#      ┌────────────────── timezone (optional)
+#      |      ┌───────────── minute (0 - 59)
+#      co|      │ ┌───────────── hour (0 - 23)
+#      |      │ │ ┌───────────── day of the month (1 - 31)
+#      |      │ │ │ ┌───────────── month (1 - 12)
+#      |      │ │ │ │ ┌───────────── day of the week (0 - 6) (Sunday to Saturday;
+#      |      │ │ │ │ │                                   7 is also Sunday on some systems)
+#      |      │ │ │ │ │
+#      |      │ │ │ │ │
+# CRON_TZ=UTC * * * * *
+#
+# Or @yearly, @annually, @monthly, @weekly, @daily, @midnight or @hourly
+schedule: "@daily"
+timeZone: UTC
+
+storage:
+  # -- File name for the SQLite3 database.
+  fileName: printer.sqlite3
+  # -- Set to `true` to enable persistent storage.
+  persistent: false
+  # -- Maximum size of the database.
+  size: 10Mi
+  # -- Storage class for database if persistent storage is enabled.
+  storageClassName: default
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # -- Specifies whether a service account should be created
+  create: true
+  # -- Annotations to add to the service account
+  annotations: {}
+  # -- The name of the service account to use.
+  # -- If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+# -- Extra annotations to add to pods.
+podAnnotations: {}
+
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 10000
+  runAsGroup: 10000
+  fsGroup: 10000
+  fsGroupChangePolicy: "OnRootMismatch"
+
+securityContext:
+  capabilities:
+    drop:
+    - ALL
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 10000
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

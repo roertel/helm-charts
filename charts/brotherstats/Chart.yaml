@@ -1,0 +1,11 @@
+apiVersion: v2
+name: brotherstats
+description: Pulls stats periodically from a Brother printer, storing to a SQLite DB.
+type: application
+version: 0.1.0
+appVersion: "3.40.1"
+maintainers:
+- name: roertel
+  email: roertel@users.noreply.github.com
+home: https://github.com/roertel/helm-charts/charts/brotherstats
+icon: https://www.brother-usa.com/favicon.ico

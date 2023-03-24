@@ -1,0 +1,15 @@
+{{- if .Values.storage.persistent -}}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "brotherstats.fullname" . }}
+  labels: {{ include "brotherstats.labels" . | nindent 4 }}
+spec:
+  {{- if .Values.storage.storageClassName }}
+  storageClassName: {{ .Values.storage.storageClassName }}
+  {{- end }}
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: {{ .Values.storage.size }}
+{{- end }}

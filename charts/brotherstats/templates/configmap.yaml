@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "brotherstats.fullname" . }}
+  labels: {{ include "brotherstats.labels" . | nindent 4 }}
+data:
+  entrypoint: |-
+    #!/usr/bin/env sh
+    # Loads printer stats into a SQLite3 database periodically
+    wget -qO- "http://{{ .Values.printerHostname }}/etc/mnt_info.csv" \
+      | sed 's/"Others"/"Other Size"/;s/"Others"/"Other Print"/'\
+      | awk -v dt="$(date -Is)" 'NR==1{print "\"Status Date\","$0}NR>1{print "\""dt"\","$0}' \
+      | sqlite3 "/database/{{ .Values.storage.fileName }}" ".import --csv |cat stats"
+    sqlite3 "/database/{{ .Values.storage.fileName }}" "delete from stats where Error1='Error1';"

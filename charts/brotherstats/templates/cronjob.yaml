@@ -1,0 +1,57 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "brotherstats.fullname" . }}
+  labels: {{ include "brotherstats.labels" . | nindent 4 }}
+spec:
+  schedule: {{ .Values.schedule | quote }}
+  concurrencyPolicy: Forbid
+  timeZone: {{ .Values.timeZone }}
+  jobTemplate:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations: {{ toYaml . | nindent 8 }}
+      {{- end }}
+      labels: {{ include "brotherstats.selectorLabels" . | nindent 8 }}
+    spec:
+      template:
+        spec:
+          {{- with .Values.imagePullSecrets }}
+          imagePullSecrets: {{ toYaml . | nindent 12 }}
+          {{- end }}
+          serviceAccountName: {{ include "brotherstats.serviceAccountName" . }}
+          securityContext: {{ toYaml .Values.podSecurityContext | nindent 12 }}
+          containers:
+            - name: {{ .Chart.Name }}
+              securityContext: {{ toYaml .Values.securityContext | nindent 16 }}
+              image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
+              resources: {{ toYaml .Values.resources | nindent 16 }}
+              command: ["/bin/sh", "-c", ". /usr/local/bin/entrypoint"]
+              volumeMounts:
+                - name: entrypoint
+                  mountPath: /usr/local/bin
+                - name: database
+                  mountPath: /database
+          volumes:
+            - name: entrypoint
+              configMap:
+                name: {{ include "brotherstats.fullname" . }}
+            - name: database
+              {{- if .Values.storage.enabled }}
+              persistentVolumeClaim:
+                claimName: {{ include "brotherstats.fullname" . }}
+              {{- else }}
+              emptyDir:
+                sizeLimit: {{ .Values.storage.size }}
+              {{- end }}
+          {{- with .Values.nodeSelector }}
+          nodeSelector: {{ toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.affinity }}
+          affinity: {{ toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.tolerations }}
+          tolerations: {{ toYaml . | nindent 12 }}
+          {{- end }}
+          restartPolicy: OnFailure

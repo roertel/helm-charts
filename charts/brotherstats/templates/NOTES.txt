@@ -1,0 +1,4 @@
+The Brother printer statistics fetching script is set up and will execute on the
+schedule: {{ .Values.schedule | quote }}. Results are stored to {{ .Values.storage.fileName | quote }} on the
+{{- if .Values.storage.persistent }} persistent {{ else }} temporary {{ end -}}
+volume.
