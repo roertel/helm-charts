@@ -8,6 +8,7 @@ if ! which helm-docs 2>/dev/null; then
   curl --silent --show-error --fail --location \
     https://github.com/norwoodj/helm-docs/releases/download/v"${HELM_DOCS_VERSION}"/helm-docs_"${HELM_DOCS_VERSION}"_Linux_x86_64.tar.gz \
   | tar xz helm-docs
+  chmod +x helm-docs
   alias helm-docs="${PWD}/helm-docs"
 fi
 
