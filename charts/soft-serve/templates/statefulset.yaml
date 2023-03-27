@@ -29,8 +29,6 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command: ["sh"]
           args: ["/usr/local/sbin/entrypoint"]
-          # command: ["sleep"]
-          # args: ["infinity"]
           env:
           - name: SOFT_SERVE_INITIAL_ADMIN_KEY
             value: "{{ .Values.initialAdminKey }}"
