@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "mariadb.fullname" . }}-headless
+  labels:
+    {{- include "mariadb.labels" . | nindent 4 }}
+spec:
+  clusterIP: None  # Headless service
+  ports:
+    - name: mysql
+      containerPort: {{ .Values.service.port }}
+      protocol: TCP
+  selector: {{ include "mariadb.selectorLabels" . | nindent 4 }}

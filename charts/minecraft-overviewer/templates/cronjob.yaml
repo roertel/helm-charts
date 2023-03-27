@@ -8,16 +8,15 @@ metadata:
 spec:
   schedule: "{{ .Values.regenerationSchedule }}"
   concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 3600
   jobTemplate:
     spec:
       template:
         metadata:
           {{- with .Values.podAnnotations }}
-          annotations:
-            {{- toYaml . | nindent 12 }}
+          annotations: {{ toYaml . | nindent 12 }}
           {{- end }}
-          labels:
-            {{- include "minecraft-overviewer.selectorLabels" . | nindent 12 }}
+          labels: {{ include "minecraft-overviewer.selectorLabels" . | nindent 12 }}
         spec:
           {{- with .Values.imagePullSecrets }}
           imagePullSecrets:
@@ -28,10 +27,12 @@ spec:
             image: "{{ .Values.image.renderer.repository }}:{{ .Values.image.renderer.tag | default .Chart.AppVersion }}"
             imagePullPolicy: {{ .Values.image.renderer.pullPolicy }}
             env:
-              # - name: CONFIG_LOCATION
-              #   value: "/opt/config.py"
               - name: MINECRAFT_VERSION
                 value: "{{ .Values.minecraftVersion }}"
+              {{- range $name, $value := .Values.extraEnv }}
+              - name: {{ $name }}
+                value: {{ $value | quote }}
+              {{- end }}
             volumeMounts:
               - name: config
                 mountPath: /opt
@@ -42,6 +43,10 @@ spec:
               - name: map
                 mountPath: /home/minecraft/render/
                 readOnly: false
+              - name: home
+                mountPath: /home/minecraft/.minecraft
+                readOnly: false
+            securityContext: {{ toYaml .Values.securityContext | nindent 14 }}
           volumes:
             - name: config
               configMap:
@@ -56,16 +61,15 @@ spec:
               persistentVolumeClaim:
                 claimName: {{ include "minecraft-overviewer.fullname" . }}
               {{- end }}
+            - name: home
+              emptyDir: {}
           restartPolicy: OnFailure
           {{- with .Values.nodeSelector }}
-          nodeSelector:
-            {{- toYaml . | nindent 12 }}
+          nodeSelector: {{ toYaml . | nindent 12 }}
           {{- end }}
           {{- with .Values.affinity }}
-          affinity:
-            {{- toYaml . | nindent 12 }}
+          affinity: {{ toYaml . | nindent 12 }}
           {{- end }}
           {{- with .Values.tolerations }}
-          tolerations:
-            {{- toYaml . | nindent 12 }}
+          tolerations: {{ toYaml . | nindent 12 }}
           {{- end }}
