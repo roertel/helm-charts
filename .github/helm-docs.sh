@@ -4,7 +4,6 @@ set -euo pipefail
 HELM_DOCS_VERSION="1.11.0"
 
 # install helm-docs if needed
-
 if ! helm_docs="$(which helm-docs 2>/dev/null)"; then
   curl --silent --show-error --fail --location \
     https://github.com/norwoodj/helm-docs/releases/download/v"${HELM_DOCS_VERSION}"/helm-docs_"${HELM_DOCS_VERSION}"_Linux_x86_64.tar.gz \
