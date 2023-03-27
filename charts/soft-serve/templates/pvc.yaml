@@ -3,15 +3,13 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: {{ include "soft-serve.fullname" . }}
-  labels:
-    {{- include "soft-serve.labels" . | nindent 4 }}
+  labels: {{ include "soft-serve.labels" . | nindent 4 }}
 spec:
   {{- if .Values.persistentVolume.storageClassName }}
   storageClassName: {{ .Values.persistentVolume.storageClassName }}
   {{- end }}
-  accessModes:
-    - ReadWriteOnce
+  accessModes: ["ReadWriteOnce"]
   resources:
     requests:
-      storage: {{ .Values.persistentVolume.size | default "1Gi" }}
+      storage: {{ .Values.persistentVolume.size }}
 {{- end }}

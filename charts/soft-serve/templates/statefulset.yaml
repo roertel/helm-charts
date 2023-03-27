@@ -2,38 +2,33 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: {{ include "soft-serve.fullname" . }}
-  labels:
-    {{- include "soft-serve.labels" . | nindent 4 }}
+  labels: {{ include "soft-serve.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
-    matchLabels:
-      {{- include "soft-serve.selectorLabels" . | nindent 6 }}
-  serviceName: {{ include "soft-serve.fullname" . }}
+    matchLabels: {{ include "soft-serve.selectorLabels" . | nindent 6 }}
+  serviceName: {{ include "soft-serve.fullname" . }}-headless
   template:
     metadata:
       {{- with .Values.podAnnotations }}
-      annotations:
-        {{- toYaml . | nindent 8 }}
+      annotations: {{ toYaml . | nindent 8 }}
       {{- end }}
-      labels:
-        {{- include "soft-serve.selectorLabels" . | nindent 8 }}
+      labels: {{ include "soft-serve.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
+      imagePullSecrets: {{ toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "soft-serve.serviceAccountName" . }}
-      securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      securityContext: {{ toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
-          securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
+          securityContext: {{ toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["sh"]
+          args: ["/usr/local/sbin/entrypoint"]
           env:
           - name: SOFT_SERVE_INITIAL_ADMIN_KEY
             value: "{{ .Values.initialAdminKey }}"
@@ -42,41 +37,40 @@ spec:
           - name: SOFT_SERVE_PORT
             value: "{{ .Values.service.port }}"
           volumeMounts:
+          - name: working
+            mountPath: /working
+          - name: entrypoint
+            mountPath: /usr/local/sbin
           {{- if .Values.persistentVolume.enabled }}
-            - name: {{ include "soft-serve.fullname" . }}
-              mountPath: /soft-serve
+          - name: {{ include "soft-serve.fullname" . }}
+            mountPath: /soft-serve
           {{- end }}
           ports:
-            - name: ssh
-              containerPort: {{ .Values.service.port }}
-              protocol: TCP
-          # livenessProbe:
-          #   tcpSocket:
-          #     port: ssh
-          #     # initialDelaySeconds: 5
-          #     # periodSeconds: 10
-          # readinessProbe:
-          #   tcpSocket:
-          #     port: ssh
-          #     # initialDelaySeconds: 15
-          #     # periodSeconds: 20
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+          - name: ssh
+            containerPort: {{ .Values.service.port }}
+            protocol: TCP
+          readinessProbe:
+            tcpSocket:
+              port: ssh
+          resources: {{ toYaml .Values.resources | nindent 12 }}
       volumes:
+        - name: entrypoint
+          configMap:
+            name: {{ include "soft-serve.fullname" . }}
+        - name: working
+          emptyDir:
+            sizeLimit: 1Mi
         {{- if .Values.persistentVolume.enabled }}
         - name: {{ include "soft-serve.fullname" . }}
           persistentVolumeClaim:
             claimName: {{ include "soft-serve.fullname" . }}
         {{- end }}
       {{- with .Values.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
+      nodeSelector: {{ toYaml . | nindent 8 }}
       {{- end }}
       {{- with .Values.affinity }}
-      affinity:
-        {{- toYaml . | nindent 8 }}
+      affinity: {{ toYaml . | nindent 8 }}
       {{- end }}
       {{- with .Values.tolerations }}
-      tolerations:
-        {{- toYaml . | nindent 8 }}
+      tolerations: {{ toYaml . | nindent 8 }}
       {{- end }}
