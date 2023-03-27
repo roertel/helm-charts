@@ -1,15 +1,20 @@
-apiVersion: v1
-kind: Pod
+apiVersion: batch/v1
+kind: Job
 metadata:
   name: "{{ include "phpldapadmin.fullname" . }}-test-connection"
-  labels:
-    {{- include "phpldapadmin.labels" . | nindent 4 }}
+  labels: {{ include "phpldapadmin.labels" . | nindent 4 }}
   annotations:
     "helm.sh/hook": test
+    kube-score/ignore: container-image-tag
 spec:
-  containers:
-    - name: wget
-      image: busybox
-      command: ['wget']
-      args: ['{{ include "phpldapadmin.fullname" . }}:{{ .Values.service.port }}']
-  restartPolicy: Never
+  ttlSecondsAfterFinished: 600
+  backoffLimit: 1
+  template:
+    spec:
+      containers:
+        - name: wget
+          image: busybox
+          command: ['wget']
+          args: ['{{ include "phpldapadmin.fullname" . }}:{{ .Values.service.port }}']
+          securityContext: {{ toYaml .Values.securityContext | nindent 12 }}
+      restartPolicy: Never

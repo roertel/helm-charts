@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "{{ include "nginx-default-backend.fullname" . }}-test-connection"
+  labels: {{ include "nginx-default-backend.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+    kube-score/ignore: container-image-tag
+spec:
+  ttlSecondsAfterFinished: 600
+  backoffLimit: 1
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: wget
+        image: busybox
+        command: ['wget']
+        args: ['{{ include "nginx-default-backend.fullname" . }}:{{ .Values.service.port }}/healthz']
+        securityContext: {{ toYaml .Values.securityContext | nindent 12 }}

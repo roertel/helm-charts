@@ -5,7 +5,7 @@ metadata:
   labels:
     {{- include "openldap.labels" . | nindent 4 }}
 spec:
-  serviceName: {{ include "openldap.fullname" . }}
+  serviceName: {{ include "openldap.fullname" . }}-headless
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
@@ -57,21 +57,9 @@ spec:
               protocol: {{ $value.protocol | default "TCP" }}
             {{- end }}
             {{- end }}
-          startupProbe:
-            failureThreshold: 30
-            periodSeconds: 10
-            exec:
-              command:
-              - /healthz
           readinessProbe:
             initialDelaySeconds: 10
             periodSeconds: 60
-            exec:
-              command:
-              - /healthz
-          livenessProbe:
-            initialDelaySeconds: 10
-            periodSeconds: 600
             exec:
               command:
               - /healthz

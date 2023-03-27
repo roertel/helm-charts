@@ -1,0 +1,3 @@
+# values file to pass to helm when generating manifests for linting and scoring.
+phpldapadmin:
+  enabled: false

@@ -4,7 +4,7 @@ metadata:
   name: {{ include "mariadb.fullname" . }}
   labels: {{ include "mariadb.labels" . | nindent 4 }}
 spec:
-  serviceName: {{ include "mariadb.fullname" . }}
+  serviceName: {{ include "mariadb.fullname" . }}-headless
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
