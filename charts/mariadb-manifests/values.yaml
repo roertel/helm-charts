@@ -8,7 +8,7 @@ connection: {}
 
 database: {}
 
-grants: {}
+grant: {}
 
 mariadb: {}
 
@@ -16,6 +16,8 @@ maxscale: {}
 
 restore: {}
 
+secret: {}
+
 sqljob: {}
 
-users: {}
+user: {}

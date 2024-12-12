@@ -1,5 +1,5 @@
 {{- $apiversion := "k8s.mariadb.com/v1alpha1" }}
-{{- $kind := "MariaDB" }}
+{{- $kind := "Grant" }}
 {{- if .Capabilities.APIVersions.Has (printf "%s/%s" $apiversion $kind) }}
 {{- $defaults := dict "name" .Release.Name }}
 {{- with get .Values (lower $kind) }}

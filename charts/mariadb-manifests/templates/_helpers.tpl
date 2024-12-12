@@ -49,3 +49,25 @@ Selector labels
 app.kubernetes.io/name: {{ include "mariadb-manifests.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
+
+{{/*
+Common Metadata
+Pass in the specific Manifest values (ex: .Values.mariadb)
+*/}}
+{{- define "mariadb-manifests.metadata" -}}
+{{- $metadata := pick . "name" "annotations" "labels" }}
+{{- with $metadata }}
+{{- toYaml . }}
+{{- end }}
+{{- end }}
+
+{{/*
+Common Spec
+Pass in the specific Manifest values (ex: .Values.mariadb)
+*/}}
+{{- define "mariadb-manifests.spec" -}}
+{{- $spec := omit . "name" "annotations" "labels" }}
+{{- with $spec }}
+{{- toYaml . }}
+{{- end }}
+{{- end }}

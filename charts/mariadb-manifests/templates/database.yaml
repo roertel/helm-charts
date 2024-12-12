@@ -1,0 +1,12 @@
+{{- $apiversion := "k8s.mariadb.com/v1alpha1" }}
+{{- $kind := "Database" }}
+{{- if .Capabilities.APIVersions.Has (printf "%s/%s" $apiversion $kind) }}
+{{- $defaults := dict "name" .Release.Name }}
+{{- with get .Values (lower $kind) }}
+{{- $localvalues := $defaults | merge . }}
+apiVersion: {{ $apiversion }}
+kind: {{ $kind }}
+metadata: {{ include "mariadb-manifests.metadata" $localvalues | nindent 2 }}
+spec: {{ include "mariadb-manifests.spec" $localvalues | nindent 2 }}
+{{- end }}
+{{- end }}

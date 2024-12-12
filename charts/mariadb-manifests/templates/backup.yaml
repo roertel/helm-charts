@@ -1,18 +1,12 @@
-{{- if .Capabilities.APIVersions.Has "k8s.mariadb.com/v1alpha1" }}
-{{- if .Values.backups -}}
-apiVersion: k8s.mariadb.com/v1alpha1
-kind: Backup
-
-metadata:
-  {{- with .Values.backup.metadata }}
-  {{- toYaml . | nindent 2 }}
-  {{- end }}
-
-spec:
-  mariaDbRef:
-    name: {{- .Values.mariadb.metadata.name }}
-  {{- with .Values.backup.spec | omit "mariaDbRef" }}
-  {{- toYaml . | nindent 2 }}
-  {{- end }}
+{{- $apiversion := "k8s.mariadb.com/v1alpha1" }}
+{{- $kind := "Backup" }}
+{{- if .Capabilities.APIVersions.Has (printf "%s/%s" $apiversion $kind) }}
+{{- $defaults := dict "name" .Release.Name }}
+{{- with get .Values (lower $kind) }}
+{{- $localvalues := $defaults | merge . }}
+apiVersion: {{ $apiversion }}
+kind: {{ $kind }}
+metadata: {{ include "mariadb-manifests.metadata" $localvalues | nindent 2 }}
+spec: {{ include "mariadb-manifests.spec" $localvalues | nindent 2 }}
 {{- end }}
 {{- end }}
