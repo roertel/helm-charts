@@ -1,0 +1,16 @@
+{{- if .Capabilities.APIVersions.Has "k8s.mariadb.com/v1alpha1" }}
+{{- if .Values.mariadbs -}}
+apiVersion: k8s.mariadb.com/v1alpha1
+kind: MariaDB
+
+metadata:
+  {{- with .Values.mariadbs.metadata }}
+  {{- toYaml . | nindent 2 }}
+  {{- end }}
+
+spec:
+  {{- with .Values.mariadbs.spec }}
+  {{- toYaml . | nindent 2 }}
+  {{- end }}
+{{- end }}
+{{- end }}

@@ -1,0 +1,2 @@
+The following MariaDB operator manifests have been deployed:
+
