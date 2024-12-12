@@ -1,0 +1,19 @@
+{{- if .Capabilities.APIVersions.Has "k8s.mariadb.com/v1alpha1" }}
+{{- if .Values.mariadb -}}
+apiVersion: k8s.mariadb.com/v1alpha1
+kind: MariaDB
+
+metadata:
+  {{- $defaults := dict "name" .Release.Name }}
+  {{- $metadata := pick .Values.mariadb "name" "annotations" "labels" }}
+  {{- with merge $metadata $defaults }}
+  {{- toYaml . | nindent 2 }}
+  {{- end }}
+
+spec:
+  {{- $spec := omit .Values.mariadb "name" "annotations" "labels" }}
+  {{- with $spec }}
+  {{- toYaml . | nindent 2 }}
+  {{- end }}
+{{- end }}
+{{- end }}

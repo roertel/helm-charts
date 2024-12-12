@@ -1,15 +1,17 @@
 {{- if .Capabilities.APIVersions.Has "k8s.mariadb.com/v1alpha1" }}
-{{- if .Values.mariadbs -}}
+{{- if .Values.backups -}}
 apiVersion: k8s.mariadb.com/v1alpha1
-kind: MariaDB
+kind: Backup
 
 metadata:
-  {{- with .Values.mariadbs.metadata }}
+  {{- with .Values.backup.metadata }}
   {{- toYaml . | nindent 2 }}
   {{- end }}
 
 spec:
-  {{- with .Values.mariadbs.spec }}
+  mariaDbRef:
+    name: {{- .Values.mariadb.metadata.name }}
+  {{- with .Values.backup.spec | omit "mariaDbRef" }}
   {{- toYaml . | nindent 2 }}
   {{- end }}
 {{- end }}
