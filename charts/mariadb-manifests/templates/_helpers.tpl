@@ -55,8 +55,7 @@ Common Metadata
 Pass in the specific Manifest values (ex: .Values.mariadb)
 */}}
 {{- define "mariadb-manifests.metadata" -}}
-{{- $metadata := pick . "name" "annotations" "labels" }}
-{{- with $metadata }}
+{{- with pick . "name" "annotations" "labels" }}
 {{- toYaml . }}
 {{- end }}
 {{- end }}
@@ -66,31 +65,7 @@ Common Spec
 Pass in the specific Manifest values (ex: .Values.mariadb)
 */}}
 {{- define "mariadb-manifests.spec" -}}
-{{- $spec := omit . "name" "annotations" "labels" }}
-{{- with $spec }}
+{{- with omit . "name" "annotations" "labels" }}
 {{- toYaml . }}
 {{- end }}
-{{- end }}
-
-{{/*
-MariaDB defaults
-*/}}
-{{- define "mariadb-manifests.mariadb-defaults" -}}
-name: {{ .Release.Name }}
-labels: {{ include "mariadb-manifests.labels" . | nindent 2}}
-database: {{ .Release.Name }}
-rootPasswordSecretKeyRef:
-  name: {{ .Release.Name }}-dbadmin
-passwordSecretKeyRef:
-  name: {{ .Release.Name }}-dbuser
-{{- end }}
-
-{{/*
-Backup defaults
-*/}}
-{{- define "mariadb-manifests.backup-defaults" -}}
-name: {{ .Release.Name }}
-labels: {{ include "mariadb-manifests.labels" . | nindent 2}}
-mariaDbRef:
-  name: {{ .Release.Name }}
 {{- end }}
