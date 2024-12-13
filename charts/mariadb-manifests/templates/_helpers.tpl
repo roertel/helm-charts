@@ -2,7 +2,7 @@
 Expand the name of the chart.
 */}}
 {{- define "mariadb-manifests.name" -}}
-{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
+{{- default .Release.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
@@ -70,4 +70,27 @@ Pass in the specific Manifest values (ex: .Values.mariadb)
 {{- with $spec }}
 {{- toYaml . }}
 {{- end }}
+{{- end }}
+
+{{/*
+MariaDB defaults
+*/}}
+{{- define "mariadb-manifests.mariadb-defaults" -}}
+name: {{ .Release.Name }}
+labels: {{ include "mariadb-manifests.labels" . | nindent 2}}
+database: {{ .Release.Name }}
+rootPasswordSecretKeyRef:
+  name: {{ .Release.Name }}-dbadmin
+passwordSecretKeyRef:
+  name: {{ .Release.Name }}-dbuser
+{{- end }}
+
+{{/*
+Backup defaults
+*/}}
+{{- define "mariadb-manifests.backup-defaults" -}}
+name: {{ .Release.Name }}
+labels: {{ include "mariadb-manifests.labels" . | nindent 2}}
+mariaDbRef:
+  name: {{ .Release.Name }}
 {{- end }}

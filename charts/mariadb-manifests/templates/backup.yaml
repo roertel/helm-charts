@@ -1,7 +1,7 @@
 {{- $apiversion := "k8s.mariadb.com/v1alpha1" }}
 {{- $kind := "Backup" }}
 {{- if .Capabilities.APIVersions.Has (printf "%s/%s" $apiversion $kind) }}
-{{- $defaults := dict "name" .Release.Name }}
+{{- $defaults := include (printf "mariadb-manifests.%s-defaults" (lower $kind)) . | fromYaml }}
 {{- with get .Values (lower $kind) }}
 {{- $localvalues := $defaults | merge . }}
 apiVersion: {{ $apiversion }}

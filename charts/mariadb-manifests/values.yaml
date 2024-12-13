@@ -2,6 +2,9 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+# Name of the database to create. Defaults to the name of the chart if empty
+nameOverride: my-database
+
 backup: {}
 
 connection: {}
