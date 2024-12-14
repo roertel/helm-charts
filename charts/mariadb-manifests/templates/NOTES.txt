@@ -1,0 +1,61 @@
+The following MariaDB operator manifests have been deployed:
+
+{{- if .Capabilities.APIVersions.Has "k8s.mariadb.com/v1alpha1/Backup" }}
+{{- if .Values.backup }}
+  Backup/{{- coalesce .Values.backup.name .Release.Name }}
+{{- end }}
+{{- end }}
+
+{{- if .Capabilities.APIVersions.Has "k8s.mariadb.com/v1alpha1/Connection" }}
+{{- if .Values.connection }}
+  Connection/{{- coalesce .Values.connection.name .Release.Name }}
+{{- end }}
+{{- end }}
+
+{{- if .Capabilities.APIVersions.Has "k8s.mariadb.com/v1alpha1/Database" }}
+{{- if .Values.database }}
+  Database/{{- coalesce .Values.database.name .Release.Name }}
+{{- end }}
+{{- end }}
+
+{{- if .Capabilities.APIVersions.Has "k8s.mariadb.com/v1alpha1/Grant" }}
+{{- if .Values.grant }}
+  Grant/{{- coalesce .Values.grant.name .Release.Name }}
+{{- end }}
+{{- end }}
+
+{{- if .Capabilities.APIVersions.Has "k8s.mariadb.com/v1alpha1/MariaDB" }}
+{{- if .Values.mariadb }}
+  MariaDB/{{ coalesce .Values.mariadb.name .Release.Name }}
+{{- end }}
+{{- end }}
+
+{{- if .Capabilities.APIVersions.Has "k8s.mariadb.com/v1alpha1/MaxScale" }}
+{{- if .Values.maxscale }}
+  MaxScale/{{- coalesce .Values.maxscale.name .Release.Name }}
+{{- end }}
+{{- end }}
+
+{{- if .Capabilities.APIVersions.Has "k8s.mariadb.com/v1alpha1/Restore" }}
+{{- if .Values.restore }}
+  Restore/{{- coalesce .Values.restore.name .Release.Name }}
+{{- end }}
+{{- end }}
+
+{{- if .Capabilities.APIVersions.Has "v1/Secret" }}
+{{- if .Values.secret }}
+  Secret/{{- coalesce .Values.secret.name .Release.Name }}
+{{- end }}
+{{- end }}
+
+{{- if .Capabilities.APIVersions.Has "k8s.mariadb.com/v1alpha1/SqlJob" }}
+{{- if .Values.sqljob }}
+  SqlJob/{{- coalesce .Values.sqljob.name .Release.Name }}
+{{- end }}
+{{- end }}
+
+{{- if .Capabilities.APIVersions.Has "k8s.mariadb.com/v1alpha1/User" }}
+{{- if .Values.user }}
+  User/{{- coalesce .Values.user.name .Release.Name }}
+{{- end }}
+{{- end }}
