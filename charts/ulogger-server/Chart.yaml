@@ -1,0 +1,32 @@
+apiVersion: v2
+
+name: ulogger-server
+version: 0.0.1
+appVersion: 1.2
+description: ulogger-server helm package
+
+kubeVersion: ">=1.16.0-0"
+
+keywords:
+  - ulogger-server
+
+home: https://github.com/roertel/helm-charts/tree/master/charts/stable/ulogger-server
+icon: https://github.com/bfabiszewski/ulogger-server/blob/master/icons/android-chrome-512x512.png
+
+sources:
+  - https://github.com/roertel/docker-ulogger-server
+  - https://github.com/bfabiszewski/ulogger-server
+
+maintainers:
+  - name: roertel
+    email: 638327+roertel@users.noreply.github.com
+
+dependencies:
+  - name: common
+    repository: https://library-charts.k8s-at-home.com
+    version: 4.5.2
+
+annotations:
+  artifacthub.io/changes: |
+    - kind: added
+      description: Initial version
