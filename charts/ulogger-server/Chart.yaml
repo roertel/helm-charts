@@ -1,0 +1,23 @@
+apiVersion: v2
+appVersion: 1.0.0
+description: ulogger-server helm package
+name: ulogger-server
+version: 1.2.2
+kubeVersion: ">=1.16.0-0"
+keywords:
+- ulogger-server
+home: https://github.com/k8s-at-home/charts/tree/master/charts/ulogger-server
+icon: https://ulogger-server.org/icon
+sources:
+- https://github.com/roertel/docker-ulogger-server
+maintainers:
+- name: roertel
+  email: roertel@gitlab.com
+dependencies:
+- name: common
+  repository: https://library-charts.k8s-at-home.com
+  version: 4.5.2
+annotations:
+  artifacthub.io/changes: |
+  - kind: added
+    description: Initial version
