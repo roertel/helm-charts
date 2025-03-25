@@ -5,7 +5,7 @@ version: 0.0.1
 appVersion: "1.2"
 description: ulogger-server helm package
 
-kubeVersion: ">=1.29.0-0"
+kubeVersion: ">=1.25"
 
 keywords:
 - ulogger-server
