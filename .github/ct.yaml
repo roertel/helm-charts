@@ -2,4 +2,4 @@ helm-extra-args: --timeout 600
 check-version-increment: true
 # debug: true
 chart-repos:
-  - roertel=https://roertel.github.io/helm-charts
+- roertel=https://roertel.github.io/helm-charts
