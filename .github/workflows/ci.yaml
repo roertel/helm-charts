@@ -38,13 +38,12 @@ jobs:
     - name: Run chart-testing (lint)
       run: ct lint --target-branch ${{ github.event.repository.default_branch }}
 
-    - name: Generate manifests
+    - name: Generate manifests for scoring
       run: |
         mkdir -p "manifests"
         for CHART in $(ls -d charts/*/); do
-          echo "${CHART}..."
-          helm dependency build "${CHART}"
-          helm template "${CHART}" --generate-name --output-dir "manifests"
+          echo "Generating manifests for ${CHART}..."
+          helm template "${CHART}" --generate-name --output-dir "manifests" --repository-config .github/repositories.yaml
         done
 
     - name: Check kube-score
