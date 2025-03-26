@@ -3,9 +3,9 @@ entries:
   mariadb:
   - apiVersion: v2
     appVersion: 10.10.2
-    created: "2024-12-14T01:34:36.524448661Z"
+    created: "2025-03-26T00:52:23.271641365Z"
     description: A Helm chart for MariaDB
-    digest: 3e1fe41997f4e7b4915995db76808716a1a3c42b656f7cc0f321db5c62d523d5
+    digest: 4cd23da3723ef8d13ee7f7405f9d990496fd0bc195fece5b69338943dce289c0
     home: https://github.com/roertel/helm-charts/charts/mariadb
     icon: https://www.custombespoke.co.uk/images/tools/mariadb.jpg
     maintainers:
@@ -79,9 +79,9 @@ entries:
   mariadb-manifests:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2024-12-14T01:34:36.525243847Z"
+    created: "2025-03-26T00:52:23.271908753Z"
     description: A Helm chart for deploying MariaDB operator manifests
-    digest: 6fab34cd7312d47707e5d50a983393be8a561f567e642162611c63b2f74aa0a3
+    digest: cc00456f824734ac6092e91e38475a830bbf7a3bb7bc878be83ace9f6875380d
     home: https://github.com/roertel/helm-charts/charts/mariadb-manifests
     maintainers:
     - email: roertel@users.noreply.github.com
@@ -94,9 +94,9 @@ entries:
   minecraft-overviewer:
   - apiVersion: v2
     appVersion: latest
-    created: "2024-12-14T01:34:36.526021903Z"
+    created: "2025-03-26T00:52:23.272454289Z"
     description: A Helm chart for Minecraft Overviewer
-    digest: eb59b0ccf59ef4bb3c99e9a68d033783c89d1e7127f69ca60dc5f884ead67fe7
+    digest: 304f216061b4e1afc64e1b5a15bd14d2ebe91cd576e9e676df87558e3be0b02a
     home: https://github.com/roertel/helm-charts/charts/minecraft-overviewer
     icon: https://image.winudf.com/v1/image/bmV0LmFscGF5Lm1jbWFwc19pY29uXzBfNDE1MjhhZWM/icon=170x.png
     maintainers:
@@ -165,9 +165,9 @@ entries:
   nginx-default-backend:
   - apiVersion: v2
     appVersion: v20230215-helm-chart-4.5.2-3-g15ecd2531
-    created: "2024-12-14T01:34:36.526445294Z"
+    created: "2025-03-26T00:52:23.272869933Z"
     description: A Helm chart to create a custom backend for your Nginx ingress
-    digest: 8c55cfb57ad8d1a322cee0e65eb856cbc3db974adbd1b9a95bacdb91dcf5db96
+    digest: 331b8db33b087bb064a8f94baff9b89273582dffbb74af20b49502f7fed9f433
     icon: https://docs.nginx.com/nginx-ingress-controller/images/icons/NGINX-Ingress-Controller-product-icon.svg
     maintainers:
     - email: roertel@users.noreply.github.com
@@ -205,14 +205,14 @@ entries:
   openldap:
   - apiVersion: v2
     appVersion: 1.0.1-1
-    created: "2024-12-14T01:34:36.527791429Z"
+    created: "2025-03-26T00:52:23.274129077Z"
     dependencies:
     - condition: phpldapadmin.enabled
       name: phpldapadmin
       repository: https://roertel.github.io/helm-charts/
       version: 0.1.4-0
     description: A Helm chart for OpenLDAP
-    digest: 6f34201fb09331b70cf1c13240c2a09e8e9adc6671f4b122a8c0481477c0071f
+    digest: 33237703c878619d8ff2e03a06c4f3a355f8ec52d1aeb7ac93264860bc988951
     home: https://github.com/roertel/helm-charts/charts/openldap
     icon: https://img.favpng.com/6/22/16/openldap-lightweight-directory-access-protocol-directory-service-active-directory-computer-configuration-png-favpng-rXDVC6WCDDD8UQ7ZFTDryfGdZ.jpg
     maintainers:
@@ -534,9 +534,9 @@ entries:
   phpldapadmin:
   - apiVersion: v2
     appVersion: 0.7.1
-    created: "2024-12-14T01:34:36.528218577Z"
+    created: "2025-03-26T00:52:23.274547827Z"
     description: Web management of LDAP
-    digest: 3bc6f8c673af8b0cbad83f7ba0956299be551afe95bb0a1acdd0e50e0d204ebc
+    digest: 70872456c8e24f7836cc64981ec7555d0c794c7004f342f6c2651ddfadaa70f9
     home: https://phpldapadmin.sourceforge.net
     icon: https://phpldapadmin.sourceforge.net/wiki/images/d/d4/Logo.jpg
     maintainers:
@@ -595,9 +595,9 @@ entries:
   soft-serve:
   - apiVersion: v2
     appVersion: v0.4.6
-    created: "2024-12-14T01:34:36.528700718Z"
+    created: "2025-03-26T00:52:23.275822249Z"
     description: A tasty, self-hostable Git server for the command line
-    digest: 74c3147e78dfb42baf7683741ad1da0258b3db5de74ef678c99086df88afd20e
+    digest: 928d6c147288e1ebfe033705c9650855f249662edb60e8e327a3e422a07a0708
     home: https://github.com/roertel/helm-charts/charts/soft-serve
     icon: https://camo.githubusercontent.com/13c5b4b96888c7577c8a6d427123a0ca9c32e1c97d390baf76fac311cdce756e/68747470733a2f2f73747566662e636861726d2e73682f736f66742d73657276652f736f66742d73657276652d6865616465722e706e673f30
     maintainers:
@@ -705,4 +705,33 @@ entries:
     urls:
     - soft-serve-0.1.0.tgz
     version: 0.1.0
-generated: "2024-12-14T01:34:36.523632907Z"
+  ulogger-server:
+  - annotations:
+      artifacthub.io/changes: |-
+        - kind: added
+          description: Initial version
+    apiVersion: v2
+    appVersion: "1.2"
+    created: "2025-03-26T00:52:23.278101754Z"
+    dependencies:
+    - name: common
+      repository: oci://ghcr.io/roertel
+      version: 4.5.4
+    description: ulogger-server helm package
+    digest: 377b41343c1e2af4d9809015f524b6a34aad1cd67804b8edd47e77d027f91fe0
+    home: https://github.com/roertel/helm-charts/tree/master/charts/stable/ulogger-server
+    icon: https://github.com/bfabiszewski/ulogger-server/blob/master/icons/android-chrome-512x512.png
+    keywords:
+    - ulogger-server
+    kubeVersion: '>=1.25'
+    maintainers:
+    - email: 638327+roertel@users.noreply.github.com
+      name: roertel
+    name: ulogger-server
+    sources:
+    - https://github.com/roertel/docker-ulogger-server
+    - https://github.com/bfabiszewski/ulogger-server
+    urls:
+    - https://roertel.github.io/helm-charts/ulogger-server-0.0.1.tgz
+    version: 0.0.1
+generated: "2025-03-26T00:52:23.270786914Z"
