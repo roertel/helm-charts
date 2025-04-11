@@ -23,8 +23,9 @@ maintainers:
 
 dependencies:
 - name: common
-  repository: oci://ghcr.io/roertel
-  version: 4.5.6
+  # repository: oci://ghcr.io/roertel
+  version: 4.5.7
+  repository: file://../../../k8s-at-home-library-charts/charts/stable/common
 
 annotations:
   artifacthub.io/changes: |-
