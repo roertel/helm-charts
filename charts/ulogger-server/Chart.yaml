@@ -1,7 +1,7 @@
 apiVersion: v2
 
 name: ulogger-server
-version: 0.0.3
+version: 0.0.4
 appVersion: "1.2"
 description: ulogger-server helm package
 
@@ -24,7 +24,7 @@ maintainers:
 dependencies:
 - name: common
   repository: oci://ghcr.io/roertel
-  version: 4.5.6
+  version: 4.5.7
 
 annotations:
   artifacthub.io/changes: |-
