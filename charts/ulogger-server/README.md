@@ -1,6 +1,6 @@
 # ulogger-server
 
-![Version: 0.0.3](https://img.shields.io/badge/Version-0.0.3-informational?style=flat-square) ![AppVersion: 1.2](https://img.shields.io/badge/AppVersion-1.2-informational?style=flat-square)
+![Version: 0.0.4](https://img.shields.io/badge/Version-0.0.4-informational?style=flat-square) ![AppVersion: 1.2](https://img.shields.io/badge/AppVersion-1.2-informational?style=flat-square)
 
 ulogger-server helm package
 
@@ -23,7 +23,7 @@ Kubernetes: `>=1.25`
 
 | Repository | Name | Version |
 |------------|------|---------|
-| oci://ghcr.io/roertel | common | 4.5.6 |
+| oci://ghcr.io/roertel | common | 4.5.7 |
 
 ## Values
 
