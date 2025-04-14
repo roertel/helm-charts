@@ -12,6 +12,7 @@ all: $(changed_charts)
 
 clean:
 	rm -rf $(makefile_dir).cache
+	rm -rf $(makefile_dir)/charts/*/Chart.lock $(makefile_dir)/charts/*/charts
 	
 distclean:
 	rm -rf $(makefile_dir).cache
