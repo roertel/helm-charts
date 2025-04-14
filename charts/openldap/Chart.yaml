@@ -3,8 +3,8 @@ name: openldap
 description: A Helm chart for OpenLDAP
 icon: https://img.favpng.com/6/22/16/openldap-lightweight-directory-access-protocol-directory-service-active-directory-computer-configuration-png-favpng-rXDVC6WCDDD8UQ7ZFTDryfGdZ.jpg
 maintainers:
-  - name: roertel
-    email: roertel@users.noreply.github.com
+- name: roertel
+  email: roertel@users.noreply.github.com
 home: https://github.com/roertel/helm-charts/charts/openldap
 
 # A chart can be either an 'application' or a 'library' chart.
@@ -31,10 +31,10 @@ version: 2.4.58-4
 # alphanumeric characters, '-', '_' or '.', and must start and end with an
 # alphanumeric character (e.g. 'MyValue',  or 'my_value',  or '12345', regex
 # used for validation is '(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])?')
-appVersion: "1.0.1-1"
+appVersion: "1.0.1-2"
 
 dependencies:
-  - name: phpldapadmin
-    version: 0.1.4-0
-    condition: phpldapadmin.enabled
-    repository: https://roertel.github.io/helm-charts/
+- name: phpldapadmin
+  version: 0.1.4-0
+  condition: phpldapadmin.enabled
+  repository: https://roertel.github.io/helm-charts/
