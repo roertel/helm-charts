@@ -1,8 +1,8 @@
 apiVersion: v2
 
 name: ulogger-server
-version: 0.0.6
-appVersion: "2.0"
+version: 0.0.7
+appVersion: "2.0.1"
 description: ulogger-server helm package
 
 kubeVersion: ">=1.25"
