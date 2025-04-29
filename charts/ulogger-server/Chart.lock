@@ -1,6 +1,6 @@
 dependencies:
 - name: common
   repository: oci://ghcr.io/roertel
-  version: 4.5.8
-digest: sha256:3dea367ab7afe45a647caf604e5e0b676a209b46e2298155466fb64a70fda18e
-generated: "2025-04-29T19:40:53.883712164Z"
+  version: 4.5.9
+digest: sha256:acf3636daf7038f1a9dcf82e1b541fa6f764799c9508598b7e0b2ae257ff83b5
+generated: "2025-04-29T15:34:59.309966741-05:00"
