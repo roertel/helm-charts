@@ -1,7 +1,7 @@
 apiVersion: v2
 
 name: ulogger-server
-version: 0.0.8
+version: 0.0.9
 appVersion: "2.0.1"
 description: ulogger-server helm package
 
