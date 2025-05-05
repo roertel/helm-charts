@@ -1,0 +1,3 @@
+repositories:
+- name: roertel
+  url: https://roertel.github.io/helm-charts
