@@ -6,7 +6,7 @@
 # nameOverride: my-database
 
 # -- Global values that apply to all manifests
-global:
+common:
   # -- Global annotations that apply to all manifests
   annotations: {}
   # -- Global name that applies to all manifests
