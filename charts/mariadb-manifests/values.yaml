@@ -5,22 +5,39 @@
 # Name of the database to create. Defaults to the name of the chart if empty
 # nameOverride: my-database
 
-backup: {}
+#-- Global values that apply to all manifests
+global:
+  #-- Global annotations that apply to all manifests
+  annotations: {}
+  #-- Global name that applies to all manifests
+  name: ""
 
-connection: {}
+#-- List of secrets to create
+secret: [{}]
 
-database: {}
+#-- List of mariadb objects to create
+mariadb: [{}]
 
-grant: {}
+#-- List of backup objects to create
+backup: [{}]
 
-mariadb: {}
+#-- List of connection objects to create
+connection: [{}]
 
-maxscale: {}
+#-- List of database objects to create
+database: [{}]
 
-restore: {}
+#-- List of maxscale objects to create
+maxscale: [{}]
 
-secret: {}
+#-- List of restore objects to create
+restore: [{}]
 
-sqljob: {}
+#-- List of sqljob objects to create
+sqljob: [{}]
 
-user: {}
+#-- List of user objects to create
+user: [{}]
+
+#-- List of grant objects to create
+grant: [{}]

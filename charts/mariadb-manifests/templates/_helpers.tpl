@@ -65,7 +65,26 @@ Common Spec
 Pass in the specific Manifest values (ex: .Values.mariadb)
 */}}
 {{- define "mariadb-manifests.spec" -}}
-{{- with omit . "name" "annotations" "labels" }}
-{{- toYaml . }}
+{{- omit . "name" "annotations" "labels" "enabled" | toYaml }}
+{{- end }}
+
+{{/*
+MariaDbSpec
+*/}}
+{{- define "mariadb-manifests.mariadbref" }}
+{{/* Derive the MariaDbRef from the first enabled MariaDB */}}
+{{- $mariadb := "" }}
+{{- $default := .Values.common.name | default (include "mariadb-manifests.name" .) }}
+{{- range .Values.mariadb }}
+{{- if .enabled }}
+{{- $mariadb = .name | default $default }}
+{{- break }}
+{{- end }}
+{{- end }}
+
+{{/* If no MariaDB is enabled, return an empty string */}}
+{{- if eq $mariadb "" }}
+{{- else }}
+name: {{ $mariadb }}
 {{- end }}
 {{- end }}
