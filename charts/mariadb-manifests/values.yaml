@@ -5,39 +5,39 @@
 # Name of the database to create. Defaults to the name of the chart if empty
 # nameOverride: my-database
 
-#-- Global values that apply to all manifests
+# -- Global values that apply to all manifests
 global:
-  #-- Global annotations that apply to all manifests
+  # -- Global annotations that apply to all manifests
   annotations: {}
-  #-- Global name that applies to all manifests
+  # -- Global name that applies to all manifests
   name: ""
 
-#-- List of secrets to create
+# -- List of secrets to create
 secret: [{}]
 
-#-- List of mariadb objects to create
+# -- List of mariadb objects to create
 mariadb: [{}]
 
-#-- List of backup objects to create
+# -- List of backup objects to create
 backup: [{}]
 
-#-- List of connection objects to create
+# -- List of connection objects to create
 connection: [{}]
 
-#-- List of database objects to create
+# -- List of database objects to create
 database: [{}]
 
-#-- List of maxscale objects to create
+# -- List of maxscale objects to create
 maxscale: [{}]
 
-#-- List of restore objects to create
+# -- List of restore objects to create
 restore: [{}]
 
-#-- List of sqljob objects to create
+# -- List of sqljob objects to create
 sqljob: [{}]
 
-#-- List of user objects to create
+# -- List of user objects to create
 user: [{}]
 
-#-- List of grant objects to create
+# -- List of grant objects to create
 grant: [{}]
