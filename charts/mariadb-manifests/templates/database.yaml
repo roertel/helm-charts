@@ -1,16 +1,25 @@
 {{- $apiversion := "k8s.mariadb.com/v1alpha1" }}
 {{- $kind := "Database" }}
-
 {{- if .Capabilities.APIVersions.Has (printf "%s/%s" $apiversion $kind) }}
-{{- $labels := include "mariadb-manifests.labels" . }}
-{{- with get .Values (lower $kind) }}
+
+{{- /* assemble default values: global, common and manifest specific */}}
+{{- $defaultValues := merge .Values.common (dict
+      "name" (include "mariadb-manifests.name" .)
+      "labels" (include "mariadb-manifests.labels" . | fromYaml)
+      "mariaDbRef" (include "mariadb-manifests.mariadbref" . | fromYaml)
+) }}
+
+{{- range get .Values (lower $kind) }}
+{{- $defaultValues := merge . $defaultValues }}
+
+{{- if $defaultValues.enabled }}
+---
 apiVersion: {{ $apiversion }}
 kind: {{ $kind }}
-metadata:
-  {{- include "mariadb-manifests.metadata" . | nindent 2 }}
-  labels:
-    {{- nindent 4 $labels }}
-spec:
-  {{- include "mariadb-manifests.spec" . | nindent 2 }}
-{{- end }}
-{{- end }}
+metadata: {{- include "mariadb-manifests.metadata" $defaultValues | nindent 2 }}
+
+spec: {{- $defaultValues | include "mariadb-manifests.spec" | nindent 2 }}
+
+{{- end }}{{/* if enabled */}}
+{{- end }}{{/* range */}}
+{{- end }}{{/* if capabilities */}}
