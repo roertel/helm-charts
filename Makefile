@@ -30,7 +30,8 @@ $(changed_charts):
 	docker run --rm --tty --volume $(makefile_dir):/repo --workdir /repo \
 		--env "TERM=${TERM}" --env "COLORTERM=${COLORTERM}" \
 		quay.io/helmpack/chart-testing ct lint --config .github/ct.yaml \
-		--target-branch '$(root_branch)' --check-version-increment --charts '$@'
+		--target-branch '$(root_branch)' --check-version-increment \
+		--validate-maintainers='$(shell test -L '$@' && echo false || echo true)' --charts '$@'
 
 	@echo -e '\e[1;33m*\n* Generate and score manifests for $@\n*\e[0m'
 	docker run --rm --volume $(makefile_dir)$@:/chart --env "TERM=${TERM}" \
