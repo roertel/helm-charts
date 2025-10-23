@@ -1,3 +1,0 @@
-The Nginx default backend is now set up. Configure Nginx-ingress to use this backend:
-set defaultBackend.enabled=false
-set controller.defaultBackendService={{ .Release.Namespace }}/{{ include "nginx-default-backend.fullname" . }}
