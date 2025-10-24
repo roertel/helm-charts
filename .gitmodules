@@ -1,0 +1,3 @@
+[submodule "submodules/postgres-operator-examples"]
+	path = submodules/postgres-operator-examples
+	url = https://github.com/CrunchyData/postgres-operator-examples.git
